@@ -97,9 +97,9 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                 if (radioButton.getText() == null) {
                     return;
                 } else if (radioButton.getText().equals("Nam")) {
-                    sex = "Female";
+                    sex = "male";
                 } else if (radioButton.getText().equals("Nữ")) {
-                    sex = "Male";
+                    sex = "female";
                 }
 
 
@@ -111,7 +111,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                                 if (task.isSuccessful()) {
                                     // Sign in success, update UI with the signed-in user's information
                                     String userId = mAuth.getCurrentUser().getUid();
-                                    DatabaseReference currentReference = FirebaseDatabase.getInstance().getReference().child("users").child(finalSex);
+                                    DatabaseReference currentReference = FirebaseDatabase.getInstance().getReference().child("users").child(finalSex).child(userId);
                                     User user = new User(userId, name, age, address);
                                     currentReference.setValue(user);
 

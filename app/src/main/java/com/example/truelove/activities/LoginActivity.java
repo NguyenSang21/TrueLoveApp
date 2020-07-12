@@ -78,16 +78,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 final String email = edtEmail.getText().toString().trim();
                 final String password = edtPassword.getText().toString().trim();
 
-                mAuth.createUserWithEmailAndPassword(email, password)
+                mAuth.signInWithEmailAndPassword(email, password)
                         .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
                                     // Sign in success, update UI with the signed-in user's information
-                                    Toast.makeText(LoginActivity.this, "Success", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(LoginActivity.this, "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
                                 } else {
                                     // If sign in fails, display a message to the user.
-                                    Toast.makeText(LoginActivity.this, "sign up error", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(LoginActivity.this, "Đăng nhập thất bại!", Toast.LENGTH_SHORT).show();
                                 }
 
                                 // ...
