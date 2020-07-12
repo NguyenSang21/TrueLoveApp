@@ -21,4 +21,13 @@
         app:rotation_degrees="15.5"
         tools:context=".MyActivity" />
 
+    <Button
+        android:onClick="goToProfile"
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="PROFILE"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
