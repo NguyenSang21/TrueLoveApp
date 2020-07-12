@@ -1,4 +1,4 @@
-package com.example.truelove;
+package com.example.truelove.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
+
+import com.example.truelove.R;
 
 public class ChooseLoginRegistrationActivity extends AppCompatActivity implements View.OnClickListener {
 
