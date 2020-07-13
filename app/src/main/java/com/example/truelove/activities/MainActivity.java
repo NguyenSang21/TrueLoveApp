@@ -259,8 +259,10 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
         intent.putExtra("userSex", userSex);
         startActivity(intent);
-        finish();
         return;
     }
 
+    public void gotoMatches(View view) {
+
+    }
 }

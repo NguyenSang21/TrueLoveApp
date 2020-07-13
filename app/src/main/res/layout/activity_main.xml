@@ -7,10 +7,11 @@
     tools:context=".activities.MainActivity">
 
     <Button
-        android:onClick="logoutUser"
-        android:text="SignOut"
+        android:id="@+id/button3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:onClick="logoutUser"
+        android:text="SignOut"
         tools:ignore="MissingConstraints" />
 
     <com.lorentzos.flingswipe.SwipeFlingAdapterView
@@ -28,6 +29,17 @@
         android:layout_height="wrap_content"
         android:text="PROFILE"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:onClick="gotoMatches"
+        android:id="@+id/gotoMatches"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="MATCHES"
+        app:layout_constraintEnd_toStartOf="@+id/button"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toEndOf="@+id/button3"
         app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
