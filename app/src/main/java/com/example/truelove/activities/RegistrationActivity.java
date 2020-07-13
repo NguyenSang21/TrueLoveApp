@@ -111,8 +111,8 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                                 if (task.isSuccessful()) {
                                     // Sign in success, update UI with the signed-in user's information
                                     String userId = mAuth.getCurrentUser().getUid();
-                                    DatabaseReference currentReference = FirebaseDatabase.getInstance().getReference().child("users").child(finalSex).child(userId);
-                                    User user = new User(userId, name, age, address);
+                                    DatabaseReference currentReference = FirebaseDatabase.getInstance().getReference().child("users").child(userId);
+                                    User user = new User(userId, name, age, address, finalSex);
                                     currentReference.setValue(user);
 
                                     Toast.makeText(RegistrationActivity.this, "Đăng ký thành công!", Toast.LENGTH_SHORT).show();

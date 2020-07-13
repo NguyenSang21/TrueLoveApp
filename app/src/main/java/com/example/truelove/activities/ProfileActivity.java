@@ -57,11 +57,9 @@ public class ProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_profile);
         mapping();
 
-        String userSex = getIntent().getExtras().getString("userSex");
-
         mAuth = FirebaseAuth.getInstance();
         userId = mAuth.getCurrentUser().getUid();
-        databaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(userSex).child(userId);
+        databaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(userId);
 
         getUserInfo();
 
