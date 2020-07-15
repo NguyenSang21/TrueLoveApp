@@ -4,19 +4,41 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.ChooseLoginRegistrationActivity"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".activities.ChooseLoginRegistrationActivity">
 
-    <Button
-        android:id="@+id/btnLogin"
+    <ImageView
+        android:id="@+id/imageView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Login" />
+        android:layout_height="450dp"
+        android:background="#fc476d"
+        android:gravity="center"
+        android:scaleType="center"
+        app:srcCompat="@drawable/anhnen" />
 
-    <Button
-        android:id="@+id/btnRegister"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Register" />
+        android:layout_height="match_parent"
+        android:background="#fc476d"
+        android:gravity="center"
+        android:orientation="horizontal">
 
+        <Button
+            android:id="@+id/btnLogin"
+            android:layout_width="110dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@drawable/custom_rounded_corners"
+            android:text="Login"
+            android:textColor="#ffffff" />
+
+        <Button
+            android:id="@+id/btnRegister"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@drawable/custom_rounded_corners"
+            android:text="Register"
+            android:textColor="#ffffff" />
+    </LinearLayout>
 </LinearLayout>
