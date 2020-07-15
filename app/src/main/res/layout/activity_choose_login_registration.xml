@@ -5,21 +5,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@drawable/gradient_pink_red_background"
     tools:context=".activities.ChooseLoginRegistrationActivity">
+
 
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="match_parent"
         android:layout_height="450dp"
-        android:background="#fc476d"
+        android:adjustViewBounds="false"
+        android:cropToPadding="true"
         android:gravity="center"
         android:scaleType="center"
-        app:srcCompat="@drawable/anhnen" />
+        app:srcCompat="@drawable/love" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#fc476d"
         android:gravity="center"
         android:orientation="horizontal">
 
