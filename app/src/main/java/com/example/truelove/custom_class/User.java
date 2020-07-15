@@ -9,6 +9,7 @@ public class User {
     private String phone;
     private String email;
     private String img;
+    private String sex;
 
     public User(String uid, String name, int age, String address) {
         this.uid = uid;
@@ -17,12 +18,29 @@ public class User {
         this.address = address;
     }
 
+    public User(String uid, String name, int age, String address, String img, String sex) {
+        this.uid = uid;
+        this.name = name;
+        this.age = age;
+        this.address = address;
+        this.sex = sex;
+        this.img = img;
+    }
+
     public User(String uid, String name, int age, String address, String img) {
         this.uid = uid;
         this.name = name;
         this.age = age;
         this.address = address;
         this.img = img;
+    }
+
+    public String getSex() {
+        return sex;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
     }
 
     public User(String uid, String name, int age, String address, String phone, String email, String img) {
