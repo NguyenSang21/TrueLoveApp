@@ -5,9 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activities.RegistrationActivity"
+    android:background="@drawable/registry_backgroud"
     android:orientation="vertical">
 
     <EditText
+        android:layout_marginTop="50dp"
         android:id="@+id/edtEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -46,6 +48,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
+        android:textColor="@color/white"
         android:hint="Địa chỉ" />
 
     <RadioGroup
@@ -54,18 +57,36 @@
         android:layout_height="wrap_content">
         <RadioButton
             android:text="Nam"
+            android:textColor="@color/white"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
         <RadioButton
             android:text="Nữ"
+            android:textColor="@color/white"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
     </RadioGroup>
 
+<!--    <Button-->
+<!--        android:id="@+id/btnRegister"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="Đăng ký" />-->
+
     <Button
-        android:id="@+id/btnRegister"
+        android:id="@+id/btnRegisterForRegistry"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Đăng ký" />
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="30dp"
+        android:background="@drawable/registry_circular_white_border"
+        android:elevation="0dp"
+        android:gravity="center"
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp"
+        android:text="Đăng ký"
+        android:textColor="@color/white"
+        android:textSize="17sp" />
 
 </LinearLayout>
