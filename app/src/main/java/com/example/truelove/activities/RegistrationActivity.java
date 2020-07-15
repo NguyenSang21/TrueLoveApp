@@ -4,8 +4,11 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
@@ -34,6 +37,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
+        personalUI();
         mapping();
         btnRegister.setOnClickListener(this);
         registration();
@@ -66,6 +70,14 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                 }
             }
         };
+    }
+
+    private void personalUI() {
+        getSupportActionBar().hide();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            Window w = getWindow();
+            w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+        }
     }
 
     private void mapping() {
@@ -109,8 +121,8 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                                 if (task.isSuccessful()) {
                                     // Sign in success, update UI with the signed-in user's information
                                     String userId = mAuth.getCurrentUser().getUid();
-                                    DatabaseReference currentReference = FirebaseDatabase.getInstance().getReference().child("users").child(finalSex).child(userId);
-                                    User user = new User(userId, name, age, address);
+                                    DatabaseReference currentReference = FirebaseDatabase.getInstance().getReference().child("users").child(userId);
+                                    User user = new User(userId, name, age, address, finalSex);
                                     currentReference.setValue(user);
 
                                     Toast.makeText(RegistrationActivity.this, "Đăng ký thành công!", Toast.LENGTH_SHORT).show();
