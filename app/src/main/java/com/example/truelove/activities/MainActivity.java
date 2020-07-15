@@ -226,7 +226,10 @@ public class MainActivity extends AppCompatActivity {
         return;
     }
 
-    public void gotoMatches(View view) {
 
+    public void gotoMatches(View view) {
+        Intent intent = new Intent(MainActivity.this, MatchesActivity.class);
+        startActivity(intent);
+        return;
     }
 }
