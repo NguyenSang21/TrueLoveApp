@@ -5,19 +5,30 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activities.RegistrationActivity"
-    android:background="@drawable/registry_backgroud"
-    android:orientation="vertical">
+    android:background="@drawable/gradient_pink_red_background"
+    android:orientation="vertical"
+    android:padding="20dp"
+    >
 
     <EditText
-        android:layout_marginTop="50dp"
+        android:drawableLeft="@drawable/registry_screeen__email"
+        android:drawablePadding="10dp"
+        android:textColor="@color/white"
+        android:layout_marginTop="30dp"
         android:id="@+id/edtEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textPersonName"
-        android:hint="Email" />
+        android:hint="Email"
+
+        />
 
     <EditText
+        android:drawableLeft="@drawable/registry_screeen__password"
+        android:drawablePadding="10dp"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/white"
         android:hint="Mật khẩu"
         android:id="@+id/edtPassword"
         android:layout_width="match_parent"
@@ -27,6 +38,10 @@
 
 
     <EditText
+        android:layout_marginTop="10dp"
+        android:drawableLeft="@drawable/registry_screeen__name"
+        android:drawablePadding="10dp"
+        android:textColor="@color/white"
         android:id="@+id/edtName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -35,6 +50,10 @@
         android:hint="Họ tên" />
 
     <EditText
+        android:layout_marginTop="10dp"
+        android:drawableLeft="@drawable/registry_screeen__age"
+        android:drawablePadding="10dp"
+        android:textColor="@color/white"
         android:inputType="number"
         android:id="@+id/edtAge"
         android:layout_width="match_parent"
@@ -43,28 +62,38 @@
         android:hint="Tuổi của bạn ?" />
 
     <EditText
+        android:layout_marginTop="10dp"
+        android:drawableLeft="@drawable/registry_screeen__roadmap"
+        android:drawablePadding="10dp"
+        android:textColor="@color/white"
         android:inputType="textPersonName"
         android:id="@+id/edtAddress"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:textColor="@color/white"
         android:hint="Địa chỉ" />
 
     <RadioGroup
+        android:layout_marginTop="10dp"
         android:id="@+id/radioGroupSex"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:gravity="clip_horizontal"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
         <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="Nam"
-            android:textColor="@color/white"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:textColor="@color/white" />
+
         <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
             android:text="Nữ"
-            android:textColor="@color/white"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:textColor="@color/white" />
     </RadioGroup>
 
 <!--    <Button-->
@@ -74,11 +103,11 @@
 <!--        android:text="Đăng ký" />-->
 
     <Button
-        android:id="@+id/btnRegisterForRegistry"
+        android:id="@+id/btnRegister"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="30dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="20dp"
         android:layout_marginRight="30dp"
         android:background="@drawable/registry_circular_white_border"
         android:elevation="0dp"
@@ -86,7 +115,7 @@
         android:paddingTop="12dp"
         android:paddingBottom="12dp"
         android:text="Đăng ký"
-        android:textColor="@color/white"
+        android:textColor="@color/common_google_signin_btn_text_light"
         android:textSize="17sp" />
 
 </LinearLayout>

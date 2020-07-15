@@ -72,7 +72,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         edtName = findViewById(R.id.edtName);
         edtEmail = findViewById(R.id.edtEmail);
         edtPassword = findViewById(R.id.edtPassword);
-        btnRegister = findViewById(R.id.btnRegisterForRegistry);
+        btnRegister = findViewById(R.id.btnRegister);
         mRadioGroupSex = findViewById(R.id.radioGroupSex);
         edtAge = findViewById(R.id.edtAge);
         edtAddress = findViewById(R.id.edtAddress);
@@ -83,7 +83,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         int viewId = view.getId();
         Toast.makeText(this, "ON CLICK !!!", Toast.LENGTH_SHORT).show();
         switch (viewId) {
-            case R.id.btnRegisterForRegistry:
+            case R.id.btnRegister:
                 final String email = edtEmail.getText().toString().trim();
                 final String password = edtPassword.getText().toString().trim();
                 final String name = edtName.getText().toString().trim();
