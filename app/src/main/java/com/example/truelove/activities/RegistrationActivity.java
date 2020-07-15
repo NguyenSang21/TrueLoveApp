@@ -101,8 +101,6 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                 } else if (radioButton.getText().equals("Nữ")) {
                     sex = "female";
                 }
-
-
                 final String finalSex = sex;
                 mAuth.createUserWithEmailAndPassword(email, password)
                         .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
