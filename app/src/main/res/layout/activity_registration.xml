@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".activities.RegistrationActivity"
     android:background="@drawable/gradient_pink_red_background"
-    android:padding="20dp"
+
     >
 
     <TextView
