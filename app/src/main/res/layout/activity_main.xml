@@ -1,45 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activities.MainActivity">
 
-    <Button
-        android:id="@+id/button3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="logoutUser"
-        android:text="SignOut"
-        tools:ignore="MissingConstraints" />
-
     <com.lorentzos.flingswipe.SwipeFlingAdapterView
+        android:layout_above="@+id/groupBtn"
         android:id="@+id/frame"
-        android:background="#ffeee9e2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:rotation_degrees="15.5"
-        tools:context=".MyActivity" />
-
-    <Button
-        android:onClick="goToProfile"
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="PROFILE"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:onClick="gotoMatches"
-        android:id="@+id/gotoMatches"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="MATCHES"
-        app:layout_constraintEnd_toStartOf="@+id/button"
-        app:layout_constraintHorizontal_bias="0.496"
-        app:layout_constraintStart_toEndOf="@+id/button3"
-        app:layout_constraintTop_toTopOf="parent" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:background="@drawable/gradient_pink_red_background"
+         />
+    <LinearLayout
+        android:id="@+id/groupBtn"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:weightSum="4">
+        <Button
+            android:id="@+id/btnProfile"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:onClick="goToProfile"
+            android:drawableLeft="@drawable/profile"
+            android:paddingLeft="40dp"
+            android:background="#fff"
+            android:text="" />
+        <Button
+            android:id="@+id/btnMatches"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:onClick="gotoMatches"
+            android:drawableLeft="@drawable/couple"
+            android:paddingLeft="40dp"
+            android:background="#fff"
+            android:text="" />
+        <Button
+            android:id="@+id/btnComment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:onClick="logoutUser"
+            android:drawableLeft="@drawable/comment"
+            android:paddingLeft="40dp"
+            android:background="#fff"
+            android:text="" />
+        <Button
+            android:id="@+id/btnLocation"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:onClick="logoutUser"
+            android:drawableLeft="@drawable/location"
+            android:paddingLeft="40dp"
+            android:background="#fff"/>
+    </LinearLayout>
+</RelativeLayout>
