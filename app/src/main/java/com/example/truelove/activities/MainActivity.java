@@ -49,6 +49,8 @@ public class MainActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         currentUId = mAuth.getCurrentUser().getUid();
 
+        personalUI();
+
         checkUserSex();
 
         rowItems = new ArrayList<User>();
@@ -231,5 +233,9 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(MainActivity.this, MatchesActivity.class);
         startActivity(intent);
         return;
+    }
+
+    private void personalUI() {
+        getSupportActionBar().hide();
     }
 }
