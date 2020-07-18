@@ -3,7 +3,6 @@ package com.example.truelove.adapter;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -13,13 +12,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.truelove.R;
 import com.example.truelove.activities.ChatActivity;
 
-public class MatchesViewHolders extends RecyclerView.ViewHolder implements View.OnClickListener {
+public class ChatViewHolders extends RecyclerView.ViewHolder implements View.OnClickListener {
     public TextView txtMatchesId, txtMatchesName;
     public ImageView imageMatches;
 
 
     private ImageView imgMatches;
-    public MatchesViewHolders(@NonNull View itemView) {
+    public ChatViewHolders(@NonNull View itemView) {
         super(itemView);
         itemView.setOnClickListener(this);
         txtMatchesId = itemView.findViewById(R.id.txtMatchesId);

@@ -74,9 +74,8 @@ public class MainActivity extends AppCompatActivity {
                 //If you want to use it just cast it (String) dataObject
                 User userObj = (User) dataObject;
                 String userId = userObj.getUid();
-                userDb.child(oppositeUserSex).child(userId).child("connections").child("nope").child(currentUId).setValue(true);
+                userDb.child(userId).child("connections").child("nope").child(currentUId).setValue(true);
 
-                isConnectionMatch(userId);
                 Toast.makeText(MainActivity.this, "Left!", Toast.LENGTH_SHORT).show();
             }
 
@@ -85,6 +84,8 @@ public class MainActivity extends AppCompatActivity {
                 User userObj = (User) dataObject;
                 String userId = userObj.getUid();
                 userDb.child(userId).child("connections").child("yeps").child(currentUId).setValue(true);
+                isConnectionMatch(userId);
+
                 Toast.makeText(MainActivity.this, "Right!", Toast.LENGTH_SHORT).show();
             }
 
@@ -108,30 +109,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void isConnectionMatch(String userId) {
-        DatabaseReference currentUserConnectReference = userDb.child(userSex).child(currentUId).child("connections").child("yeps").child(userId);
-        currentUserConnectReference.addChildEventListener(new ChildEventListener() {
+        DatabaseReference currentUserConnectReference = userDb.child(currentUId).child("connections").child("yeps").child(userId);
+        currentUserConnectReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()) {
                     Toast.makeText(MainActivity.this, "new connection", Toast.LENGTH_SHORT).show();
-                    userDb.child(dataSnapshot.getKey()).child("connections").child("matches").child(currentUId).setValue(true);
-                    userDb.child(currentUId).child("connections").child("matches").child(dataSnapshot.getKey()).setValue(true);
+                    String keyChat = FirebaseDatabase.getInstance().getReference().child("chat").push().getKey();
+
+                    userDb.child(dataSnapshot.getKey()).child("connections").child("matches").child(currentUId).child("chatId").setValue(keyChat);
+
+                    userDb.child(currentUId).child("connections").child("matches").child(dataSnapshot.getKey()).child("chatId").setValue(keyChat);
                 }
-            }
-
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
             }
 
             @Override
@@ -234,6 +223,12 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
         return;
     }
+    public void gotoChat(View view) {
+        Intent intent = new Intent(MainActivity.this, ChatActivity.class);
+        startActivity(intent);
+        return;
+    }
+
 
     private void personalUI() {
         getSupportActionBar().hide();

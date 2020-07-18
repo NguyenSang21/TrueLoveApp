@@ -191,7 +191,7 @@ public class ProfileActivity extends AppCompatActivity {
         profileConfirm = findViewById(R.id.profileConfirm);
         profileAddress = findViewById(R.id.profileAddress);
         profileAge = findViewById(R.id.profileAge);
-        profileSex = findViewById(R.id.profileSex);
+        // profileSex = findViewById(R.id.profileSex);
         btnBack = findViewById(R.id.btnBack);
     }
 
