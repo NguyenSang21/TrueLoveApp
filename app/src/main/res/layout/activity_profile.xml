@@ -7,53 +7,151 @@
     android:orientation="vertical"
     tools:context=".activities.ProfileActivity">
 
-    <ImageView
-        android:layout_margin="10dp"
-        android:layout_gravity="center"
-        android:src="@color/colorAccent"
-        android:id="@+id/profileImage"
-        android:layout_width="100sp"
-        android:layout_height="100sp"/>
-
-    <EditText
-        android:hint="Họ tên"
-        android:id="@+id/profileName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-
-    <EditText
-        android:hint="Email"
-        android:id="@+id/profileEMail"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-
-    <EditText
-        android:hint="Số điện thoại"
-        android:id="@+id/profilePhone"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-
-    <EditText
-        android:hint="Địa chỉ"
-        android:id="@+id/profileAddress"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-
-    <EditText
-        android:hint="Tuổi"
-        android:id="@+id/profileAge"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-
-    <Button
-        android:text="Xác nhận"
-        android:id="@+id/profileConfirm"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-
-    <Button
-        android:id="@+id/btnBack"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Trở lại" />
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_margin="10dp"
+            android:layout_gravity="center"
+            android:src="@color/colorAccent"
+            android:id="@+id/profileImage"
+            android:layout_width="100sp"
+            android:layout_height="100sp"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="10dp"
+                android:text="Sang Nguyen"
+                android:textColor="#424242"
+                android:textSize="25sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:text="nguyensang@gmail.com"
+                android:textColor="#424242"
+                android:textSize="20sp" />
+        </LinearLayout>
+    </LinearLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Thông tin cơ bản"
+        android:textSize="20sp"
+        android:textStyle="bold"/>
+    <EditText
+        android:id="@+id/profileName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Nguyễn Văn A" />
+
+    <EditText
+        android:id="@+id/profileEMail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="nguyena@gmai.com"/>
+
+    <EditText
+        android:id="@+id/profilePhone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="0909797979"/>
+
+    <EditText
+        android:id="@+id/profileAddress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="227 Nguyen Van Cu, phuong 4, quan 5, thanh pho Ho Chi Minh"/>
+
+    <EditText
+        android:id="@+id/profileAge"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="20"/>
+    <RadioGroup
+        android:id="@+id/radioGroupSex"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="clip_horizontal"
+        android:orientation="horizontal">
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="17sp"
+            android:text="Nam"
+            android:checked="true"
+            />
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:textSize="17sp"
+            android:text="Nữ" />
+    </RadioGroup>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Hình ảnh"
+        android:textSize="20sp"
+        android:textStyle="bold"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <ImageView
+            android:layout_margin="10dp"
+            android:layout_gravity="center"
+            android:src="@color/colorAccent"
+            android:layout_width="100sp"
+            android:layout_height="100sp"/>
+        <ImageView
+            android:layout_margin="10dp"
+            android:layout_gravity="center"
+            android:src="@color/colorAccent"
+            android:layout_width="100sp"
+            android:layout_height="100sp"/>
+        <ImageView
+            android:layout_margin="10dp"
+            android:layout_gravity="center"
+            android:src="@color/colorAccent"
+            android:layout_width="100sp"
+            android:layout_height="100sp"/>
+        <ImageView
+            android:layout_margin="10dp"
+            android:layout_gravity="center"
+            android:src="@color/colorAccent"
+            android:layout_width="100sp"
+            android:layout_height="100sp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:text="Xác nhận"
+            android:id="@+id/profileConfirm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <Button
+            android:id="@+id/btnBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Trở lại" />
+    </LinearLayout>
 </LinearLayout>

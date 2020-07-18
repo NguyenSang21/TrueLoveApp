@@ -41,7 +41,7 @@ import java.util.Map;
 
 public class ProfileActivity extends AppCompatActivity {
 
-    private EditText profileName, profileEMail, profilePhone, profileAddress, profileAge;
+    private EditText profileName, profileEMail, profilePhone, profileAddress, profileAge, profileSex;
     private ImageView profileImage;
     private Button profileConfirm, btnBack;
 
@@ -191,6 +191,7 @@ public class ProfileActivity extends AppCompatActivity {
         profileConfirm = findViewById(R.id.profileConfirm);
         profileAddress = findViewById(R.id.profileAddress);
         profileAge = findViewById(R.id.profileAge);
+        profileSex = findViewById(R.id.profileSex);
         btnBack = findViewById(R.id.btnBack);
     }
 
