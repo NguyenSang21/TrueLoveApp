@@ -113,4 +113,18 @@ public class User {
     public void setImg(String img) {
         this.img = img;
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "uid='" + uid + '\'' +
+                ", name='" + name + '\'' +
+                ", age=" + age +
+                ", address='" + address + '\'' +
+                ", phone='" + phone + '\'' +
+                ", email='" + email + '\'' +
+                ", img='" + img + '\'' +
+                ", sex='" + sex + '\'' +
+                '}';
+    }
 }

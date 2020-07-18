@@ -131,9 +131,12 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                                     user.setName(name);
                                     user.setAge(age);
                                     user.setAddress(address);
+                                    user.setImg("default");
+                                    user.setPhone("default");
                                     user.setSex(finalSex);
+                                    user.setEmail(email);
+                                    System.out.println(user.toString());
                                     currentReference.setValue(user);
-
                                     Toast.makeText(RegistrationActivity.this, "Đăng ký thành công!", Toast.LENGTH_SHORT).show();
                                 } else {
                                     // If sign in fails, display a message to the user.
