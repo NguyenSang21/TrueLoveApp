@@ -1,42 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/gradient_pink_red_background"
     tools:context=".activities.RegistrationActivity"
-    android:orientation="vertical">
+    >
 
     <TextView
+        android:textStyle="bold"
+        android:layout_centerHorizontal="true"
         android:id="@+id/txtWelcome"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="35dp"
-        android:layout_marginLeft="80dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginRight="70dp"
+        android:layout_above="@+id/txtSignIn"
         android:text="Welcome back,"
         android:textColor="#fff"
-        android:textSize="30dp" />
+        android:textSize="30sp" />
 
     <TextView
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="50dp"
+        android:layout_above="@+id/cardLogin"
         android:id="@+id/txtSignIn"
         android:layout_width="wrap_content"
         android:layout_height="25dp"
-        android:layout_marginLeft="95dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="90dp"
         android:text="Sign in to continue"
         android:textColor="#fff"
-        android:textSize="20dp" />
+        android:textSize="20sp" />
+
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/cardLogin"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
         android:layout_width="match_parent"
         android:layout_height="300dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginBottom="210dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp">
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp">
 
         <EditText
             android:id="@+id/edtEmail"
@@ -84,4 +86,4 @@
     </androidx.cardview.widget.CardView>
 
 
-</LinearLayout>
+</RelativeLayout>
