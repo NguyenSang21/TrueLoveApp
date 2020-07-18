@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -74,10 +75,13 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
     private void personalUI() {
         getSupportActionBar().hide();
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-//            Window w = getWindow();
-//            w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-//        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            Window w = getWindow();
+            w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+            // add FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS flag to the window
+            w.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            w.setStatusBarColor(Color.parseColor("#FB6667"));
+        }
     }
 
     private void mapping() {
@@ -122,7 +126,12 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                                     // Sign in success, update UI with the signed-in user's information
                                     String userId = mAuth.getCurrentUser().getUid();
                                     DatabaseReference currentReference = FirebaseDatabase.getInstance().getReference().child("users").child(userId);
-                                    User user = new User(userId, name, age, address, finalSex);
+                                    User user = new User();
+                                    user.setUid(userId);
+                                    user.setName(name);
+                                    user.setAge(age);
+                                    user.setAddress(address);
+                                    user.setSex(finalSex);
                                     currentReference.setValue(user);
 
                                     Toast.makeText(RegistrationActivity.this, "Đăng ký thành công!", Toast.LENGTH_SHORT).show();

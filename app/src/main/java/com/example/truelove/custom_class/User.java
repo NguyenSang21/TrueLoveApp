@@ -11,6 +11,10 @@ public class User {
     private String img;
     private String sex;
 
+    public  User(){
+        super();
+    }
+
     public User(String uid, String name, int age, String address) {
         this.uid = uid;
         this.name = name;
