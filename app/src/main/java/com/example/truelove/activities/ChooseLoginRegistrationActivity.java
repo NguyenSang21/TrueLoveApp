@@ -48,7 +48,6 @@ public class ChooseLoginRegistrationActivity extends AppCompatActivity implement
     @Override
     public void onClick(View view) {
         int viewId = view.getId();
-        Toast.makeText(this, "" + viewId, Toast.LENGTH_SHORT).show();
         switch (viewId) {
             case R.id.btnLogin:
                 Intent intent1 = new Intent(ChooseLoginRegistrationActivity.this, LoginActivity.class);
