@@ -15,23 +15,79 @@
         android:layout_height="0dp">
         <com.lorentzos.flingswipe.SwipeFlingAdapterView
             android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
+            android:layout_marginTop="10dp"
             android:id="@+id/frame"
-            android:layout_margin="40dp"
+            android:layout_marginRight="40dp"
             android:layout_width="match_parent"
             android:layout_height="400dp"
             android:elevation="8dp"
             android:background="#fff" />
+
+        <RelativeLayout
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="80dp"
+            android:layout_marginRight="80dp"
+            android:layout_marginBottom="15dp"
+            android:layout_below="@+id/frame"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <androidx.cardview.widget.CardView
+                android:layout_margin="10dp"
+                app:cardCornerRadius="34dp"
+                app:cardElevation="3dp"
+                android:layout_width="70dp"
+                android:layout_height="70dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <ImageButton
+                        android:layout_centerVertical="true"
+                        android:layout_centerHorizontal="true"
+                        android:src="@drawable/close"
+                        android:background="#fff"
+                        android:scaleType="fitCenter"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"/>
+                </RelativeLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_margin="10dp"
+                android:layout_alignParentRight="true"
+                app:cardCornerRadius="34dp"
+                app:cardElevation="3dp"
+                android:layout_width="70dp"
+                android:layout_height="70dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <ImageButton
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/heart"
+                        android:background="#fff"
+                        android:scaleType="fitCenter"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"/>
+                </RelativeLayout>
+
+            </androidx.cardview.widget.CardView>
+        </RelativeLayout>
+
     </RelativeLayout>
 
+
     <RelativeLayout
-        android:layout_weight="2"
+        android:layout_weight="1"
         android:layout_width="match_parent"
         android:layout_height="0dp">
         <androidx.cardview.widget.CardView
             android:id="@+id/groupBtn"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="55dp"
             android:layout_centerHorizontal="true"
             app:cardCornerRadius="25dp"
             app:cardElevation="5dp"
