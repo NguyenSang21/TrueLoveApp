@@ -23,8 +23,6 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesViewHolders>  {
         this.context = context;
     }
 
-    @NonNull
-
 
     @Override
     public MatchesViewHolders onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

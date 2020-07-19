@@ -8,11 +8,9 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.example.truelove.R;
 import com.example.truelove.activities.ChatActivity;
 import com.example.truelove.custom_class.ChatObject;
-import com.example.truelove.custom_class.MatchesObject;
 
 import java.util.List;
 

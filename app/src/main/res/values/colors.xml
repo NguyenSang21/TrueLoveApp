@@ -8,4 +8,7 @@
     <color name="black">#000000</color>
     <color name="pray">#f5f8f9</color>
     <color name="pink">#F45F92</color>
+    <color name="md_grey_200">#EEEEEE</color>
+    <color name="darkGray">#333333</color>
+    <color name="red">#FE3C72</color>
 </resources>
