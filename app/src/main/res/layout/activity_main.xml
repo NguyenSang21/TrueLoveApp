@@ -1,63 +1,96 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.MainActivity">
+    android:background="#E6E7E8"
+    tools:context=".activities.MainActivity"
+    android:layout_weight="10"
+    android:orientation="vertical">
 
-    <com.lorentzos.flingswipe.SwipeFlingAdapterView
-        android:layout_above="@+id/groupBtn"
-        android:id="@+id/frame"
+    <RelativeLayout
+        android:layout_weight="8"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/gradient_pink_red_background"
-         />
-    <LinearLayout
-        android:id="@+id/groupBtn"
+        android:layout_height="0dp">
+        <com.lorentzos.flingswipe.SwipeFlingAdapterView
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:id="@+id/frame"
+            android:layout_margin="40dp"
+            android:layout_width="match_parent"
+            android:layout_height="400dp"
+            android:elevation="8dp"
+            android:background="#fff" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_weight="2"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_alignParentBottom="true"
-        android:orientation="horizontal"
-        android:weightSum="4">
-        <Button
-            android:id="@+id/btnProfile"
+        android:layout_height="0dp">
+        <androidx.cardview.widget.CardView
+            android:id="@+id/groupBtn"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:onClick="goToProfile"
-            android:drawableLeft="@drawable/profile"
-            android:paddingLeft="40dp"
-            android:background="#fff"
-            android:text="" />
-        <Button
-            android:id="@+id/btnMatches"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:onClick="gotoMatches"
-            android:drawableLeft="@drawable/couple"
-            android:paddingLeft="40dp"
-            android:background="#fff"
-            android:text="" />
-        <Button
-            android:id="@+id/btnComment"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:onClick="gotoChat"
-            android:drawableLeft="@drawable/comment"
-            android:paddingLeft="40dp"
-            android:background="#fff"
-            android:text="" />
-        <Button
-            android:id="@+id/btnLocation"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:onClick="logoutUser"
-            android:drawableLeft="@drawable/location"
-            android:paddingLeft="40dp"
-            android:background="#fff"/>
-    </LinearLayout>
-</RelativeLayout>
+            android:layout_height="50dp"
+            android:layout_centerHorizontal="true"
+            app:cardCornerRadius="25dp"
+            app:cardElevation="5dp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            >
+
+            <LinearLayout
+                android:weightSum="4"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageButton
+                    android:id="@+id/btnHome"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:src="@drawable/home"
+                    android:scaleType="fitCenter"
+                    android:padding="7dp"
+                    android:background="#fff"/>
+
+                <ImageButton
+                    android:id="@+id/btnProfile"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:onClick="goToProfile"
+                    android:src="@drawable/profile"
+                    android:scaleType="fitCenter"
+                    android:padding="7dp"
+                    android:background="#fff" />
+
+                <ImageButton
+                    android:id="@+id/btnMatches"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:scaleType="fitCenter"
+                    android:padding="7dp"
+                    android:onClick="gotoMatches"
+                    android:src="@drawable/couple"
+                    android:background="#fff" />
+
+                <ImageButton
+                    android:id="@+id/btnLocation"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:scaleType="fitCenter"
+                    android:padding="7dp"
+                    android:onClick="logoutUser"
+                    android:src="@drawable/location"
+                    android:background="#fff"/>
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+    </RelativeLayout>
+
+</LinearLayout>
