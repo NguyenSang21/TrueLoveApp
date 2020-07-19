@@ -15,6 +15,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -41,7 +44,8 @@ import java.util.Map;
 
 public class ProfileActivity extends AppCompatActivity {
 
-    private EditText profileName, profileEMail, profilePhone, profileAddress, profileAge, profileSex;
+    private EditText profileName, profileEMail, profilePhone, profileAddress, profileAge;
+    private TextView profileSex;
     private ImageView profileImage;
     private Button profileConfirm, btnBack;
 
@@ -51,6 +55,8 @@ public class ProfileActivity extends AppCompatActivity {
     private String userId;
 
     private Uri resultUri;
+    private String uriImage ="default";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -116,8 +122,21 @@ public class ProfileActivity extends AppCompatActivity {
                         profileEMail.setText(map.get("email").toString());
                     }
                     if (map.get("img") != null) {
-                        String uriImage = map.get("img").toString();
+                        uriImage = map.get("img").toString();
+
                         Glide.with(getApplication()).load(uriImage).into(profileImage);
+                    }
+                    if (map.get("sex") != null) {
+                        String uriImage = map.get("sex").toString();
+                        if (uriImage == null) {
+                            return;
+                        } else if (uriImage.equals("male")) {
+//                            sex = "male";
+                            profileSex.setText("Nam");
+                        } else if (uriImage.equals("female")) {
+//                            sex = "female";
+                            profileSex.setText("Nữ");
+                        }
                     }
 
                 }
@@ -136,6 +155,7 @@ public class ProfileActivity extends AppCompatActivity {
         String phone = profilePhone.getText().toString().trim();
         String address = profileAddress.getText().toString().trim();
         int age = Integer.parseInt(profileAge.getText().toString().trim());
+
         final Map userInfo = new HashMap();
 
         userInfo.put("name", name);
@@ -143,6 +163,18 @@ public class ProfileActivity extends AppCompatActivity {
         userInfo.put("phone", phone);
         userInfo.put("address", address);
         userInfo.put("age", age);
+        userInfo.put("userId", this.userId);
+
+        String uriImage =  profileSex.getText().toString();
+        if (uriImage == null) {
+            return;
+        } else if (uriImage.equals("")) {
+//                            sex = "male";
+            userInfo.put("sex", "male");
+        } else if (uriImage.equals("Nữ")) {
+//                            sex = "female";
+            userInfo.put("sex", "female");
+        }
 
         if (resultUri != null) {
             StorageReference filepath = FirebaseStorage.getInstance().getReference().child("profileImages").child(userId);
@@ -178,6 +210,11 @@ public class ProfileActivity extends AppCompatActivity {
                     finish();
                 }
             });
+        }else{
+            userInfo.put("img", uriImage);
+            databaseReference.updateChildren(userInfo);
+            Toast.makeText(ProfileActivity.this, "Lưu thành công!", Toast.LENGTH_SHORT).show();
+            finish();
         }
 
     }
@@ -191,7 +228,7 @@ public class ProfileActivity extends AppCompatActivity {
         profileConfirm = findViewById(R.id.profileConfirm);
         profileAddress = findViewById(R.id.profileAddress);
         profileAge = findViewById(R.id.profileAge);
-        // profileSex = findViewById(R.id.profileSex);
+        profileSex = findViewById(R.id.profileSex);
         btnBack = findViewById(R.id.btnBack);
     }
 
