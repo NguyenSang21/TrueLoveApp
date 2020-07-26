@@ -12,9 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center_vertical"
-        android:background="?android:attr/selectableItemBackground"
-        android:clickable="true"
-        android:focusable="true">
+        android:background="?android:attr/selectableItemBackground">
 
 
         <RelativeLayout
@@ -30,8 +28,7 @@
                 android:id="@+id/imageMatches"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
-                />
-
+                tools:ignore="MissingClass" />
 
             <RelativeLayout
                 android:id="@+id/layout_dot_indicator"
