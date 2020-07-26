@@ -41,12 +41,13 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ProfileActivity extends AppCompatActivity {
 
     private EditText profileName, profileEMail, profilePhone, profileAddress, profileAge;
     private TextView profileSex;
-    private ImageView profileImage;
+    private CircleImageView profileImage;
     private Button profileConfirm, btnBack;
 
     private FirebaseAuth mAuth;
