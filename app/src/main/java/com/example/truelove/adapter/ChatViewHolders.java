@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -13,25 +14,18 @@ import com.example.truelove.R;
 import com.example.truelove.activities.ChatActivity;
 
 public class ChatViewHolders extends RecyclerView.ViewHolder implements View.OnClickListener {
-    public TextView txtMatchesId, txtMatchesName;
-    public ImageView imageMatches;
+    public TextView mMessage;
+    public LinearLayout mContainer;
 
-
-    private ImageView imgMatches;
     public ChatViewHolders(@NonNull View itemView) {
         super(itemView);
         itemView.setOnClickListener(this);
-        txtMatchesId = itemView.findViewById(R.id.txtMatchesId);
-        txtMatchesName = itemView.findViewById(R.id.txtMatchesName);
-        imageMatches = itemView.findViewById(R.id.imageMatches);
+
+        mMessage = itemView.findViewById(R.id.message);
+        mContainer = itemView.findViewById(R.id.container);
     }
 
     @Override
     public void onClick(View view) {
-        Intent intent = new Intent(view.getContext(), ChatActivity.class);
-        Bundle b = new Bundle();
-        b.putString("matchId", txtMatchesId.getText().toString());
-        intent.putExtras(b);
-        view.getContext().startActivity(intent);
     }
 }
