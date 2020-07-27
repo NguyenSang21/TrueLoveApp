@@ -36,7 +36,8 @@ import java.util.Map;
 
 public class ChatActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
-    private RecyclerView.Adapter mChatAdapter;
+    private RecyclerView mChatAdapter;
+    private ChatAdapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
     private ArrayList<ChatObject> resultChat = new ArrayList<>();
 
@@ -77,9 +78,8 @@ public class ChatActivity extends AppCompatActivity {
         layoutManager.setStackFromEnd(true);
         recyclerView.setNestedScrollingEnabled(true);
         recyclerView.setLayoutManager(layoutManager);
-        mChatAdapter = new ChatAdapter(getDataSetChat(), ChatActivity.this);
-        recyclerView.setAdapter(mChatAdapter);
-        recyclerView.smoothScrollToPosition(mChatAdapter.getItemCount());
+        mAdapter = new ChatAdapter(getDataSetChat(), ChatActivity.this);
+        recyclerView.setAdapter(mAdapter);
 
 
 
@@ -160,9 +160,8 @@ public class ChatActivity extends AppCompatActivity {
 
                         ChatObject newMessage = new ChatObject(message, currentUserBoolean);
 
-                        resultChat.add(newMessage);
-                        mChatAdapter.notifyDataSetChanged();
 
+                        mAdapter.add(newMessage);
                     }
                 }
             }
