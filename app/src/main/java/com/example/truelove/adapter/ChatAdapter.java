@@ -1,7 +1,9 @@
 package com.example.truelove.adapter;
 
 import android.content.Context;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +18,8 @@ import com.example.truelove.custom_class.ChatObject;
 
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class ChatAdapter extends RecyclerView.Adapter<ChatViewHolders>  {
     private List<ChatObject> chatList;
     private Context context;
@@ -28,7 +32,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatViewHolders>  {
     @NonNull
     @Override
     public ChatViewHolders onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View layoutView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_chat, null, false);
+        View layoutView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_custom_dialog, null, false);
         RecyclerView.LayoutParams lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         layoutView.setLayoutParams(lp);
         ChatViewHolders rcv = new ChatViewHolders(layoutView);
@@ -39,13 +43,16 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatViewHolders>  {
     public void onBindViewHolder(@NonNull ChatViewHolders holder, int position) {
         holder.mMessage.setText(chatList.get(position).getMessage());
         if(chatList.get(position).getCurrentUser()) {
-            holder.mMessage.setGravity(Gravity.END);
-            holder.mMessage.setBackgroundColor(Color.parseColor("#404040"));
-            holder.mContainer.setBackgroundColor(Color.parseColor("#F4F4F4"));
+            holder.relativeLayoutMessage.setGravity(Gravity.END);
+            holder.mMessage.setTextColor(Color.parseColor("#ffffff"));
+            holder.mMessage.setBackgroundColor(Color.parseColor("#38be55"));
+
         } else {
-            holder.mMessage.setGravity(Gravity.START);
-            holder.mMessage.setBackgroundColor(Color.parseColor("#FFFFFF"));
-            holder.mContainer.setBackgroundColor(Color.parseColor("#2DB4C8"));
+            holder.relativeLayoutMessage.setGravity(Gravity.START);
+            holder.mMessage.setTextColor(Color.parseColor("#000000"));
+            holder.mMessage.setBackgroundColor(Color.parseColor("#ffe680"));
+            holder.circleImageView.setImageDrawable(Drawable.createFromPath("./drawable/profile.png"));
+            holder.circleImageView.setBackgroundColor(Color.parseColor("#38be55"));
         }
     }
 

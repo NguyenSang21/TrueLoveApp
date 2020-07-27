@@ -3,13 +3,17 @@ package com.example.truelove.activities;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.ViewCompat;
+import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.SimpleItemAnimator;
 
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.example.truelove.R;
@@ -37,7 +41,7 @@ public class ChatActivity extends AppCompatActivity {
     private ArrayList<ChatObject> resultChat = new ArrayList<>();
 
     private EditText edtSend;
-    private Button btnSend;
+    private ImageButton btnSend;
     private String currentUserID, matchID, chatId;
 
     private DatabaseReference mDatabaseReference, mDatabaseReferenceChat;
@@ -57,15 +61,28 @@ public class ChatActivity extends AppCompatActivity {
 
         getChatId();
 
-        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+/*        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         recyclerView.setNestedScrollingEnabled(false);
         recyclerView.setHasFixedSize(false);
 
         layoutManager = new LinearLayoutManager(ChatActivity.this);
-        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setLayoutManager(layoutManager);;
 
         mChatAdapter = new ChatAdapter(getDataSetChat(), ChatActivity.this);
+        recyclerView.setAdapter(mChatAdapter);*/
+
+
+        RecyclerView recyclerView = findViewById(R.id.recyclerView);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        layoutManager.setStackFromEnd(true);
+        recyclerView.setNestedScrollingEnabled(true);
+        recyclerView.setLayoutManager(layoutManager);
+        mChatAdapter = new ChatAdapter(getDataSetChat(), ChatActivity.this);
         recyclerView.setAdapter(mChatAdapter);
+        recyclerView.smoothScrollToPosition(mChatAdapter.getItemCount());
+
+
+
 
         // handle event on click
         handleOnClick();
@@ -83,6 +100,7 @@ public class ChatActivity extends AppCompatActivity {
     private void mapping() {
         edtSend = findViewById(R.id.edtSend);
         btnSend = findViewById(R.id.btnSend);
+        btnSend.setFocusable(true);
     }
 
     private void sendMessage() {
