@@ -1,21 +1,31 @@
 package com.example.truelove.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.os.StrictMode;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.truelove.R;
 import com.example.truelove.activities.ChatActivity;
 import com.example.truelove.custom_class.ChatObject;
 
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.net.URLConnection;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -85,6 +95,9 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatViewHolders>  {
             holder.ivImage.setVisibility(View.GONE);
             holder.tvMessage.setVisibility(View.VISIBLE);
             holder.tvMessage.setText(chatList.get(position).getMessage());
+            holder.dialogAvatar.setImageBitmap(chatList.get(position).getUrlimage());
+
+
 //            holder.ivImage.setImageResource(R.drawable.img_sample);
 //        } else {
 //            holder.ivImage.setVisibility(View.GONE);
@@ -114,5 +127,4 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatViewHolders>  {
         chatList.add(message);
         notifyItemInserted(chatList.size() - 1);
     }
-
 }

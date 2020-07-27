@@ -9,6 +9,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.truelove.R;
 import com.example.truelove.utilchatuser.ChatMessageView;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class ChatViewHolders extends RecyclerView.ViewHolder implements View.OnClickListener {
   /*  public TextView mMessage;
     //    public LinearLayout mContainer;
@@ -35,6 +37,7 @@ public class ChatViewHolders extends RecyclerView.ViewHolder implements View.OnC
     TextView tvMessage, tvTime;
     ImageView ivImage;
     ChatMessageView chatMessageView;
+    ImageView dialogAvatar;
 
     ChatViewHolders(View itemView) {
         super(itemView);
@@ -42,6 +45,7 @@ public class ChatViewHolders extends RecyclerView.ViewHolder implements View.OnC
         tvMessage = (TextView) itemView.findViewById(R.id.tv_message);
         tvTime = (TextView) itemView.findViewById(R.id.tv_time);
         ivImage = (ImageView) itemView.findViewById(R.id.iv_image);
+        dialogAvatar=itemView.findViewById(R.id.dialogAvatar);
     }
 
     @Override
