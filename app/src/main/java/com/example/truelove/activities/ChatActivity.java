@@ -9,9 +9,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Handler;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ScrollView;
 import android.widget.Toast;
 
 import com.example.truelove.R;
@@ -38,8 +41,8 @@ import java.util.Map;
 public class ChatActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private ChatAdapter mAdapter;
-    private RecyclerView.LayoutManager layoutManager;
     private ArrayList<ChatObject> resultChat = new ArrayList<>();
+    private ScrollView sendLayoutScrollView;
 
     private EditText edtSend;
     private ImageButton btnSend;
@@ -64,15 +67,22 @@ public class ChatActivity extends AppCompatActivity {
 
         getChatId();
 
+        sendLayoutScrollView=(ScrollView) findViewById(R.id.scrollViewParent);
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-        recyclerView.setNestedScrollingEnabled(false);
-        recyclerView.setHasFixedSize(false);
+        recyclerView.setNestedScrollingEnabled(true);
 
-        layoutManager = new LinearLayoutManager(ChatActivity.this);
+
+
+        recyclerView.setHasFixedSize(true);
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager (ChatActivity.this);
+        layoutManager.setOrientation(RecyclerView.VERTICAL);
+//        layoutManager.setStackFromEnd(true);
         recyclerView.setLayoutManager(layoutManager);;
 
         mAdapter = new ChatAdapter(getDataSetChat(), ChatActivity.this);
         recyclerView.setAdapter(mAdapter);
+
 
         // handle event on click
         handleOnClick();
@@ -91,26 +101,28 @@ public class ChatActivity extends AppCompatActivity {
         edtSend = findViewById(R.id.edtSend);
         btnSend = findViewById(R.id.btnSend);
         btnSend.setFocusable(true);
+
     }
 
     private void sendMessage() {
         String sendMessageText = edtSend.getText().toString();
 
         if(!sendMessageText.isEmpty()) {
-            DatabaseReference newMessageDb = mDatabaseReferenceChat.push();
+            recyclerView.scrollToPosition(mAdapter.getItemCount()+1);
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
 
+                    recyclerView.smoothScrollToPosition(mAdapter.getItemCount()+1);
+                }
+            }, 0);
+            DatabaseReference newMessageDb = mDatabaseReferenceChat.push();
             Map newMessageMap = new HashMap();
             newMessageMap.put("createdByUser", currentUserID);
             newMessageMap.put("text", sendMessageText);
-
             newMessageDb.setValue(newMessageMap);
         }
         edtSend.setText(null);
-        if( mAdapter.getItemCount() !=0 && recyclerView != null){
-
-            recyclerView.scrollToPosition(recyclerView.getAdapter().getItemCount() - 1);
-
-        }
     }
 
     private void getChatId() {
@@ -228,6 +240,13 @@ public class ChatActivity extends AppCompatActivity {
                             newMessage = new ChatObject(message, currentUserBoolean, finalBitmapUserOther);
                         }
                         mAdapter.add(newMessage);
+                        recyclerView.scrollToPosition(mAdapter.getItemCount()+1);
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                recyclerView.smoothScrollToPosition(mAdapter.getItemCount()+1);
+                            }
+                        }, 0);
                     }
                 }
             }

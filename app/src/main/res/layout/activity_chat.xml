@@ -8,15 +8,18 @@
     android:theme="@style/Theme.AppCompat.Light.NoActionBar"
     android:background="@color/white">
 
-    <androidx.core.widget.NestedScrollView
+    <ScrollView
+        android:focusableInTouchMode="true"
         android:layout_above="@+id/sendLayout"
+        android:id="@+id/scrollViewParent"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
+            android:clipToPadding="false"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
-    </androidx.core.widget.NestedScrollView>
+    </ScrollView>
     
     <LinearLayout
         android:id="@+id/sendLayout"
@@ -24,6 +27,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#ffffff"
+        android:focusableInTouchMode="true"
         android:padding="5dp"
         android:orientation="horizontal">
 

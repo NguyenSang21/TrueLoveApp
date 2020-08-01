@@ -301,7 +301,7 @@ public class ChatMessageView extends RelativeLayout {
     public Bitmap rotateBitmap(Bitmap source, float angle) {
         Matrix matrix = new Matrix();
         matrix.postRotate(angle);
-        return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(), matrix, true);
+        return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight()-10, matrix, true);
     }
 
     private int dip2px(float dpValue) {
