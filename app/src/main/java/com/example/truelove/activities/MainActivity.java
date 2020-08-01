@@ -230,12 +230,12 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
         return;
     }
-    public void gotoChat(View view) {
-        Intent intent = new Intent(MainActivity.this, ChatActivity.class);
+
+    public void gotoFinder(View view) {
+        Intent intent = new Intent(MainActivity.this, Finder.class);
         startActivity(intent);
         return;
     }
-
 
     private void personalUI() {
         getSupportActionBar().hide();
