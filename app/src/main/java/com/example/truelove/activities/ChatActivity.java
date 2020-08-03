@@ -3,18 +3,23 @@ package com.example.truelove.activities;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Rect;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.MotionEvent;
+import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ScrollView;
 import android.widget.Toast;
 
 import com.example.truelove.R;
@@ -22,6 +27,7 @@ import com.example.truelove.adapter.ChatAdapter;
 import com.example.truelove.custom_class.ChatObject;
 import com.example.truelove.custom_class.MatchesObject;
 import com.example.truelove.custom_class.User;
+import com.example.truelove.utilchatuser.KerboardListenerInterface;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -38,17 +44,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ChatActivity extends AppCompatActivity {
+public class ChatActivity extends AppCompatActivity implements KerboardListenerInterface {
     private RecyclerView recyclerView;
     private ChatAdapter mAdapter;
     private ArrayList<ChatObject> resultChat = new ArrayList<>();
-    private ScrollView sendLayoutScrollView;
+    private NestedScrollView nestedScrollView;
 
     private EditText edtSend;
     private ImageButton btnSend;
     private String currentUserID, matchID, chatId;
     private DatabaseReference mDatabaseReference, mDatabaseReferenceChat,databaseReferenceUserCurrent,databaseReferenceUserOther;
     private User userCurrent, userOther;
+    private boolean isKeyboardOpen;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,25 +74,23 @@ public class ChatActivity extends AppCompatActivity {
 
         getChatId();
 
-        sendLayoutScrollView=(ScrollView) findViewById(R.id.scrollViewParent);
+        nestedScrollView=  findViewById(R.id.scrollViewParent);
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-        recyclerView.setNestedScrollingEnabled(true);
-
-
-
+        recyclerView.setNestedScrollingEnabled(false);
         recyclerView.setHasFixedSize(true);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager (ChatActivity.this);
         layoutManager.setOrientation(RecyclerView.VERTICAL);
-//        layoutManager.setStackFromEnd(true);
         recyclerView.setLayoutManager(layoutManager);;
 
         mAdapter = new ChatAdapter(getDataSetChat(), ChatActivity.this);
         recyclerView.setAdapter(mAdapter);
 
-
         // handle event on click
         handleOnClick();
+
+        //listener keyboard appear
+        setKeyboardVisibilityListener(this);
     }
 
     private void handleOnClick() {
@@ -108,14 +113,20 @@ public class ChatActivity extends AppCompatActivity {
         String sendMessageText = edtSend.getText().toString();
 
         if(!sendMessageText.isEmpty()) {
+            nestedScrollView.post(new Runnable() {
+                @Override
+                public void run() {
+                    nestedScrollView.fullScroll(View.FOCUS_DOWN);
+                }
+            });
             recyclerView.scrollToPosition(mAdapter.getItemCount()+1);
-            new Handler().postDelayed(new Runnable() {
+            new Handler().post(new Runnable() {
                 @Override
                 public void run() {
 
-                    recyclerView.smoothScrollToPosition(mAdapter.getItemCount()+1);
+                    recyclerView.scrollToPosition(mAdapter.getItemCount()+1);
                 }
-            }, 0);
+            });
             DatabaseReference newMessageDb = mDatabaseReferenceChat.push();
             Map newMessageMap = new HashMap();
             newMessageMap.put("createdByUser", currentUserID);
@@ -241,12 +252,26 @@ public class ChatActivity extends AppCompatActivity {
                         }
                         mAdapter.add(newMessage);
                         recyclerView.scrollToPosition(mAdapter.getItemCount()+1);
-                        new Handler().postDelayed(new Runnable() {
+                        new Handler().post(new Runnable() {
                             @Override
                             public void run() {
                                 recyclerView.smoothScrollToPosition(mAdapter.getItemCount()+1);
                             }
-                        }, 0);
+                        });
+                        nestedScrollView.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                nestedScrollView.fullScroll(View.FOCUS_DOWN);
+                            }
+                        });
+                        if(isKeyboardOpen){
+                            edtSend.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    edtSend.requestFocus();
+                                }
+                            });
+                        }
                     }
                 }
             }
@@ -310,5 +335,59 @@ public class ChatActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    private void setKeyboardVisibilityListener(final KerboardListenerInterface onKeyboardVisibilityListener) {
+        final View parentView = ((ViewGroup) findViewById(android.R.id.content)).getChildAt(0);
+        parentView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+
+            private boolean alreadyOpen;
+            private final int defaultKeyboardHeightDP = 100;
+            private final int EstimatedKeyboardDP = defaultKeyboardHeightDP + (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ? 48 : 0);
+            private final Rect rect = new Rect();
+
+            @Override
+            public void onGlobalLayout() {
+                int estimatedKeyboardHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, EstimatedKeyboardDP, parentView.getResources().getDisplayMetrics());
+                parentView.getWindowVisibleDisplayFrame(rect);
+                int heightDiff = parentView.getRootView().getHeight() - (rect.bottom - rect.top);
+                boolean isShown = heightDiff >= estimatedKeyboardHeight;
+
+                if (isShown == alreadyOpen) {
+                    Log.i("Keyboard state", "Ignoring global layout change...");
+                    return;
+                }
+                alreadyOpen = isShown;
+                onKeyboardVisibilityListener.onVisibilityChanged(isShown);
+            }
+        });
+    }
+
+    @Override
+    public void onVisibilityChanged(boolean visible) {
+//        Toast.makeText(ChatActivity.this, visible ? "Keyboard is active" : "Keyboard is Inactive", Toast.LENGTH_SHORT).show();
+        nestedScrollView.post(new Runnable() {
+            @Override
+            public void run() {
+                nestedScrollView.fullScroll(View.FOCUS_DOWN);
+            }
+        });
+        /*recyclerView.scrollToPosition(mAdapter.getItemCount());
+        new Handler().post(new Runnable() {
+            @Override
+            public void run() {
+                recyclerView.smoothScrollToPosition(mAdapter.getItemCount());
+            }
+        });*/
+//        android:focusableInTouchMode="true"
+        if(visible){
+            edtSend.post(new Runnable() {
+                @Override
+                public void run() {
+                    edtSend.requestFocus();
+                }
+            });
+        }
+        isKeyboardOpen=visible;
     }
 }

@@ -8,8 +8,8 @@
     android:theme="@style/Theme.AppCompat.Light.NoActionBar"
     android:background="@color/white">
 
-    <ScrollView
-        android:focusableInTouchMode="true"
+    <androidx.core.widget.NestedScrollView
+
         android:layout_above="@+id/sendLayout"
         android:id="@+id/scrollViewParent"
         android:layout_width="match_parent"
@@ -19,7 +19,7 @@
             android:clipToPadding="false"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
     
     <LinearLayout
         android:id="@+id/sendLayout"
