@@ -108,6 +108,7 @@
                     android:layout_weight="1"
                     android:src="@drawable/home"
                     android:scaleType="fitCenter"
+                    android:onClick="logoutUser"
                     android:padding="7dp"
                     android:background="#fff"/>
 
@@ -140,9 +141,9 @@
                     android:layout_weight="1"
                     android:scaleType="fitCenter"
                     android:padding="7dp"
-                    android:onClick="logoutUser"
+                    android:onClick="gotoFinder"
                     android:src="@drawable/location"
-                    android:background="#fff"/>
+                    android:background="#fff" />
 
             </LinearLayout>
 
