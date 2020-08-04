@@ -2,6 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:fillViewport="true">
 
     <LinearLayout
@@ -16,13 +17,15 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <ImageView
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:layout_margin="10dp"
-                android:layout_gravity="center"
-                android:src="@color/colorAccent"
                 android:id="@+id/profileImage"
                 android:layout_width="100sp"
-                android:layout_height="100sp"/>
+                android:layout_height="100sp"
+                android:src="@drawable/love"
+                app:civ_border_width="2dp"
+                app:civ_border_color="#FF000000" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -53,51 +56,143 @@
             android:layout_height="wrap_content"
             android:text="Thông tin cơ bản"
             android:textSize="20sp"
+            android:layout_marginLeft="10dp"
+            android:textColor="#424242"
             android:textStyle="bold"/>
-        <EditText
-            android:id="@+id/profileName"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Nguyễn Văn A" />
-
-        <EditText
-            android:id="@+id/profileEMail"
+            android:orientation="horizontal"
+            android:background="@drawable/border_edit_profile"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="7dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:drawableLeft="@drawable/username"/>
+            <EditText
+                android:id="@+id/profileName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Nguyen Van A"
+                android:padding="15dp"
+                android:background="@null"/>
+        </LinearLayout>
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="nguyena@gmai.com"/>
-
-        <EditText
-            android:id="@+id/profilePhone"
+            android:orientation="horizontal"
+            android:background="@drawable/border_edit_profile"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="7dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:drawableLeft="@drawable/mail"/>
+            <EditText
+                android:id="@+id/profileEMail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="nguyena@gmail.com"
+                android:padding="15dp"
+                android:background="@null"/>
+        </LinearLayout>
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="0909797979"/>
-
-        <EditText
-            android:id="@+id/profileAddress"
+            android:orientation="horizontal"
+            android:background="@drawable/border_edit_profile"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="7dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:drawableLeft="@drawable/phone"/>
+            <EditText
+                android:id="@+id/profilePhone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="090929299"
+                android:padding="15dp"
+                android:background="@null"/>
+        </LinearLayout>
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="227 Nguyen Van Cu, phuong 4, quan 5, thanh pho Ho Chi Minh"/>
-
-        <EditText
-            android:id="@+id/profileAge"
+            android:orientation="horizontal"
+            android:background="@drawable/border_edit_profile"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="7dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:drawableLeft="@drawable/pin"/>
+            <EditText
+                android:id="@+id/profileAddress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="227 Nguyen Van Cu, phuong 4, quan 5, thanh pho Ho Chi Minh"
+                android:padding="15dp"
+                android:background="@null"/>
+        </LinearLayout>
+        <LinearLayout
+            android:weightSum="10"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="20"/>
+            android:orientation="horizontal"
+            android:layout_marginTop="7dp">
 
-        <TextView
-            android:id="@+id/profileSex"
-            android:layout_width="wrap_content"
-            android:textSize="17sp"
-            android:text="Nam"
-            android:textColor="@color/black"
-            android:layout_height="wrap_content"/>
+            <LinearLayout
+                android:layout_weight="5"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="@drawable/border_edit_profile"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:drawableLeft="@drawable/age"/>
+                <EditText
+                    android:id="@+id/profileAge"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="24"
+                    android:padding="15dp"
+                    android:background="@null"/>
+            </LinearLayout>
 
+            <TextView
+                android:layout_weight="5"
+                android:id="@+id/profileSex"
+                android:layout_width="0dp"
+                android:text="Nam"
+                android:textColor="@color/black"
+                android:layout_height="match_parent"
+                android:padding="15dp"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/border_edit_profile"
+                android:drawableLeft="@drawable/gender"/>
+        </LinearLayout>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Hình ảnh"
             android:textSize="20sp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="7dp"
+            android:textColor="#424242"
             android:textStyle="bold"/>
         <LinearLayout
             android:layout_width="match_parent"
@@ -130,22 +225,33 @@
 
         </LinearLayout>
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            >
 
-            <Button
-                android:text="Xác nhận"
-                android:id="@+id/profileConfirm"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-            <Button
-                android:id="@+id/btnBack"
+            <LinearLayout
+                android:orientation="horizontal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Trở lại" />
-        </LinearLayout>
+                android:layout_centerInParent="true"
+                android:layout_margin="5dp">
+
+                <Button
+                    android:text="Xác nhận"
+                    android:id="@+id/profileConfirm"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    />
+
+                <Button
+                    android:id="@+id/btnBack"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:text="Trở lại" />
+            </LinearLayout>
+        </RelativeLayout>
     </LinearLayout>
 </ScrollView>
