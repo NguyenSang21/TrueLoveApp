@@ -20,8 +20,10 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.truelove.R;
@@ -73,6 +75,9 @@ public class Finder extends AppCompatActivity {
     private Double latUserCurrent;
     private Double longiUserCurrent;
 
+    private Button btnFinder;
+    private boolean flagIsPressbtnFinder=false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,10 +90,9 @@ public class Finder extends AppCompatActivity {
 
         // set permission
         getLocationPermission();
-        // get device location
-        getDeviceLocation();
-        // get all user
-        getAllUser();
+
+/*        // get all user
+        getAllUser();*/
 
         // list user find appear here
         recyclerView = (RecyclerView) findViewById(R.id.recyclerViewFinder);
@@ -101,6 +105,16 @@ public class Finder extends AppCompatActivity {
         mAdapter = new FindersAdapter(getDatasetFinders(), Finder.this);
         recyclerView.setAdapter(mAdapter);
 
+
+        // set button find user
+        btnFinder= findViewById(R.id.btnFinder);
+        btnFinder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // get device location
+                getDeviceLocation();
+            }
+        });
     }
 
     private void personalUI() {
@@ -150,9 +164,14 @@ public class Finder extends AppCompatActivity {
                                 latUserCurrent = lastKnownLocation.getLatitude();
                                 longiUserCurrent = lastKnownLocation.getLongitude();
                                 Toast.makeText(Finder.this, "LATITUDE =" + latUserCurrent + "LONGI =" + longiUserCurrent , Toast.LENGTH_SHORT).show();
+                                if(!flagIsPressbtnFinder){
+                                    // run tinh khoang cach all user
+                                    getAllUser();
+                                    flagIsPressbtnFinder=true;
+                                }
                             }
                         } else {
-
+                            Toast.makeText(Finder.this, "turn on GPS on your phone !!! " , Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
