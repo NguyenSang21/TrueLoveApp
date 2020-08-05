@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
 import android.content.Context;
@@ -20,6 +22,7 @@ import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.example.truelove.R;
+import com.example.truelove.adapter.FindersAdapter;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -27,6 +30,17 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.libraries.places.compat.GeoDataClient;
 import com.google.android.libraries.places.compat.PlaceDetectionClient;
 import com.google.android.libraries.places.compat.Places;
+
+import com.example.truelove.custom_class.User;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Finder extends AppCompatActivity implements LocationListener {
 
@@ -37,6 +51,15 @@ public class Finder extends AppCompatActivity implements LocationListener {
     private FusedLocationProviderClient mFusedLocationProviderClient;
     private boolean locationPermissionGranted;
     static public final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
+
+    // list user find appear here
+    private RecyclerView recyclerView;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager layoutManager;
+    private ArrayList<User> resultFinders = new ArrayList<User>();
+
+    // test
+    private String currentUserID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +96,21 @@ public class Finder extends AppCompatActivity implements LocationListener {
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
 
 
+        // list user find appear here
+        recyclerView = (RecyclerView) findViewById(R.id.recyclerViewFinder);
+        recyclerView.setNestedScrollingEnabled(false);
+        recyclerView.setHasFixedSize(true);
+
+        layoutManager = new LinearLayoutManager(Finder.this);
+        recyclerView.setLayoutManager(layoutManager);
+
+        mAdapter = new FindersAdapter(getDatasetFinders(), Finder.this);
+        recyclerView.setAdapter(mAdapter);
+
+
+        // test view
+        currentUserID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        getUserMatchId();
     }
 
     private void personalUI() {
@@ -164,5 +202,64 @@ public class Finder extends AppCompatActivity implements LocationListener {
     @Override
     public void onProviderDisabled(@NonNull String provider) {
 
+    }
+
+    private List<User> getDatasetFinders() {
+
+        return resultFinders;
+    }
+
+    //===================test ==========================
+    private void getUserMatchId() {
+        DatabaseReference matchDb = FirebaseDatabase.getInstance().getReference().child("users").child(currentUserID).child("connections").child("matches");
+        matchDb.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()) {
+                    for(DataSnapshot match : dataSnapshot.getChildren()) {
+                        fetchMatchInformation(match.getKey());
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void fetchMatchInformation(String key) {
+        DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("users").child(key);
+        userDb.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()) {
+                    String userId = dataSnapshot.getKey();
+                    String name = "";
+                    String profileImageUrl = "";
+
+                    if(dataSnapshot.child("name").getValue() != null) {
+                        name = dataSnapshot.child("name").getValue().toString();
+                    }
+
+                    if(dataSnapshot.child("img").getValue() != null) {
+                        profileImageUrl = dataSnapshot.child("img").getValue().toString();
+                    }
+
+                    User obj = new User(userId, name, profileImageUrl);
+                    user.setUid(userId);
+                    user.setName(name);
+                    user.setImg(profileImageUrl);
+                    resultFinders.add(obj);
+                    mAdapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 }
