@@ -181,6 +181,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                                         user.setLatitude(latitude);
                                         user.setLongitude(longitude);
                                     }else{
+                                        // set default in my school
                                         user.setLatitude( 10.762918);
                                         user.setLongitude(106.682284);
                                     }
@@ -237,7 +238,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                                 Toast.makeText(RegistrationActivity.this, "LATITUDE =" + lat + "LONGI =" + longi , Toast.LENGTH_SHORT).show();
                                 latitude=lat;
                                 longitude=longi;
-                                Location truongHoc= new Location("khtn");
+/*                                Location truongHoc= new Location("khtn");
                                 truongHoc.setLatitude( 10.762918);
                                 truongHoc.setLongitude(106.682284);
 
@@ -246,7 +247,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                                 etown.setLongitude(106.641379);
                                 float kq=  etown.distanceTo(truongHoc);
 
-                                Toast.makeText(RegistrationActivity.this, "etown to school: "+kq , Toast.LENGTH_SHORT).show();
+                                Toast.makeText(RegistrationActivity.this, "etown to school: "+kq , Toast.LENGTH_SHORT).show();*/
                             }
                         } else {
 
