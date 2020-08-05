@@ -83,8 +83,6 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         // get device location
         getDeviceLocation();
 
-
-
     }
 
     @Override
@@ -183,8 +181,8 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                                         user.setLatitude(latitude);
                                         user.setLongitude(longitude);
                                     }else{
-                                        user.setLatitude(37.42);
-                                        user.setLongitude(-122.08);
+                                        user.setLatitude( 10.762918);
+                                        user.setLongitude(106.682284);
                                     }
 
                                     System.out.println(user.toString());
@@ -239,6 +237,16 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                                 Toast.makeText(RegistrationActivity.this, "LATITUDE =" + lat + "LONGI =" + longi , Toast.LENGTH_SHORT).show();
                                 latitude=lat;
                                 longitude=longi;
+                                Location truongHoc= new Location("khtn");
+                                truongHoc.setLatitude( 10.762918);
+                                truongHoc.setLongitude(106.682284);
+
+                                Location etown= new Location("etown");
+                                etown.setLatitude( 10.802031);
+                                etown.setLongitude(106.641379);
+                                float kq=  etown.distanceTo(truongHoc);
+
+                                Toast.makeText(RegistrationActivity.this, "etown to school: "+kq , Toast.LENGTH_SHORT).show();
                             }
                         } else {
 
