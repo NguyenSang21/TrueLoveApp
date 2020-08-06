@@ -220,7 +220,9 @@ public class ChatActivity extends AppCompatActivity implements KerboardListenerI
         // img for user Other
         Bitmap bitmapUserOther = null;
         try {
-            bitmapUserOther = BitmapFactory.decodeStream((InputStream)new URL(userOther.getImg()).getContent());
+            if(!"default".equals(userOther.getImg())) {
+                bitmapUserOther = BitmapFactory.decodeStream((InputStream)new URL(userOther.getImg()).getContent());
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }

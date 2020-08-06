@@ -15,14 +15,14 @@ import com.example.truelove.activities.ChatActivity;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class FindersViewHolders extends RecyclerView.ViewHolder implements View.OnClickListener {
-    public TextView txtMatchesId, txtMatchesName, txtDistance;
+    public TextView txtFindesAddress, txtMatchesName, txtDistance;
     public CircleImageView imageMatches;
 
 
     public FindersViewHolders(@NonNull View itemView) {
         super(itemView);
         itemView.setOnClickListener(this);
-        txtMatchesId = itemView.findViewById(R.id.txtFindesId);
+        txtFindesAddress = itemView.findViewById(R.id.txtFindesAddress);
         txtMatchesName = itemView.findViewById(R.id.txtFindersName);
         imageMatches = itemView.findViewById(R.id.imageFinders);
         txtDistance=itemView.findViewById(R.id.txtFindersDistance);

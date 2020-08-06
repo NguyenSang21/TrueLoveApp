@@ -8,6 +8,8 @@ import androidx.core.content.ContextCompat;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -38,6 +40,10 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
+
 
 public class RegistrationActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -55,6 +61,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     private PlaceDetectionClient mPlaceDetectionClient;
     private Double latitude;
     private Double longitude;
+    private String addressLocation;
 
 
     @Override
@@ -80,9 +87,6 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
         // set permission
         getLocationPermission();
-        // get device location
-        getDeviceLocation();
-
     }
 
     @Override
@@ -133,7 +137,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         btnRegister = findViewById(R.id.btnRegister);
         mRadioGroupSex = findViewById(R.id.radioGroupSex);
         edtAge = findViewById(R.id.edtAge);
-        edtAddress = findViewById(R.id.edtAddress);
+        //edtAddress = findViewById(R.id.edtAddress);
     }
 
     @Override
@@ -142,12 +146,15 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         Toast.makeText(this, "ON CLICK !!!", Toast.LENGTH_SHORT).show();
         switch (viewId) {
             case R.id.btnRegister:
+                // get device location
+                getDeviceLocation();
+
                 final String email = edtEmail.getText().toString().trim();
                 final String password = edtPassword.getText().toString().trim();
                 final String name = edtName.getText().toString().trim();
                 final int selectedId = mRadioGroupSex.getCheckedRadioButtonId();
                 final int age = Integer.parseInt(edtAge.getText().toString());
-                final String address = edtAddress.getText().toString().trim();
+              /*  final String address = edtAddress.getText().toString().trim();*/
 
                 final RadioButton radioButton = findViewById(selectedId);
                 String sex = "";
@@ -172,7 +179,6 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                                     user.setUid(userId);
                                     user.setName(name);
                                     user.setAge(age);
-                                    user.setAddress(address);
                                     user.setImg("default");
                                     user.setPhone("default");
                                     user.setSex(finalSex);
@@ -180,10 +186,13 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                                     if(latitude!=null&&longitude!=null){
                                         user.setLatitude(latitude);
                                         user.setLongitude(longitude);
+                                        user.setAddress(addressLocation);
+//                                        user.setAddress("Quận 5, HCMC");
                                     }else{
                                         // set default in my school
                                         user.setLatitude( 10.762918);
                                         user.setLongitude(106.682284);
+                                        user.setAddress("Quận 5, HCMC");
                                     }
 
                                     System.out.println(user.toString());
@@ -233,11 +242,45 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                             Location lastKnownLocation = task.getResult();
 
                             if (lastKnownLocation != null) {
+
                                 double lat = lastKnownLocation.getLatitude();
                                 double longi = lastKnownLocation.getLongitude();
                                 Toast.makeText(RegistrationActivity.this, "LATITUDE =" + lat + "LONGI =" + longi , Toast.LENGTH_SHORT).show();
                                 latitude=lat;
                                 longitude=longi;
+                                Toast.makeText(RegistrationActivity.this, "LATITUDE =" + lat + "LONGI =" + longi , Toast.LENGTH_SHORT).show();
+
+                                Geocoder geocoder;
+                                List<Address> addresses = null;
+                                geocoder = new Geocoder(RegistrationActivity.this, Locale.getDefault());
+
+                                try {
+                                    addresses = geocoder.getFromLocation(latitude, longitude, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+
+                                String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
+                                String city = addresses.get(0).getLocality();
+                                String state = addresses.get(0).getAdminArea();
+                                String country = addresses.get(0).getCountryName();
+                                String postalCode = addresses.get(0).getPostalCode();
+                                String knownName = addresses.get(0).getFeatureName(); //
+
+                                StringBuilder addressLocation2=new StringBuilder();
+                                if( addresses.get(0).getSubAdminArea()!=null){
+                                    addressLocation2.append(addresses.get(0).getSubAdminArea()+",");
+                                }
+                                 if(addresses.get(0).getAdminArea()!=null){
+                                    addressLocation2.append(addresses.get(0).getAdminArea()+",");
+                                }
+                                 if(addresses.get(0).getCountryName()!=null){
+                                    addressLocation2.append(addresses.get(0).getCountryName());
+                                }
+
+                                addressLocation= addressLocation2.toString();
+
+                                /*
 /*                                Location truongHoc= new Location("khtn");
                                 truongHoc.setLatitude( 10.762918);
                                 truongHoc.setLongitude(106.682284);

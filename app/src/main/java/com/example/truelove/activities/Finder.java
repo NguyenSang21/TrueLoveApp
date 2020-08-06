@@ -12,6 +12,8 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -57,6 +59,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 
@@ -280,16 +283,30 @@ public class Finder extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()) {
                     User obj = new User();
-                    String userId = dataSnapshot.getKey();
-                    String name = "";
-                    String profileImageUrl = "";
-
+                    obj.setUid(dataSnapshot.getKey());
                     if(dataSnapshot.child("name").getValue() != null) {
-                        name = dataSnapshot.child("name").getValue().toString();
+                        obj.setName(dataSnapshot.child("name").getValue().toString());
                     }
 
                     if(dataSnapshot.child("img").getValue() != null) {
-                        profileImageUrl = dataSnapshot.child("img").getValue().toString();
+                        obj.setImg(dataSnapshot.child("img").getValue().toString());
+                    }
+
+                    if(dataSnapshot.child("address").getValue() != null) {
+                        obj.setAddress(dataSnapshot.child("address").getValue().toString());
+                    }
+
+                    if (dataSnapshot.child("sex").getValue()  != null) {
+                        String sex = dataSnapshot.child("sex").getValue().toString();
+                        if (sex == null) {
+                            return;
+                        } else if (sex.equals("male")) {
+//                            sex = "male";
+                            obj.setSex("Nam");
+                        } else if (sex.equals("female")) {
+//                            sex = "female";
+                            obj.setSex("Nữ");
+                        }
                     }
 
                     if(dataSnapshot.child("latitude").getValue()==null || dataSnapshot.child("longitude").getValue() == null){
@@ -301,15 +318,10 @@ public class Finder extends AppCompatActivity {
                         obj.setLatitude(Double.valueOf(dataSnapshot.child("latitude").getValue().toString().trim()));
                         obj.setLongitude(Double.valueOf(dataSnapshot.child("longitude").getValue().toString().trim()));
                     }
-
-                    obj.setUid(userId);
-                    obj.setName(name);
-                    obj.setImg(profileImageUrl);
-
                     getFindersWithUserCurrent(obj);
 
                     // for update location for all user to testing
-                    /*try {
+                   /* try {
                         saveUserInfomation(dataSnapshot);
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -332,7 +344,6 @@ public class Finder extends AppCompatActivity {
         String name = dataSnapshot.child("name").getValue().toString().trim();
         String email = dataSnapshot.child("email").getValue().toString().trim();
         String phone = dataSnapshot.child("phone").getValue().toString().trim();
-        String address = dataSnapshot.child("address").getValue().toString().trim();
         String image = dataSnapshot.child("img").getValue().toString().trim();
         int age = Integer.parseInt(dataSnapshot.child("age").getValue().toString().trim());
 
@@ -341,7 +352,7 @@ public class Finder extends AppCompatActivity {
         userInfo.put("name", name);
         userInfo.put("email", email);
         userInfo.put("phone", phone);
-        userInfo.put("address", address);
+
         userInfo.put("age", age);
         userInfo.put("userId", dataSnapshot.getKey());
 
@@ -361,11 +372,77 @@ public class Finder extends AppCompatActivity {
         if(dataSnapshot.child("latitude").getValue()==null || dataSnapshot.child("longitude").getValue() == null){
             Double lat=radomLocationlatitude();
             Double longi=radomLocationlongitude();
+
+            Geocoder geocoder;
+            List<Address> addresses = null;
+            geocoder = new Geocoder(Finder.this, Locale.getDefault());
+
+            try {
+                addresses = geocoder.getFromLocation(lat, longi, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            String addresss = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
+            String city = addresses.get(0).getLocality();
+            String state = addresses.get(0).getAdminArea();
+            String country = addresses.get(0).getCountryName();
+            String postalCode = addresses.get(0).getPostalCode();
+            String knownName = addresses.get(0).getFeatureName(); //
+
+            StringBuilder addressLocation2=new StringBuilder();
+            if( addresses.get(0).getSubAdminArea()!=null){
+                addressLocation2.append(addresses.get(0).getSubAdminArea()+",");
+            }
+            if(addresses.get(0).getAdminArea()!=null){
+                addressLocation2.append(addresses.get(0).getAdminArea()+",");
+            }
+            if(addresses.get(0).getCountryName()!=null){
+                addressLocation2.append(addresses.get(0).getCountryName());
+            }
+
+
+
             userInfo.put("latitude", lat);
             userInfo.put("longitude", longi);
+
+            userInfo.put("address", addressLocation2.toString());
         }else{
             userInfo.put("latitude", dataSnapshot.child("latitude").getValue().toString().trim());
             userInfo.put("longitude", dataSnapshot.child("longitude").getValue().toString().trim());
+
+            // update address
+            Geocoder geocoder;
+            List<Address> addresses = null;
+            geocoder = new Geocoder(Finder.this, Locale.getDefault());
+
+            try {
+                Double a= Double.valueOf(dataSnapshot.child("latitude").getValue().toString());
+                Double b= Double.valueOf(dataSnapshot.child("longitude").getValue().toString());
+                addresses = geocoder.getFromLocation(a, b, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+           String addresss = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
+            String city = addresses.get(0).getLocality();
+            String state = addresses.get(0).getAdminArea();
+            String country = addresses.get(0).getCountryName();
+            String postalCode = addresses.get(0).getPostalCode();
+            String knownName = addresses.get(0).getFeatureName(); //
+
+            StringBuilder addressLocation2=new StringBuilder();
+            if( addresses.get(0).getSubAdminArea()!=null){
+                addressLocation2.append(addresses.get(0).getSubAdminArea()+",");
+            }
+             if(addresses.get(0).getAdminArea()!=null){
+                addressLocation2.append(addresses.get(0).getAdminArea()+",");
+            }
+             if(addresses.get(0).getCountryName()!=null){
+                addressLocation2.append(addresses.get(0).getCountryName());
+            }
+
+            userInfo.put("address", addressLocation2.toString());
         }
         System.out.println(userInfo);
         databaseReference.updateChildren(userInfo);

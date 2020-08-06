@@ -37,7 +37,7 @@ public class FindersAdapter extends RecyclerView.Adapter<FindersViewHolders>  {
 
     @Override
     public void onBindViewHolder(@NonNull FindersViewHolders holder, int position) {
-        holder.txtMatchesId.setText(matchesList.get(position).getUser().getUid());
+        holder.txtFindesAddress.setText(matchesList.get(position).getUser().getAddress());
         holder.txtMatchesName.setText(matchesList.get(position).getUser().getName());
 
         if(!matchesList.get(position).getUser().getImg().equals("default")) {

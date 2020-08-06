@@ -78,33 +78,13 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatViewHolders>  {
 
     @Override
     public void onBindViewHolder(@NonNull ChatViewHolders holder, int position) {
-       /* holder.mMessage.setText(chatList.get(position).getMessage());
-        if(chatList.get(position).getCurrentUser()) {
-            holder.relativeLayoutMessage.setGravity(Gravity.END);
-            holder.mMessage.setTextColor(Color.parseColor("#ffffff"));
-            holder.mMessage.setBackgroundColor(Color.parseColor("#38be55"));
 
-        } else {
-            holder.relativeLayoutMessage.setGravity(Gravity.START);
-            holder.mMessage.setTextColor(Color.parseColor("#000000"));
-            holder.mMessage.setBackgroundColor(Color.parseColor("#ffe680"));
-            holder.circleImageView.setImageDrawable(Drawable.createFromPath("./drawable/profile.png"));
-            holder.circleImageView.setBackgroundColor(Color.parseColor("#38be55"));
-        }*/
-//        if (chatMessage.isImage()) {
             holder.ivImage.setVisibility(View.GONE);
             holder.tvMessage.setVisibility(View.VISIBLE);
             holder.tvMessage.setText(chatList.get(position).getMessage());
-            holder.dialogAvatar.setImageBitmap(chatList.get(position).getUrlimage());
-
-
-//            holder.ivImage.setImageResource(R.drawable.img_sample);
-//        } else {
-//            holder.ivImage.setVisibility(View.GONE);
-//            holder.tvMessage.setVisibility(View.VISIBLE);
-
-//            holder.tvMessage.setText(chatMessage.getContent());
-//        }
+            if(chatList.get(position).getUrlimage()!=null) {
+                holder.dialogAvatar.setImageBitmap(chatList.get(position).getUrlimage());
+            }
 
         String date = new SimpleDateFormat("hh:mm aa", Locale.getDefault()).format(new Date());
         holder.tvTime.setText(date);

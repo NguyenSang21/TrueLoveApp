@@ -23,7 +23,7 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/cardSignup"
         android:layout_width="match_parent"
-        android:layout_height="460dp"
+        android:layout_height="420dp"
         android:layout_centerInParent="true"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp">
@@ -86,26 +86,12 @@
             android:textColorHint="#dbe1dd"
              />
 
-        <EditText
-            android:id="@+id/edtAddress"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="270dp"
-            android:layout_marginRight="15dp"
-            android:drawablePadding="10dp"
-            android:ems="10"
-            android:hint="Địa chỉ"
-            android:textColorHint="#dbe1dd"
-            android:inputType="textPersonName"
-             />
-
         <RadioGroup
             android:id="@+id/radioGroupSex"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
-            android:layout_marginTop="330dp"
+            android:layout_marginTop="270dp"
             android:layout_marginRight="15dp"
             android:gravity="clip_horizontal"
             android:orientation="horizontal"
@@ -131,19 +117,12 @@
                 android:text="Nữ" />
         </RadioGroup>
 
-        <!--    <Button-->
-        <!--        android:id="@+id/btnRegister"-->
-        <!--        android:layout_width="match_parent"-->
-        <!--        android:layout_height="wrap_content"-->
-        <!--        android:text="Đăng ký" />-->
-
-
         <Button
             android:id="@+id/btnRegister"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
-            android:layout_marginTop="390dp"
+            android:layout_marginTop="340dp"
             android:layout_marginRight="20dp"
             android:background="@drawable/gradient_pink_red_background"
             android:text="Đăng ký"

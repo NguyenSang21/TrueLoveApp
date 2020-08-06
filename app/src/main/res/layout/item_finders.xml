@@ -25,6 +25,7 @@
             android:layout_marginBottom="8dp">
 
             <de.hdodenhof.circleimageview.CircleImageView
+                android:src="@drawable/smile"
                 android:id="@+id/imageFinders"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
@@ -80,7 +81,7 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:text="Matche's ID"
-                android:id="@+id/txtFindesId"
+                android:id="@+id/txtFindesAddress"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"

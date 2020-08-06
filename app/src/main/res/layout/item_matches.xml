@@ -26,6 +26,7 @@
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/imageMatches"
+                android:src="@drawable/smile"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 tools:ignore="MissingClass" />
