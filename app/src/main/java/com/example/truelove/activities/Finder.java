@@ -4,39 +4,82 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.truelove.R;
+import com.example.truelove.adapter.FindersAdapter;
+import com.example.truelove.custom_class.FinderDistance;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.libraries.places.compat.GeoDataClient;
 import com.google.android.libraries.places.compat.PlaceDetectionClient;
 import com.google.android.libraries.places.compat.Places;
 
-public class Finder extends AppCompatActivity implements LocationListener {
+import com.example.truelove.custom_class.User;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
-    protected LocationManager locationManager;
-    protected LocationListener locationListener;
-    private GeoDataClient mGeoDataClient;
-    private PlaceDetectionClient mPlaceDetectionClient;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Random;
+
+public class Finder extends AppCompatActivity {
+
     private FusedLocationProviderClient mFusedLocationProviderClient;
     private boolean locationPermissionGranted;
     static public final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
+
+    // list user find appear here
+    private RecyclerView recyclerView;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager layoutManager;
+    private ArrayList<User> listAllUser = new ArrayList<User>();
+    private List<FinderDistance> listFinders= new ArrayList<FinderDistance>();
+    private Double latUserCurrent;
+    private Double longiUserCurrent;
+
+    private Button btnFinder;
+    private boolean flagIsPressbtnFinder=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,34 +88,36 @@ public class Finder extends AppCompatActivity implements LocationListener {
 
         personalUI();
 
-        // Construct a GeoDataClient.
-        mGeoDataClient = Places.getGeoDataClient(this);
-
-        // Construct a PlaceDetectionClient.
-        mPlaceDetectionClient = Places.getPlaceDetectionClient(this);
-
         // Construct a FusedLocationProviderClient.
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
         // set permission
         getLocationPermission();
-        // get device location
-        getDeviceLocation();
 
-        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
-        }
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+/*        // get all user
+        getAllUser();*/
+
+        // list user find appear here
+        recyclerView = (RecyclerView) findViewById(R.id.recyclerViewFinder);
+        recyclerView.setNestedScrollingEnabled(false);
+        recyclerView.setHasFixedSize(true);
+
+        layoutManager = new LinearLayoutManager(Finder.this);
+        recyclerView.setLayoutManager(layoutManager);
+
+        mAdapter = new FindersAdapter(getDatasetFinders(), Finder.this);
+        recyclerView.setAdapter(mAdapter);
 
 
+        // set button find user
+        btnFinder= findViewById(R.id.btnFinder);
+        btnFinder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // get device location
+                getDeviceLocation();
+            }
+        });
     }
 
     private void personalUI() {
@@ -119,13 +164,17 @@ public class Finder extends AppCompatActivity implements LocationListener {
                             Location lastKnownLocation = task.getResult();
 
                             if (lastKnownLocation != null) {
-                                double lat = lastKnownLocation.getLatitude();
-                                double log = lastKnownLocation.getLongitude();
-
-                                Toast.makeText(Finder.this, "LATITUDE =" + lat + "LONGI =" + log , Toast.LENGTH_SHORT).show();
+                                latUserCurrent = lastKnownLocation.getLatitude();
+                                longiUserCurrent = lastKnownLocation.getLongitude();
+                                Toast.makeText(Finder.this, "LATITUDE =" + latUserCurrent + "LONGI =" + longiUserCurrent , Toast.LENGTH_SHORT).show();
+                                if(!flagIsPressbtnFinder){
+                                    // run tinh khoang cach all user
+                                    getAllUser();
+                                    flagIsPressbtnFinder=true;
+                                }
                             }
                         } else {
-
+                            Toast.makeText(Finder.this, "turn on GPS on your phone !!! " , Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -151,18 +200,277 @@ public class Finder extends AppCompatActivity implements LocationListener {
         }
     }
 
-    @Override
-    public void onLocationChanged(@NonNull Location location) {
-        Toast.makeText(this, "Latitude:" + location.getLatitude() + ", Longitude:" + location.getLongitude(), Toast.LENGTH_SHORT).show();
+    private List<FinderDistance> getDatasetFinders() {
+        return listFinders;
     }
 
-    @Override
-    public void onProviderEnabled(@NonNull String provider) {
+    // distance user current with all user
+    private void getFindersWithUserCurrent(User in){
+
+        if(latUserCurrent == null || longiUserCurrent == null){
+            Toast.makeText(Finder.this, "turn on GPS on your phone !!! " , Toast.LENGTH_SHORT).show();
+        }
+
+        // khoang cach user
+        if(in!=null){
+                FinderDistance userFinderDistance= new FinderDistance();
+                userFinderDistance.setUser(in);
+                Location userCurrentLocation= new Location(" User Current");
+                userCurrentLocation.setLatitude( latUserCurrent);
+                userCurrentLocation.setLongitude(longiUserCurrent);
+
+                Location yourLocation= new Location("You");
+                yourLocation.setLatitude( in.getLatitude());
+                yourLocation.setLongitude(in.getLongitude());
+                float kq=  userCurrentLocation.distanceTo(yourLocation);
+                if(kq>1000){
+                    // meter to km
+                    float kqReality=(float) Math.round((kq/1000) * 10)/10;
+                    userFinderDistance.setDistance(kqReality);
+                    userFinderDistance.setUnit("km");
+                }else{
+                    // meter to km
+                    float kqReality=(float) Math.round(kq * 10)/10;
+                    userFinderDistance.setDistance(kqReality);
+                    userFinderDistance.setUnit("meter");
+                }
+                listFinders.add(userFinderDistance);
+            }
+        // sort tang dan
+        Collections.sort(listFinders, new Comparator<FinderDistance>() {
+            @Override
+            public int compare(FinderDistance truoc, FinderDistance sau) {
+                // -1 - less than, 1 - greater than, 0 - equal, all inversed for descending
+                float truocDis=truoc.getDistance();
+                float sauDis=sau.getDistance();
+                if("km".equals(truoc.getUnit())){
+                    truocDis=truocDis*1000;
+                }
+                if("km".equals(sau.getUnit())){
+                    sauDis=sauDis*1000;
+                }
+                return truocDis > sauDis ? 1 : -1;
+            }
+        });
+        mAdapter.notifyDataSetChanged();
+    }
+
+    //===================get all user ==========================
+    private void getAllUser() {
+        DatabaseReference matchDb = FirebaseDatabase.getInstance().getReference().child("users");
+        matchDb.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()) {
+                    for(DataSnapshot match : dataSnapshot.getChildren()) {
+                        fetchMatchInformation(match.getKey());
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    DatabaseReference databaseReference;
+    private void fetchMatchInformation(String key) {
+        DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("users").child(key);
+        userDb.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()) {
+                    User obj = new User();
+                    obj.setUid(dataSnapshot.getKey());
+                    if(dataSnapshot.child("name").getValue() != null) {
+                        obj.setName(dataSnapshot.child("name").getValue().toString());
+                    }
+
+                    if(dataSnapshot.child("img").getValue() != null) {
+                        obj.setImg(dataSnapshot.child("img").getValue().toString());
+                    }
+
+                    if(dataSnapshot.child("address").getValue() != null) {
+                        obj.setAddress(dataSnapshot.child("address").getValue().toString());
+                    }
+
+                    if (dataSnapshot.child("sex").getValue()  != null) {
+                        String sex = dataSnapshot.child("sex").getValue().toString();
+                        if (sex == null) {
+                            return;
+                        } else if (sex.equals("male")) {
+//                            sex = "male";
+                            obj.setSex("Nam");
+                        } else if (sex.equals("female")) {
+//                            sex = "female";
+                            obj.setSex("Nữ");
+                        }
+                    }
+
+                    if(dataSnapshot.child("latitude").getValue()==null || dataSnapshot.child("longitude").getValue() == null){
+                        Double lat=radomLocationlatitude();
+                        Double longi=radomLocationlongitude();
+                        obj.setLatitude(lat);
+                        obj.setLongitude(longi);
+                    }else{
+                        obj.setLatitude(Double.valueOf(dataSnapshot.child("latitude").getValue().toString().trim()));
+                        obj.setLongitude(Double.valueOf(dataSnapshot.child("longitude").getValue().toString().trim()));
+                    }
+                    getFindersWithUserCurrent(obj);
+
+                    // for update location for all user to testing
+                   /* try {
+                        saveUserInfomation(dataSnapshot);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }*/
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+
+
+    // for testing update location for all user
+    private void saveUserInfomation(DataSnapshot dataSnapshot) throws IOException {
+        databaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(dataSnapshot.getKey());
+        String name = dataSnapshot.child("name").getValue().toString().trim();
+        String email = dataSnapshot.child("email").getValue().toString().trim();
+        String phone = dataSnapshot.child("phone").getValue().toString().trim();
+        String image = dataSnapshot.child("img").getValue().toString().trim();
+        int age = Integer.parseInt(dataSnapshot.child("age").getValue().toString().trim());
+
+        final Map userInfo = new HashMap();
+
+        userInfo.put("name", name);
+        userInfo.put("email", email);
+        userInfo.put("phone", phone);
+
+        userInfo.put("age", age);
+        userInfo.put("userId", dataSnapshot.getKey());
+
+        String uriImage =  dataSnapshot.child("sex").getValue().toString().trim();
+        if (uriImage == null) {
+            return;
+        } else if (uriImage.equals("")) {
+//                            sex = "male";
+            userInfo.put("sex", "male");
+        } else if (uriImage.equals("Nữ")) {
+//                            sex = "female";
+            userInfo.put("sex", "female");
+        }
+
+        userInfo.put("img",image);
+
+        if(dataSnapshot.child("latitude").getValue()==null || dataSnapshot.child("longitude").getValue() == null){
+            Double lat=radomLocationlatitude();
+            Double longi=radomLocationlongitude();
+
+            Geocoder geocoder;
+            List<Address> addresses = null;
+            geocoder = new Geocoder(Finder.this, Locale.getDefault());
+
+            try {
+                addresses = geocoder.getFromLocation(lat, longi, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            String addresss = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
+            String city = addresses.get(0).getLocality();
+            String state = addresses.get(0).getAdminArea();
+            String country = addresses.get(0).getCountryName();
+            String postalCode = addresses.get(0).getPostalCode();
+            String knownName = addresses.get(0).getFeatureName(); //
+
+            StringBuilder addressLocation2=new StringBuilder();
+            if( addresses.get(0).getSubAdminArea()!=null){
+                addressLocation2.append(addresses.get(0).getSubAdminArea()+",");
+            }
+            if(addresses.get(0).getAdminArea()!=null){
+                addressLocation2.append(addresses.get(0).getAdminArea()+",");
+            }
+            if(addresses.get(0).getCountryName()!=null){
+                addressLocation2.append(addresses.get(0).getCountryName());
+            }
+
+
+
+            userInfo.put("latitude", lat);
+            userInfo.put("longitude", longi);
+
+            userInfo.put("address", addressLocation2.toString());
+        }else{
+            userInfo.put("latitude", dataSnapshot.child("latitude").getValue().toString().trim());
+            userInfo.put("longitude", dataSnapshot.child("longitude").getValue().toString().trim());
+
+            // update address
+            Geocoder geocoder;
+            List<Address> addresses = null;
+            geocoder = new Geocoder(Finder.this, Locale.getDefault());
+
+            try {
+                Double a= Double.valueOf(dataSnapshot.child("latitude").getValue().toString());
+                Double b= Double.valueOf(dataSnapshot.child("longitude").getValue().toString());
+                addresses = geocoder.getFromLocation(a, b, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+           String addresss = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
+            String city = addresses.get(0).getLocality();
+            String state = addresses.get(0).getAdminArea();
+            String country = addresses.get(0).getCountryName();
+            String postalCode = addresses.get(0).getPostalCode();
+            String knownName = addresses.get(0).getFeatureName(); //
+
+            StringBuilder addressLocation2=new StringBuilder();
+            if( addresses.get(0).getSubAdminArea()!=null){
+                addressLocation2.append(addresses.get(0).getSubAdminArea()+",");
+            }
+             if(addresses.get(0).getAdminArea()!=null){
+                addressLocation2.append(addresses.get(0).getAdminArea()+",");
+            }
+             if(addresses.get(0).getCountryName()!=null){
+                addressLocation2.append(addresses.get(0).getCountryName());
+            }
+
+            userInfo.put("address", addressLocation2.toString());
+        }
+        System.out.println(userInfo);
+        databaseReference.updateChildren(userInfo);
 
     }
 
-    @Override
-    public void onProviderDisabled(@NonNull String provider) {
+    Double radomLocationlongitude(){
+        // bac cu chi 11.076944, 106.457601
+        // nam can gio 10.449601, 106.892934
+        // dong 10.869324, 106.833883
+        // tay 10.756016, 106.494680
+        Double minlatitude=new Double("106.457601");
+        Double maxlatitude=new Double("106.892934");
+        Random r = new Random();
+        Double random = minlatitude + r.nextFloat() * (maxlatitude - minlatitude);
+        return random;
 
+    }
+
+    Double radomLocationlatitude(){
+        // bac cu chi 11.076944, 106.457601
+        // nam can gio 10.449601, 106.892934
+        // dong 10.869324, 106.833883
+        // tay 10.756016, 106.494680
+        Double minlatitude=new Double("10.449601");
+        Double maxlatitude=new Double("10.869324");
+        Random r = new Random();
+        Double random = minlatitude + r.nextFloat() * (maxlatitude - minlatitude);
+        return random;
     }
 }

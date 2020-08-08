@@ -25,21 +25,22 @@
             android:layout_marginBottom="8dp">
 
             <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/imageMatches"
                 android:src="@drawable/smile"
+                android:id="@+id/imageFinders"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 tools:ignore="MissingClass" />
 
-            <RelativeLayout
+            <!--<RelativeLayout
                 android:id="@+id/layout_dot_indicator"
                 android:layout_width="12dp"
                 android:layout_height="12dp"
                 android:padding="2dp"
                 android:background="@drawable/dot_message"
-                android:layout_toEndOf="@id/imageMatches"
+                android:layout_toEndOf="@id/imageFinders"
                 android:layout_centerInParent="true"
-                android:layout_marginStart="-5dp"/>
+                android:layout_marginStart="-5dp"/>-->
+
         </RelativeLayout>
 
 
@@ -48,28 +49,47 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_toEndOf="@id/layout_picture_frame"
-            android:layout_centerInParent="true">
-            <androidx.appcompat.widget.AppCompatTextView
-                android:text="Matche's Name"
-                android:id="@+id/txtMatchesName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:fontFamily="sans-serif-medium"
-                android:maxLines="1"
-                android:textColor="@color/darkGray"
-                android:textSize="17sp"
-                />
+            android:layout_centerInParent="true"
+            >
+
+            <LinearLayout android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:layout_width="match_parent">
+                <TextView
+                    android:text="Matche's Name"
+                    android:id="@+id/txtFindersName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-medium"
+                    android:textColor="@color/darkGray"
+                    android:textSize="17sp"
+                    />
+
+                <TextView
+                    android:id="@+id/txtFindersDistance"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-medium"
+                    android:text="Matche's"
+                    android:gravity="end"
+                    android:textColor="@color/darkGray"
+                    android:textSize="17sp">
+                </TextView>
+
+            </LinearLayout>
+
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:text="Matche's ID"
-                android:id="@+id/txtMatchesId"
+                android:id="@+id/txtFindesAddress"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
                 android:textSize="14sp"
                 android:maxLines="1"
                 android:ellipsize="end"/>
+
+
         </LinearLayout>
 
         <View

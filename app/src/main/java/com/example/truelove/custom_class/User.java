@@ -10,25 +10,47 @@ public class User {
     private String email;
     private String img;
     private String sex;
+    private Double latitude;
+    private Double longitude;
+
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
+    }
+
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
+    }
+
+    public Double getLatitude() {
+        return latitude;
+    }
+
+    public Double getLongitude() {
+        return longitude;
+    }
 
     public  User(){
         super();
     }
 
-    public User(String uid, String name, int age, String address) {
+    public User(String uid, String name, int age, String address, Double latitude, Double longitude) {
         this.uid = uid;
         this.name = name;
         this.age = age;
         this.address = address;
+        this.latitude=latitude;
+        this.longitude=longitude;
     }
 
-    public User(String uid, String name, int age, String address, String img, String sex) {
+    public User(String uid, String name, int age, String address, String img, String sex,Double latitude, Double longitude) {
         this.uid = uid;
         this.name = name;
         this.age = age;
         this.address = address;
         this.sex = sex;
         this.img = img;
+        this.latitude=latitude;
+        this.longitude=longitude;
     }
 
     public User(String uid, String name, int age, String address, String img) {
@@ -37,6 +59,8 @@ public class User {
         this.age = age;
         this.address = address;
         this.img = img;
+        this.latitude=latitude;
+        this.longitude=longitude;
     }
 
     public String getSex() {

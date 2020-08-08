@@ -9,7 +9,7 @@
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/dialogAvatar"
-        android:src="@drawable/userchat"
+        android:src="@drawable/smile"
         android:background="@color/white"
         android:layout_width="45dp"
         android:layout_height="45dp"
