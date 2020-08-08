@@ -31,9 +31,13 @@ public class UserAdapter extends ArrayAdapter {
         }
 
         TextView name = (TextView) convertView.findViewById(R.id.edtUserName);
+        TextView age = convertView.findViewById(R.id.txtAge);
+        TextView address = convertView.findViewById(R.id.txtAdrress);
         ImageView image = (ImageView) convertView.findViewById(R.id.img);
         image.setEnabled(false);
         name.setText(user.getName());
+        age.setText(user.getAge() + " tuổi");
+        address.setText(user.getAddress());
         Glide.with(getContext()).load(user.getImg()).into(image);
 
         return convertView;
