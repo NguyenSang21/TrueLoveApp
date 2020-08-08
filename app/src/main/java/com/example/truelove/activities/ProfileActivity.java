@@ -58,6 +58,10 @@ public class ProfileActivity extends AppCompatActivity {
     private Uri resultUri;
     private String uriImage ="default";
 
+    // set defaul my school if data null
+    private Double latitudeCurrent=10.762918;
+    private Double longitudeCurrent=106.682284;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -124,22 +128,26 @@ public class ProfileActivity extends AppCompatActivity {
                     }
                     if (map.get("img") != null) {
                         uriImage = map.get("img").toString();
-
                         Glide.with(getApplication()).load(uriImage).into(profileImage);
                     }
                     if (map.get("sex") != null) {
-                        String uriImage = map.get("sex").toString();
-                        if (uriImage == null) {
+                        String sexs = map.get("sex").toString();
+                        if (sexs == null) {
                             return;
-                        } else if (uriImage.equals("male")) {
+                        } else if (sexs.equals("male")) {
 //                            sex = "male";
                             profileSex.setText("Nam");
-                        } else if (uriImage.equals("female")) {
+                        } else if (sexs.equals("female")) {
 //                            sex = "female";
                             profileSex.setText("Nữ");
                         }
                     }
-
+                    if(map.get("latitude")!=null){
+                        latitudeCurrent= Double.valueOf(map.get("latitude").toString());
+                    }
+                    if(map.get("longitude")!=null){
+                        longitudeCurrent= Double.valueOf(map.get("longitude").toString());
+                    }
                 }
             }
 
@@ -165,14 +173,16 @@ public class ProfileActivity extends AppCompatActivity {
         userInfo.put("address", address);
         userInfo.put("age", age);
         userInfo.put("userId", this.userId);
+        userInfo.put("latitude", latitudeCurrent);
+        userInfo.put("longitude", longitudeCurrent);
 
-        String uriImage =  profileSex.getText().toString();
-        if (uriImage == null) {
+        String sexss =  profileSex.getText().toString();
+        if (sexss == null) {
             return;
-        } else if (uriImage.equals("")) {
+        } else if (sexss.equals("")) {
 //                            sex = "male";
             userInfo.put("sex", "male");
-        } else if (uriImage.equals("Nữ")) {
+        } else if (sexss.equals("Nữ")) {
 //                            sex = "female";
             userInfo.put("sex", "female");
         }

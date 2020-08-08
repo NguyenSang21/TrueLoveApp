@@ -61,7 +61,6 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     private PlaceDetectionClient mPlaceDetectionClient;
     private Double latitude;
     private Double longitude;
-    private String addressLocation;
 
 
     @Override
@@ -72,7 +71,6 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         mapping();
         btnRegister.setOnClickListener(this);
         registration();
-
 
         //==========================================================================================
 
@@ -137,7 +135,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         btnRegister = findViewById(R.id.btnRegister);
         mRadioGroupSex = findViewById(R.id.radioGroupSex);
         edtAge = findViewById(R.id.edtAge);
-        //edtAddress = findViewById(R.id.edtAddress);
+        edtAddress = findViewById(R.id.edtAddress);
     }
 
     @Override
@@ -154,7 +152,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                 final String name = edtName.getText().toString().trim();
                 final int selectedId = mRadioGroupSex.getCheckedRadioButtonId();
                 final int age = Integer.parseInt(edtAge.getText().toString());
-              /*  final String address = edtAddress.getText().toString().trim();*/
+               final String address = edtAddress.getText().toString().trim();
 
                 final RadioButton radioButton = findViewById(selectedId);
                 String sex = "";
@@ -179,6 +177,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                                     user.setUid(userId);
                                     user.setName(name);
                                     user.setAge(age);
+                                    user.setAddress(address);
                                     user.setImg("default");
                                     user.setPhone("default");
                                     user.setSex(finalSex);
@@ -186,13 +185,10 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                                     if(latitude!=null&&longitude!=null){
                                         user.setLatitude(latitude);
                                         user.setLongitude(longitude);
-                                        user.setAddress(addressLocation);
-//                                        user.setAddress("Quận 5, HCMC");
                                     }else{
                                         // set default in my school
                                         user.setLatitude( 10.762918);
                                         user.setLongitude(106.682284);
-                                        user.setAddress("Quận 5, HCMC");
                                     }
 
                                     System.out.println(user.toString());
@@ -250,47 +246,6 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                                 longitude=longi;
                                 Toast.makeText(RegistrationActivity.this, "LATITUDE =" + lat + "LONGI =" + longi , Toast.LENGTH_SHORT).show();
 
-                                Geocoder geocoder;
-                                List<Address> addresses = null;
-                                geocoder = new Geocoder(RegistrationActivity.this, Locale.getDefault());
-
-                                try {
-                                    addresses = geocoder.getFromLocation(latitude, longitude, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
-
-                                String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
-                                String city = addresses.get(0).getLocality();
-                                String state = addresses.get(0).getAdminArea();
-                                String country = addresses.get(0).getCountryName();
-                                String postalCode = addresses.get(0).getPostalCode();
-                                String knownName = addresses.get(0).getFeatureName(); //
-
-                                StringBuilder addressLocation2=new StringBuilder();
-                                if( addresses.get(0).getSubAdminArea()!=null){
-                                    addressLocation2.append(addresses.get(0).getSubAdminArea()+",");
-                                }
-                                 if(addresses.get(0).getAdminArea()!=null){
-                                    addressLocation2.append(addresses.get(0).getAdminArea()+",");
-                                }
-                                 if(addresses.get(0).getCountryName()!=null){
-                                    addressLocation2.append(addresses.get(0).getCountryName());
-                                }
-
-                                addressLocation= addressLocation2.toString();
-
-                                /*
-/*                                Location truongHoc= new Location("khtn");
-                                truongHoc.setLatitude( 10.762918);
-                                truongHoc.setLongitude(106.682284);
-
-                                Location etown= new Location("etown");
-                                etown.setLatitude( 10.802031);
-                                etown.setLongitude(106.641379);
-                                float kq=  etown.distanceTo(truongHoc);
-
-                                Toast.makeText(RegistrationActivity.this, "etown to school: "+kq , Toast.LENGTH_SHORT).show();*/
                             }
                         } else {
 

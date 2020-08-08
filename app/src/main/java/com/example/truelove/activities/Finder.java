@@ -81,6 +81,8 @@ public class Finder extends AppCompatActivity {
     private Button btnFinder;
     private boolean flagIsPressbtnFinder=false;
 
+    private String currentUserID;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,9 +95,6 @@ public class Finder extends AppCompatActivity {
 
         // set permission
         getLocationPermission();
-
-/*        // get all user
-        getAllUser();*/
 
         // list user find appear here
         recyclerView = (RecyclerView) findViewById(R.id.recyclerViewFinder);
@@ -118,7 +117,15 @@ public class Finder extends AppCompatActivity {
                 getDeviceLocation();
             }
         });
+
+        // get information user current
+        /*currentUserID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        getUserCurrent();*/
     }
+
+    /*private void getUserCurrent(){
+        databaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(userId);
+    }*/
 
     private void personalUI() {
         getSupportActionBar().hide();
@@ -223,6 +230,11 @@ public class Finder extends AppCompatActivity {
                 yourLocation.setLatitude( in.getLatitude());
                 yourLocation.setLongitude(in.getLongitude());
                 float kq=  userCurrentLocation.distanceTo(yourLocation);
+
+                // get address of you
+                String addressOfYou = locationToAddress(in.getLatitude(),in.getLongitude());
+                userFinderDistance.setAddressCurrentOfYou(addressOfYou);
+
                 if(kq>1000){
                     // meter to km
                     float kqReality=(float) Math.round((kq/1000) * 10)/10;
@@ -318,8 +330,9 @@ public class Finder extends AppCompatActivity {
                         obj.setLatitude(Double.valueOf(dataSnapshot.child("latitude").getValue().toString().trim()));
                         obj.setLongitude(Double.valueOf(dataSnapshot.child("longitude").getValue().toString().trim()));
                     }
-                    getFindersWithUserCurrent(obj);
-
+                    if(!FirebaseAuth.getInstance().getCurrentUser().getUid().equals(obj.getUid())){
+                        getFindersWithUserCurrent(obj);
+                    }
                     // for update location for all user to testing
                    /* try {
                         saveUserInfomation(dataSnapshot);
@@ -472,5 +485,37 @@ public class Finder extends AppCompatActivity {
         Random r = new Random();
         Double random = minlatitude + r.nextFloat() * (maxlatitude - minlatitude);
         return random;
+    }
+
+    private String locationToAddress(Double latitude, Double longitude){
+        Geocoder geocoder;
+        List<Address> addresses = null;
+        geocoder = new Geocoder(Finder.this, Locale.getDefault());
+
+        try {
+            addresses = geocoder.getFromLocation(latitude, longitude, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
+        String city = addresses.get(0).getLocality();
+        String state = addresses.get(0).getAdminArea();
+        String country = addresses.get(0).getCountryName();
+        String postalCode = addresses.get(0).getPostalCode();
+        String knownName = addresses.get(0).getFeatureName(); //
+
+        StringBuilder addressLocation2=new StringBuilder();
+        if( addresses.get(0).getSubAdminArea()!=null){
+            addressLocation2.append(addresses.get(0).getSubAdminArea()+",");
+        }
+        if(addresses.get(0).getAdminArea()!=null){
+            addressLocation2.append(addresses.get(0).getAdminArea()+",");
+        }
+        if(addresses.get(0).getCountryName()!=null){
+            addressLocation2.append(addresses.get(0).getCountryName());
+        }
+
+        return addressLocation2.toString();
     }
 }

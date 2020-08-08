@@ -72,6 +72,7 @@
                     android:fontFamily="sans-serif-medium"
                     android:text="Matche's"
                     android:gravity="end"
+                    android:layout_marginRight="5dp"
                     android:textColor="@color/darkGray"
                     android:textSize="17sp">
                 </TextView>
