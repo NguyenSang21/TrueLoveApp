@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/gradient_profile_backgroud"
     android:fillViewport="true">
 
     <LinearLayout
@@ -66,7 +67,7 @@
             android:background="@drawable/border_edit_profile"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:layout_marginTop="7dp">
+            android:layout_marginTop="15dp">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -87,7 +88,7 @@
             android:background="@drawable/border_edit_profile"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:layout_marginTop="7dp">
+            android:layout_marginTop="15dp">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -108,7 +109,7 @@
             android:background="@drawable/border_edit_profile"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:layout_marginTop="7dp">
+            android:layout_marginTop="15dp">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -129,7 +130,7 @@
             android:background="@drawable/border_edit_profile"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:layout_marginTop="7dp">
+            android:layout_marginTop="15dp">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -148,7 +149,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginTop="7dp">
+            android:layout_marginTop="15dp">
 
             <LinearLayout
                 android:layout_weight="5"
@@ -191,7 +192,7 @@
             android:text="Hình ảnh"
             android:textSize="20sp"
             android:layout_marginLeft="10dp"
-            android:layout_marginTop="7dp"
+            android:layout_marginTop="15dp"
             android:textColor="#424242"
             android:textStyle="bold"/>
         <LinearLayout
@@ -243,6 +244,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="5dp"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:background="@drawable/border_button"
                     />
 
                 <Button
@@ -250,6 +254,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:background="@drawable/border_button"
                     android:text="Trở lại" />
             </LinearLayout>
         </RelativeLayout>
