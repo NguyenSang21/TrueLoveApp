@@ -240,7 +240,9 @@ public class MainActivity extends AppCompatActivity {
         userDb.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                if(dataSnapshot.exists() && !dataSnapshot.child("connections").child("nope").hasChild(currentUId) && !dataSnapshot.child("connections").child("yeps").hasChild(currentUId) && dataSnapshot.child("sex").getValue().equals(oppositeUserSex)) {
+                if(dataSnapshot.exists() && !dataSnapshot.child("connections").child("nope").hasChild(currentUId)
+                        && !dataSnapshot.child("connections").child("yeps").hasChild(currentUId)
+                        && dataSnapshot.child("sex").getValue().equals(oppositeUserSex)) {
                     String name = dataSnapshot.child("name").getValue().toString();
                     int age = Integer.parseInt(dataSnapshot.child("age").getValue().toString());
                     String address = dataSnapshot.child("address").getValue().toString();

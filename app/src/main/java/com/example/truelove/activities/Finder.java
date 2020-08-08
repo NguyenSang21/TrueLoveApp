@@ -105,7 +105,7 @@ public class Finder extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
 
         mAdapter = new FindersAdapter(getDatasetFinders(), Finder.this);
-        recyclerView.setAdapter(mAdapter);
+
 
 
         // set button find user
@@ -208,6 +208,7 @@ public class Finder extends AppCompatActivity {
     }
 
     private List<FinderDistance> getDatasetFinders() {
+
         return listFinders;
     }
 
@@ -247,24 +248,25 @@ public class Finder extends AppCompatActivity {
                     userFinderDistance.setUnit("meter");
                 }
                 listFinders.add(userFinderDistance);
-            }
-        // sort tang dan
-        Collections.sort(listFinders, new Comparator<FinderDistance>() {
-            @Override
-            public int compare(FinderDistance truoc, FinderDistance sau) {
-                // -1 - less than, 1 - greater than, 0 - equal, all inversed for descending
-                float truocDis=truoc.getDistance();
-                float sauDis=sau.getDistance();
-                if("km".equals(truoc.getUnit())){
-                    truocDis=truocDis*1000;
+            // sort tang dan
+            Collections.sort(listFinders, new Comparator<FinderDistance>() {
+                @Override
+                public int compare(FinderDistance truoc, FinderDistance sau) {
+                    // -1 - less than, 1 - greater than, 0 - equal, all inversed for descending
+                    float truocDis=truoc.getDistance();
+                    float sauDis=sau.getDistance();
+                    if("km".equals(truoc.getUnit())){
+                        truocDis=truocDis*1000;
+                    }
+                    if("km".equals(sau.getUnit())){
+                        sauDis=sauDis*1000;
+                    }
+                    return truocDis > sauDis ? 1 : -1;
                 }
-                if("km".equals(sau.getUnit())){
-                    sauDis=sauDis*1000;
-                }
-                return truocDis > sauDis ? 1 : -1;
-            }
-        });
-        mAdapter.notifyDataSetChanged();
+            });
+            mAdapter.notifyDataSetChanged();
+            recyclerView.setAdapter(mAdapter);
+        }
     }
 
     //===================get all user ==========================
@@ -276,7 +278,9 @@ public class Finder extends AppCompatActivity {
                 if(dataSnapshot.exists()) {
                     for(DataSnapshot match : dataSnapshot.getChildren()) {
                         fetchMatchInformation(match.getKey());
+
                     }
+
                 }
             }
 
@@ -296,6 +300,11 @@ public class Finder extends AppCompatActivity {
                 if(dataSnapshot.exists()) {
                     User obj = new User();
                     obj.setUid(dataSnapshot.getKey());
+
+                    if(dataSnapshot.child("name").equals("Titus")){
+                        System.out.print("");
+                    }
+
                     if(dataSnapshot.child("name").getValue() != null) {
                         obj.setName(dataSnapshot.child("name").getValue().toString());
                     }
@@ -333,6 +342,7 @@ public class Finder extends AppCompatActivity {
                     if(!FirebaseAuth.getInstance().getCurrentUser().getUid().equals(obj.getUid())){
                         getFindersWithUserCurrent(obj);
                     }
+                    mAdapter.notifyDataSetChanged();
                     // for update location for all user to testing
                    /* try {
                         saveUserInfomation(dataSnapshot);
@@ -413,8 +423,6 @@ public class Finder extends AppCompatActivity {
             if(addresses.get(0).getCountryName()!=null){
                 addressLocation2.append(addresses.get(0).getCountryName());
             }
-
-
 
             userInfo.put("latitude", lat);
             userInfo.put("longitude", longi);
