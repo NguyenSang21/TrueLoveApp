@@ -96,7 +96,7 @@
                 android:layout_marginTop="2dp"
                 android:textSize="14sp"
                 android:enabled="false"
-                android:visibility="visible"
+                android:visibility="gone"
                 android:maxLines="1"
                 />
 
