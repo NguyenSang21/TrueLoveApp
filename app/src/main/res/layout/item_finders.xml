@@ -79,7 +79,6 @@
 
             </LinearLayout>
 
-
             <androidx.appcompat.widget.AppCompatTextView
                 android:text="Matche's ID"
                 android:id="@+id/txtFindesAddress"
@@ -89,6 +88,17 @@
                 android:textSize="14sp"
                 android:maxLines="1"
                 android:ellipsize="end"/>
+            <androidx.appcompat.widget.AppCompatTextView
+                android:text="Matche's ID"
+                android:id="@+id/txtFindesId"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:textSize="14sp"
+                android:enabled="false"
+                android:visibility="visible"
+                android:maxLines="1"
+                />
 
 
         </LinearLayout>

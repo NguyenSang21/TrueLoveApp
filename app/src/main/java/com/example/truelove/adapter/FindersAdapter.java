@@ -44,6 +44,8 @@ public class FindersAdapter extends RecyclerView.Adapter<FindersViewHolders>  {
             Glide.with(context).load(matchesList.get(position).getUser().getImg()).into(holder.imageMatches);
         }
         holder.txtDistance.setText(String.valueOf(matchesList.get(position).getDistance())+" "+matchesList.get(position).getUnit());
+
+        holder.txtMatchesId.setText(String.valueOf(matchesList.get(position).getUser().getUid()));
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.example.truelove.activities;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -8,7 +9,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -58,6 +61,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -83,6 +87,8 @@ public class Finder extends AppCompatActivity {
 
     private String currentUserID;
 
+    private boolean isFinderMatch=false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -106,8 +112,6 @@ public class Finder extends AppCompatActivity {
 
         mAdapter = new FindersAdapter(getDatasetFinders(), Finder.this);
 
-
-
         // set button find user
         btnFinder= findViewById(R.id.btnFinder);
         btnFinder.setOnClickListener(new View.OnClickListener() {
@@ -126,6 +130,33 @@ public class Finder extends AppCompatActivity {
     /*private void getUserCurrent(){
         databaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(userId);
     }*/
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(Activity.RESULT_OK==resultCode){
+            try{
+                String matchIdReturn= data.getExtras().getString("matchIdReturn");
+                Iterator in= listFinders.iterator();
+                while (in.hasNext()){
+                    FinderDistance obj =(FinderDistance) in.next();
+                    if(obj.getUser().getUid().equals(matchIdReturn)){
+                        listFinders.remove(obj);
+                        mAdapter.notifyDataSetChanged();
+                        return;
+                    }
+                }
+            }catch(Exception e){
+                System.out.print(e);
+            }
+        }
+    }
 
     private void personalUI() {
         getSupportActionBar().hide();
@@ -211,6 +242,7 @@ public class Finder extends AppCompatActivity {
 
         return listFinders;
     }
+
 
     // distance user current with all user
     private void getFindersWithUserCurrent(User in){
@@ -339,9 +371,21 @@ public class Finder extends AppCompatActivity {
                         obj.setLatitude(Double.valueOf(dataSnapshot.child("latitude").getValue().toString().trim()));
                         obj.setLongitude(Double.valueOf(dataSnapshot.child("longitude").getValue().toString().trim()));
                     }
+                    // KHONG SERACH USER HIEN TAI
                     if(!FirebaseAuth.getInstance().getCurrentUser().getUid().equals(obj.getUid())){
-                        getFindersWithUserCurrent(obj);
+                        // user dang search chua get hoac chua match ai het
+                        if(dataSnapshot.child("connections")==null){
+                            getFindersWithUserCurrent(obj);
+                        }else{
+                            // user đang search không thich và không match vs user current
+                            if(!dataSnapshot.child("connections").child("nope").hasChild(FirebaseAuth.getInstance().getCurrentUser().getUid()) &&
+                                    !dataSnapshot.child("connections").child("yeps").hasChild(FirebaseAuth.getInstance().getCurrentUser().getUid())){
+                                getFindersWithUserCurrent(obj);
+                            }
+                        }
                     }
+
+
                     mAdapter.notifyDataSetChanged();
                     // for update location for all user to testing
                    /* try {
