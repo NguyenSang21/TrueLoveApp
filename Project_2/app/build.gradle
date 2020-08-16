@@ -1,9 +1,14 @@
-apply plugin: 'com.android.application'
+
+
+// or, if you're on an old version
+apply plugin: 'com.android.library'
+// or, if you're on an old version
+apply plugin: 'android-library' // note: this one is deprecated
 
 android {
     compileSdkVersion 29
     defaultConfig {
-        applicationId "com.burhanrashid52.photoeditor"
+
         minSdkVersion 14
         targetSdkVersion 29
         versionCode 1
