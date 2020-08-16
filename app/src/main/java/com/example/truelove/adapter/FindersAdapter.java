@@ -37,13 +37,15 @@ public class FindersAdapter extends RecyclerView.Adapter<FindersViewHolders>  {
 
     @Override
     public void onBindViewHolder(@NonNull FindersViewHolders holder, int position) {
-        holder.txtFindesAddress.setText(matchesList.get(position).getUser().getAddress());
+        holder.txtFindesAddress.setText(matchesList.get(position).getAddressCurrentOfYou());
         holder.txtMatchesName.setText(matchesList.get(position).getUser().getName());
 
         if(!matchesList.get(position).getUser().getImg().equals("default")) {
             Glide.with(context).load(matchesList.get(position).getUser().getImg()).into(holder.imageMatches);
         }
         holder.txtDistance.setText(String.valueOf(matchesList.get(position).getDistance())+" "+matchesList.get(position).getUnit());
+
+        holder.txtMatchesId.setText(String.valueOf(matchesList.get(position).getUser().getUid()));
     }
 
     @Override

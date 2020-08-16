@@ -6,6 +6,17 @@ public class FinderDistance {
     // don vi meter or km
     private String unit;
 
+    public void setAddressCurrentOfYou(String addressCurrentOfYou) {
+        this.addressCurrentOfYou = addressCurrentOfYou;
+    }
+
+    public String getAddressCurrentOfYou() {
+        return addressCurrentOfYou;
+    }
+
+    // vi tri của người mà bạn đi search họ
+    private String addressCurrentOfYou;
+
     public FinderDistance() {
         super();
     }

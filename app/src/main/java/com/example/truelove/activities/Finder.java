@@ -1,6 +1,7 @@
 package com.example.truelove.activities;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -8,7 +9,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -58,6 +61,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -81,6 +85,10 @@ public class Finder extends AppCompatActivity {
     private Button btnFinder;
     private boolean flagIsPressbtnFinder=false;
 
+    private String currentUserID;
+
+    private boolean isFinderMatch=false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -94,9 +102,6 @@ public class Finder extends AppCompatActivity {
         // set permission
         getLocationPermission();
 
-/*        // get all user
-        getAllUser();*/
-
         // list user find appear here
         recyclerView = (RecyclerView) findViewById(R.id.recyclerViewFinder);
         recyclerView.setNestedScrollingEnabled(false);
@@ -106,8 +111,6 @@ public class Finder extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
 
         mAdapter = new FindersAdapter(getDatasetFinders(), Finder.this);
-        recyclerView.setAdapter(mAdapter);
-
 
         // set button find user
         btnFinder= findViewById(R.id.btnFinder);
@@ -118,6 +121,41 @@ public class Finder extends AppCompatActivity {
                 getDeviceLocation();
             }
         });
+
+        // get information user current
+        /*currentUserID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        getUserCurrent();*/
+    }
+
+    /*private void getUserCurrent(){
+        databaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(userId);
+    }*/
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(Activity.RESULT_OK==resultCode){
+            try{
+                String matchIdReturn= data.getExtras().getString("matchIdReturn");
+                Iterator in= listFinders.iterator();
+                while (in.hasNext()){
+                    FinderDistance obj =(FinderDistance) in.next();
+                    if(obj.getUser().getUid().equals(matchIdReturn)){
+                        listFinders.remove(obj);
+                        mAdapter.notifyDataSetChanged();
+                        return;
+                    }
+                }
+            }catch(Exception e){
+                System.out.print(e);
+            }
+        }
     }
 
     private void personalUI() {
@@ -201,8 +239,10 @@ public class Finder extends AppCompatActivity {
     }
 
     private List<FinderDistance> getDatasetFinders() {
+
         return listFinders;
     }
+
 
     // distance user current with all user
     private void getFindersWithUserCurrent(User in){
@@ -223,6 +263,11 @@ public class Finder extends AppCompatActivity {
                 yourLocation.setLatitude( in.getLatitude());
                 yourLocation.setLongitude(in.getLongitude());
                 float kq=  userCurrentLocation.distanceTo(yourLocation);
+
+                // get address of you
+                String addressOfYou = locationToAddress(in.getLatitude(),in.getLongitude());
+                userFinderDistance.setAddressCurrentOfYou(addressOfYou);
+
                 if(kq>1000){
                     // meter to km
                     float kqReality=(float) Math.round((kq/1000) * 10)/10;
@@ -235,24 +280,25 @@ public class Finder extends AppCompatActivity {
                     userFinderDistance.setUnit("meter");
                 }
                 listFinders.add(userFinderDistance);
-            }
-        // sort tang dan
-        Collections.sort(listFinders, new Comparator<FinderDistance>() {
-            @Override
-            public int compare(FinderDistance truoc, FinderDistance sau) {
-                // -1 - less than, 1 - greater than, 0 - equal, all inversed for descending
-                float truocDis=truoc.getDistance();
-                float sauDis=sau.getDistance();
-                if("km".equals(truoc.getUnit())){
-                    truocDis=truocDis*1000;
+            // sort tang dan
+            Collections.sort(listFinders, new Comparator<FinderDistance>() {
+                @Override
+                public int compare(FinderDistance truoc, FinderDistance sau) {
+                    // -1 - less than, 1 - greater than, 0 - equal, all inversed for descending
+                    float truocDis=truoc.getDistance();
+                    float sauDis=sau.getDistance();
+                    if("km".equals(truoc.getUnit())){
+                        truocDis=truocDis*1000;
+                    }
+                    if("km".equals(sau.getUnit())){
+                        sauDis=sauDis*1000;
+                    }
+                    return truocDis > sauDis ? 1 : -1;
                 }
-                if("km".equals(sau.getUnit())){
-                    sauDis=sauDis*1000;
-                }
-                return truocDis > sauDis ? 1 : -1;
-            }
-        });
-        mAdapter.notifyDataSetChanged();
+            });
+            mAdapter.notifyDataSetChanged();
+            recyclerView.setAdapter(mAdapter);
+        }
     }
 
     //===================get all user ==========================
@@ -264,7 +310,9 @@ public class Finder extends AppCompatActivity {
                 if(dataSnapshot.exists()) {
                     for(DataSnapshot match : dataSnapshot.getChildren()) {
                         fetchMatchInformation(match.getKey());
+
                     }
+
                 }
             }
 
@@ -284,6 +332,11 @@ public class Finder extends AppCompatActivity {
                 if(dataSnapshot.exists()) {
                     User obj = new User();
                     obj.setUid(dataSnapshot.getKey());
+
+                    if(dataSnapshot.child("name").equals("Titus")){
+                        System.out.print("");
+                    }
+
                     if(dataSnapshot.child("name").getValue() != null) {
                         obj.setName(dataSnapshot.child("name").getValue().toString());
                     }
@@ -318,8 +371,22 @@ public class Finder extends AppCompatActivity {
                         obj.setLatitude(Double.valueOf(dataSnapshot.child("latitude").getValue().toString().trim()));
                         obj.setLongitude(Double.valueOf(dataSnapshot.child("longitude").getValue().toString().trim()));
                     }
-                    getFindersWithUserCurrent(obj);
+                    // KHONG SERACH USER HIEN TAI
+                    if(!FirebaseAuth.getInstance().getCurrentUser().getUid().equals(obj.getUid())){
+                        // user dang search chua get hoac chua match ai het
+                        if(dataSnapshot.child("connections")==null){
+                            getFindersWithUserCurrent(obj);
+                        }else{
+                            // user đang search không thich và không match vs user current
+                            if(!dataSnapshot.child("connections").child("nope").hasChild(FirebaseAuth.getInstance().getCurrentUser().getUid()) &&
+                                    !dataSnapshot.child("connections").child("yeps").hasChild(FirebaseAuth.getInstance().getCurrentUser().getUid())){
+                                getFindersWithUserCurrent(obj);
+                            }
+                        }
+                    }
 
+
+                    mAdapter.notifyDataSetChanged();
                     // for update location for all user to testing
                    /* try {
                         saveUserInfomation(dataSnapshot);
@@ -401,8 +468,6 @@ public class Finder extends AppCompatActivity {
                 addressLocation2.append(addresses.get(0).getCountryName());
             }
 
-
-
             userInfo.put("latitude", lat);
             userInfo.put("longitude", longi);
 
@@ -472,5 +537,37 @@ public class Finder extends AppCompatActivity {
         Random r = new Random();
         Double random = minlatitude + r.nextFloat() * (maxlatitude - minlatitude);
         return random;
+    }
+
+    private String locationToAddress(Double latitude, Double longitude){
+        Geocoder geocoder;
+        List<Address> addresses = null;
+        geocoder = new Geocoder(Finder.this, Locale.getDefault());
+
+        try {
+            addresses = geocoder.getFromLocation(latitude, longitude, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
+        String city = addresses.get(0).getLocality();
+        String state = addresses.get(0).getAdminArea();
+        String country = addresses.get(0).getCountryName();
+        String postalCode = addresses.get(0).getPostalCode();
+        String knownName = addresses.get(0).getFeatureName(); //
+
+        StringBuilder addressLocation2=new StringBuilder();
+        if( addresses.get(0).getSubAdminArea()!=null){
+            addressLocation2.append(addresses.get(0).getSubAdminArea()+",");
+        }
+        if(addresses.get(0).getAdminArea()!=null){
+            addressLocation2.append(addresses.get(0).getAdminArea()+",");
+        }
+        if(addresses.get(0).getCountryName()!=null){
+            addressLocation2.append(addresses.get(0).getCountryName());
+        }
+
+        return addressLocation2.toString();
     }
 }

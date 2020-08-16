@@ -37,7 +37,6 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesViewHolders>  {
     public void onBindViewHolder(@NonNull MatchesViewHolders holder, int position) {
         holder.txtMatchesId.setText(matchesList.get(position).getUserId());
         holder.txtMatchesName.setText(matchesList.get(position).getName());
-
         if(!matchesList.get(position).getProfileImageUrl().equals("default")) {
             Glide.with(context).load(matchesList.get(position).getProfileImageUrl()).into(holder.imageMatches);
         }

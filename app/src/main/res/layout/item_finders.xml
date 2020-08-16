@@ -72,12 +72,12 @@
                     android:fontFamily="sans-serif-medium"
                     android:text="Matche's"
                     android:gravity="end"
+                    android:layout_marginRight="5dp"
                     android:textColor="@color/darkGray"
                     android:textSize="17sp">
                 </TextView>
 
             </LinearLayout>
-
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:text="Matche's ID"
@@ -88,6 +88,17 @@
                 android:textSize="14sp"
                 android:maxLines="1"
                 android:ellipsize="end"/>
+            <androidx.appcompat.widget.AppCompatTextView
+                android:text="Matche's ID"
+                android:id="@+id/txtFindesId"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:textSize="14sp"
+                android:enabled="false"
+                android:visibility="gone"
+                android:maxLines="1"
+                />
 
 
         </LinearLayout>
