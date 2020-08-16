@@ -23,6 +23,7 @@ import android.widget.RadioButton;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.burhanrashid52.photoeditor.EditImageActivity;
 import com.example.truelove.R;
 import com.example.truelove.adapter.UserAdapter;
 import com.example.truelove.custom_class.User;
@@ -277,10 +278,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void logoutUser (View view) {
-        mAuth.signOut();
-        Intent intent = new Intent(MainActivity.this, ChooseLoginRegistrationActivity.class);
+//        mAuth.signOut();
+//        Intent intent = new Intent(MainActivity.this, ChooseLoginRegistrationActivity.class);
+        Intent intent = new Intent(MainActivity.this, EditImageActivity.class);
         startActivity(intent);
-        finish();
+
         return;
     }
 
