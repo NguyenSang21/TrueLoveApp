@@ -4,7 +4,9 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/pink</item>
+        <item name="colorSurface">#E91E63</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="materialAlertDialogTheme">@color/pink</item>
     </style>
 
 </resources>
