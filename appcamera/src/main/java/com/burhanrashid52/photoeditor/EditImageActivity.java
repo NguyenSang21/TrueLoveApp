@@ -2,6 +2,7 @@ package com.burhanrashid52.photoeditor;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -34,6 +35,7 @@ import com.burhanrashid52.photoeditor.base.BaseActivity;
 import com.burhanrashid52.photoeditor.filters.FilterListener;
 import com.burhanrashid52.photoeditor.filters.FilterViewAdapter;
 import com.burhanrashid52.photoeditor.tools.EditingToolsAdapter;
+import com.burhanrashid52.photoeditor.tools.SingleMediaScanner;
 import com.burhanrashid52.photoeditor.tools.ToolType;
 
 import java.io.File;
@@ -271,17 +273,18 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
     private void saveImage() {
         if (requestPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
             showLoading("Saving...");
-            File file = new File(Environment.getExternalStorageDirectory()
+          /*  final File file = new File(Environment.getExternalStorageDirectory()
                     + File.separator + ""
-                    + System.currentTimeMillis() + ".png");
+                    + System.currentTimeMillis() + ".png");*/
             try {
+                final File file=writeFileIntoExtendnal();
                 file.createNewFile();
 
                 SaveSettings saveSettings = new SaveSettings.Builder()
                         .setClearViewsEnabled(true)
                         .setTransparencyEnabled(true)
                         .build();
-
+                final Context context=this.getApplicationContext();
                 mPhotoEditor.saveAsFile(file.getAbsolutePath(), saveSettings, new PhotoEditor.OnSaveListener() {
                     @Override
                     public void onSuccess(@NonNull String imagePath) {
@@ -289,6 +292,11 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
                         showSnackbar("Image Saved Successfully");
                         mSaveImageUri = Uri.fromFile(new File(imagePath));
                         mPhotoEditorView.getSource().setImageURI(mSaveImageUri);
+                        new SingleMediaScanner(context,file);
+                        Intent intent = new Intent();
+                        intent.putExtra("matchIdReturn","abc");
+                        setResult(RESULT_OK, intent);
+                        finish();
                     }
 
                     @Override
@@ -470,5 +478,25 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
         } else {
             super.onBackPressed();
         }
+    }
+
+    // read Folder
+    private File writeFileIntoExtendnal() throws IOException {
+        String folder_main = "TrueLove";
+
+        File outerFolder = new File(Environment.getExternalStorageDirectory(), folder_main);
+
+        File inerDire = new File(outerFolder.getAbsoluteFile(), System.currentTimeMillis() + ".png");
+
+        if (!outerFolder.exists()) {
+
+            outerFolder.mkdirs();
+
+        }
+        if (!outerFolder.exists()) {
+
+            inerDire.createNewFile();
+        }
+        return inerDire;
     }
 }
