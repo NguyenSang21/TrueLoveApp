@@ -19,13 +19,11 @@
         android:layout_weight="0.6"
         android:textSize="25dp"
         android:id="@+id/txtLabel"
-        android:text="Có chắc yêu là đây ?"
+        android:text="True Love"
         android:layout_width="match_parent"
         android:layout_height="0dp"/>
 
-
     <com.lorentzos.flingswipe.SwipeFlingAdapterView
-
         android:layout_weight="6"
         android:layout_centerHorizontal="true"
         android:id="@+id/frame"
