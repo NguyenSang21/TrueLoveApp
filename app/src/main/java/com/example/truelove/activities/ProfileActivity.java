@@ -25,6 +25,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.burhanrashid52.photoeditor.EditImageActivity;
 import com.example.truelove.R;
 import com.example.truelove.custom_class.User;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -93,9 +94,18 @@ public class ProfileActivity extends AppCompatActivity {
         profileImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Intent.ACTION_PICK);
-                intent.setType("image/*");
-                startActivityForResult(intent, 1);
+                boolean userCamera=true;
+                if(userCamera){
+                    Intent intent = new Intent(ProfileActivity.this, EditImageActivity.class);
+                    if(uriImage!=null){
+                        intent.putExtra("imageUri", uriImage);
+                    }
+                    startActivityForResult(intent, 1);
+                }else{
+                    Intent intent = new Intent(Intent.ACTION_PICK);
+                    intent.setType("image/*");
+                    startActivityForResult(intent, 1);
+                }
             }
         });
 

@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "123396859587",
+    "firebase_url": "https://trueloveapp-82a47.firebaseio.com",
+    "project_id": "trueloveapp-82a47",
+    "storage_bucket": "trueloveapp-82a47.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:123396859587:android:d28297597f49a836342476",
+        "android_client_info": {
+          "package_name": "com.example.truelove"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "123396859587-npm8smel30u5upo8gv05dt81og33pv20.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.truelove",
+            "certificate_hash": "286d62452132ce20b90ef7e5c9328f7751176957"
+          }
+        },
+        {
+          "client_id": "123396859587-ssf98r4nr8902maql4jpn5iebk095ka7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDZskSAy7mW0gxDW3xs57Ngzfx8wP-Af0c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "123396859587-ssf98r4nr8902maql4jpn5iebk095ka7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
