@@ -16,6 +16,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.storage.StorageManager;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,9 +24,14 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.bumptech.glide.Glide;
+import com.burhanrashid52.photoeditor.EditImageActivity;
 import com.example.truelove.R;
 import com.example.truelove.adapter.AlbumAdapter;
 import com.example.truelove.custom_class.Album;
@@ -42,6 +48,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -57,6 +65,7 @@ public class ProfileActivity extends AppCompatActivity {
     private TextView profileSex;
     private CircleImageView profileImage;
     private Button profileConfirm, btnBack;
+
     private FirebaseAuth mAuth;
     private DatabaseReference databaseReference;
     private String userId;
@@ -131,6 +140,11 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Toast.makeText(ProfileActivity.this, "CAMERA", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(ProfileActivity.this, EditImageActivity.class);
+                if(uriImage!=null){
+                    intent.putExtra("imageUri", uriImage);
+                }
+                startActivityForResult(intent, 1);
             }
         });
 
@@ -347,6 +361,7 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void mapping() {
+
         profileName = findViewById(R.id.profileName);
         profileEMail = findViewById(R.id.profileEMail);
         profilePhone = findViewById(R.id.profilePhone);

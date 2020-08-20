@@ -5,10 +5,12 @@ import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
@@ -36,6 +38,8 @@ import com.burhanrashid52.photoeditor.tools.ToolType;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 
 import ja.burhanrashid52.photoeditor.OnPhotoEditorListener;
 import ja.burhanrashid52.photoeditor.PhotoEditor;
@@ -69,6 +73,10 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
     private ConstraintSet mConstraintSet = new ConstraintSet();
     private boolean mIsFilterVisible;
 
+    //------------------ true love
+
+    private String urlOfAvata="0";
+
     @Nullable
     @VisibleForTesting
     Uri mSaveImageUri;
@@ -82,7 +90,7 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
 
         initViews();
 
-        handleIntentImage(mPhotoEditorView.getSource());
+//        handleIntentImage(mPhotoEditorView.getSource());
 
         mWonderFont = Typeface.createFromAsset(getAssets(), "beyond_wonderland.ttf");
 
@@ -115,6 +123,19 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
 
         //Set Image Dynamically
         // mPhotoEditorView.getSource().setImageResource(R.drawable.color_palette);
+
+        //-------------------True love--------------------------
+        urlOfAvata = getIntent().getExtras().getString("imageUri");
+        if(urlOfAvata!=null){
+            Bitmap bitmapUserOther=null;
+            try {
+                 bitmapUserOther=  bitmapUserOther = BitmapFactory.decodeStream((InputStream)new URL(urlOfAvata).getContent());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            mPhotoEditorView.getSource().setImageBitmap(bitmapUserOther);
+        }
     }
 
     private void handleIntentImage(ImageView source) {
