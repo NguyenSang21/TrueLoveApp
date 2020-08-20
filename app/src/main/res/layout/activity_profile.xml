@@ -1,19 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@drawable/gradient_profile_backgroud"
     android:fillViewport="true">
 
     <LinearLayout
+        android:background="#F1F4F6"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         tools:context=".activities.ProfileActivity">
 
+        <RelativeLayout
+            android:background="#F45F92"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <Button
+                android:layout_centerVertical="true"
+                android:id="@+id/btnBack"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="15dp"
+                android:background="@drawable/left_arrow"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp" />
+
+            <Button
+                android:textColor="@color/white"
+                android:layout_centerVertical="true"
+                android:id="@+id/profileConfirm"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="3dp"
+                android:background="@android:color/transparent"
+                android:text="Save" />
+        </RelativeLayout>
+
         <LinearLayout
+            android:background="#F45F92"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
@@ -25,7 +53,7 @@
                 android:layout_height="100sp"
                 android:src="@drawable/love"
                 app:civ_border_width="2dp"
-                app:civ_border_color="#FF000000" />
+                app:civ_border_color="#FAFAFA" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -39,7 +67,7 @@
                     android:layout_marginTop="15dp"
                     android:layout_marginBottom="10dp"
                     android:text="Sang Nguyen"
-                    android:textColor="#424242"
+                    android:textColor="#FFFFFF"
                     android:textSize="25sp"
                     android:textStyle="bold" />
 
@@ -48,61 +76,94 @@
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
                     android:text="nguyensang@gmail.com"
-                    android:textColor="#424242"
+                    android:textColor="#FFFFFF"
                     android:textSize="20sp" />
             </LinearLayout>
+
+            <Button
+                android:id="@+id/button2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Button" />
         </LinearLayout>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Thông tin cơ bản"
-            android:textSize="20sp"
-            android:layout_marginLeft="10dp"
-            android:textColor="#424242"
-            android:textStyle="bold"/>
         <LinearLayout
+            android:weightSum="2"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:gravity="center_vertical"
+                android:layout_weight="1.3"
+                android:layout_marginTop="10dp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Thông tin cơ bản"
+                android:textSize="23sp"
+                android:layout_marginLeft="10dp"
+                android:textColor="#515151"
+                android:textStyle="bold"/>
+
+            <RelativeLayout
+                android:layout_weight="0.7"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content">
+                <Button
+                    android:id="@+id/btnUpImage"
+                    android:textAllCaps="false"
+                    android:paddingLeft="10dp"
+                    android:drawablePadding="10dp"
+                    android:drawableLeft="@drawable/album"
+                    android:layout_alignParentEnd="true"
+                    android:background="@drawable/border_edit_profile"
+                    android:layout_margin="5dp"
+                    android:textColor="#F45F92"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ảnh" />
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <androidx.cardview.widget.CardView
+            app:cardCornerRadius="7dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:background="@drawable/border_edit_profile"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:layout_marginTop="15dp">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:drawableLeft="@drawable/username"/>
             <EditText
+                android:drawablePadding="5dp"
+                android:drawableLeft="@drawable/username"
                 android:id="@+id/profileName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Nguyen Van A"
                 android:padding="15dp"
                 android:background="@null"/>
-        </LinearLayout>
-        <LinearLayout
+        </androidx.cardview.widget.CardView>
+        <androidx.cardview.widget.CardView
+            app:cardCornerRadius="7dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:background="@drawable/border_edit_profile"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:layout_marginTop="15dp">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:drawableLeft="@drawable/mail"/>
             <EditText
+                android:drawableLeft="@drawable/mail"
+                android:drawablePadding="10dp"
                 android:id="@+id/profileEMail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="nguyena@gmail.com"
                 android:padding="15dp"
                 android:background="@null"/>
-        </LinearLayout>
-        <LinearLayout
+        </androidx.cardview.widget.CardView>
+        <androidx.cardview.widget.CardView
+            app:cardCornerRadius="7dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -110,20 +171,18 @@
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:layout_marginTop="15dp">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:drawableLeft="@drawable/phone"/>
             <EditText
+                android:drawablePadding="5dp"
+                android:drawableLeft="@drawable/phone"
                 android:id="@+id/profilePhone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="090929299"
                 android:padding="15dp"
                 android:background="@null"/>
-        </LinearLayout>
-        <LinearLayout
+        </androidx.cardview.widget.CardView>
+        <androidx.cardview.widget.CardView
+            app:cardCornerRadius="7dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -131,20 +190,17 @@
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:layout_marginTop="15dp">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:drawableLeft="@drawable/pin"/>
 
             <EditText
+                android:drawablePadding="5dp"
+                android:drawableLeft="@drawable/pin"
                 android:id="@+id/profileAddress"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@null"
                 android:padding="15dp"
                 android:text="227 Nguyen Van Cu, phuong 4, quan 5, thanh pho Ho Chi Minh" />
-        </LinearLayout>
+        </androidx.cardview.widget.CardView>
         <LinearLayout
             android:weightSum="10"
             android:layout_width="match_parent"
@@ -152,7 +208,8 @@
             android:orientation="horizontal"
             android:layout_marginTop="15dp">
 
-            <LinearLayout
+            <androidx.cardview.widget.CardView
+                app:cardCornerRadius="7dp"
                 android:layout_weight="5"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -160,106 +217,57 @@
                 android:background="@drawable/border_edit_profile"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:drawableLeft="@drawable/age"/>
                 <EditText
+                    android:drawablePadding="5dp"
+                    android:drawableLeft="@drawable/age"
                     android:id="@+id/profileAge"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="24"
                     android:padding="15dp"
                     android:background="@null"/>
-            </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
-            <TextView
-                android:layout_weight="5"
-                android:id="@+id/profileSex"
-                android:layout_width="0dp"
-                android:text="Nam"
-                android:textColor="@color/black"
-                android:layout_height="match_parent"
-                android:padding="15dp"
+            <androidx.cardview.widget.CardView
+                android:layout_marginBottom="10dp"
                 android:layout_marginRight="20dp"
-                android:background="@drawable/border_edit_profile"
-                android:drawableLeft="@drawable/gender"/>
+                android:layout_weight="5"
+                app:cardCornerRadius="7dp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:drawablePadding="5dp"
+                    android:id="@+id/profileSex"
+                    android:layout_width="match_parent"
+                    android:text="Nam"
+                    android:textColor="@color/black"
+                    android:layout_height="match_parent"
+                    android:padding="15dp"
+                    android:drawableLeft="@drawable/gender"/>
+            </androidx.cardview.widget.CardView>
         </LinearLayout>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Hình ảnh"
-            android:textSize="20sp"
+            android:text="Album"
+            android:textSize="23sp"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="15dp"
-            android:textColor="#424242"
+            android:textColor="#515151"
             android:textStyle="bold"/>
-        <LinearLayout
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewAlbums"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <ImageView
-                android:layout_margin="10dp"
-                android:layout_gravity="center"
-                android:src="@color/colorAccent"
-                android:layout_width="100sp"
-                android:layout_height="100sp"/>
-            <ImageView
-                android:layout_margin="10dp"
-                android:layout_gravity="center"
-                android:src="@color/colorAccent"
-                android:layout_width="100sp"
-                android:layout_height="100sp"/>
-            <ImageView
-                android:layout_margin="10dp"
-                android:layout_gravity="center"
-                android:src="@color/colorAccent"
-                android:layout_width="100sp"
-                android:layout_height="100sp"/>
-            <ImageView
-                android:layout_margin="10dp"
-                android:layout_gravity="center"
-                android:src="@color/colorAccent"
-                android:layout_width="100sp"
-                android:layout_height="100sp"/>
-
-        </LinearLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            >
-
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:layout_margin="5dp">
-
-                <Button
-                    android:text="Xác nhận"
-                    android:id="@+id/profileConfirm"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="5dp"
-                    android:paddingLeft="5dp"
-                    android:paddingRight="5dp"
-                    android:background="@drawable/border_button"
-                    />
-
-                <Button
-                    android:id="@+id/btnBack"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:paddingLeft="5dp"
-                    android:paddingRight="5dp"
-                    android:background="@drawable/border_button"
-                    android:text="Trở lại" />
-            </LinearLayout>
-        </RelativeLayout>
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:scrollbars="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
     </LinearLayout>
-</ScrollView>
+</androidx.core.widget.NestedScrollView>
