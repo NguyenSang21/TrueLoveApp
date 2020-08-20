@@ -294,8 +294,8 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
                         mPhotoEditorView.getSource().setImageURI(mSaveImageUri);
                         new SingleMediaScanner(context,file);
                         Intent intent = new Intent();
-                        intent.putExtra("matchIdReturn","abc");
-                        setResult(RESULT_OK, intent);
+                        intent.putExtra("filepath",file.getAbsolutePath());
+                        setResult(9999, intent);
                         finish();
                     }
 

@@ -51,7 +51,9 @@ import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -139,6 +141,7 @@ public class ProfileActivity extends AppCompatActivity {
         btnCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                alertDialog.hide();
                 Toast.makeText(ProfileActivity.this, "CAMERA", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(ProfileActivity.this, EditImageActivity.class);
                 if(uriImage!=null){
@@ -393,9 +396,16 @@ public class ProfileActivity extends AppCompatActivity {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-            } else {
+            } else { // pich up
                 profileImage.setImageURI(resultUri);
             }
+        }
+
+        // camera editor
+        if(requestCode == 1 && resultCode == 9999) {
+            String imagePath = data.getExtras().getString("filepath");
+            resultUri = Uri.fromFile(new File(imagePath));
+            profileImage.setImageURI(resultUri);
         }
     }
 
