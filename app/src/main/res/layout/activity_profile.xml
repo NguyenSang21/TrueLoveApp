@@ -41,7 +41,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
-                android:background="#F45F92"
                 android:orientation="horizontal">
 
                 <de.hdodenhof.circleimageview.CircleImageView
@@ -94,7 +93,7 @@
                 android:text="Thông tin cơ bản"
                 android:textSize="23sp"
                 android:layout_marginLeft="10dp"
-                android:textColor="#515151"
+                android:textColor="#FFFFFF"
                 android:textStyle="bold"/>
 
             <RelativeLayout
