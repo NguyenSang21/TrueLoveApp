@@ -175,6 +175,7 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     void getAlbums() {
+        albumArray.clear();
         gridLayoutManager = new GridLayoutManager(getApplicationContext(), 2);
         recyclerViewAlbums.setLayoutManager(gridLayoutManager);
         final AlbumAdapter albumAdapter = new AlbumAdapter(getApplicationContext(), albumArray);
@@ -184,6 +185,7 @@ public class ProfileActivity extends AppCompatActivity {
         currentUserConnectReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                albumArray.clear();
                 for (DataSnapshot childDataSnapshot : dataSnapshot.getChildren()) {
                     Album album = new Album();
                     album.setImageUrl((String) childDataSnapshot.getValue());
@@ -228,6 +230,8 @@ public class ProfileActivity extends AppCompatActivity {
                             String imageUrl = uri.toString();
                             databaseReference.child("albums").push().setValue(imageUrl);
                             Toast.makeText(ProfileActivity.this, "Tải lên thành công!", Toast.LENGTH_SHORT).show();
+                            resultUri=null;
+                            isUploadAlbums=false;
                         }
                     });
                 }
