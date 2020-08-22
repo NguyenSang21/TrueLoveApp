@@ -49,6 +49,8 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -82,6 +84,10 @@ public class ProfileActivity extends AppCompatActivity {
     private AlertDialog alertDialog;
     private Boolean isUploadAlbums = false;
     GridLayoutManager gridLayoutManager;
+
+    // avatatemp
+    private Uri avatatemp=null;
+    private Uri avatatempMediaPick=null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -144,7 +150,13 @@ public class ProfileActivity extends AppCompatActivity {
                 alertDialog.hide();
                 Toast.makeText(ProfileActivity.this, "CAMERA", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(ProfileActivity.this, EditImageActivity.class);
-                if(uriImage!=null){
+                if(avatatemp!=null){
+                    intent.putExtra("FileimageUri", avatatemp.getPath());
+                }
+                else if(avatatempMediaPick!=null){
+                    intent.setType("image/*");
+                    intent.putExtra("MediaimageUri", avatatempMediaPick);
+                }else if(uriImage!=null){
                     intent.putExtra("imageUri", uriImage);
                 }
                 startActivityForResult(intent, 1);
@@ -394,22 +406,27 @@ public class ProfileActivity extends AppCompatActivity {
         if(requestCode == 1 && resultCode == Activity.RESULT_OK) {
             final Uri imageUri = data.getData();
             resultUri = imageUri;
+            // upload Albums of user
             if(isUploadAlbums) {
                 try {
                     uploadImageToServer();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-            } else { // pich up
+            } else { // pich up Avata User
                 profileImage.setImageURI(resultUri);
+                avatatempMediaPick=resultUri;
+                avatatemp=null;
             }
         }
 
-        // camera editor
+        // camera editor Avata User
         if(requestCode == 1 && resultCode == 9999) {
             String imagePath = data.getExtras().getString("filepath");
             resultUri = Uri.fromFile(new File(imagePath));
             profileImage.setImageURI(resultUri);
+            avatatemp=resultUri;
+            avatatempMediaPick=null;
         }
     }
 

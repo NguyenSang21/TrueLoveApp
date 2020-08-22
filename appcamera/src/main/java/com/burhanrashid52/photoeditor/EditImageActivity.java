@@ -128,16 +128,39 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
 
         //-------------------True love--------------------------
         urlOfAvata = getIntent().getExtras().getString("imageUri");
-        if(urlOfAvata!=null){
-            Bitmap bitmapUserOther=null;
+        if(getIntent().getExtras().getString("imageUri")!=null){
+            urlOfAvata=getIntent().getExtras().getString("imageUri");
+                Bitmap bitmapUserOther=null;
+                try {
+                    bitmapUserOther=  bitmapUserOther = BitmapFactory.decodeStream((InputStream)new URL(urlOfAvata).getContent());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                mPhotoEditorView.getSource().setImageBitmap(bitmapUserOther);
+        }else if(getIntent().getExtras().getString("FileimageUri")!=null){
+            urlOfAvata=getIntent().getExtras().getString("FileimageUri");
+            Uri resultUri = Uri.fromFile(new File(urlOfAvata));
+            Bitmap bitmap = null;
             try {
-                 bitmapUserOther=  bitmapUserOther = BitmapFactory.decodeStream((InputStream)new URL(urlOfAvata).getContent());
+                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), resultUri);
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            mPhotoEditorView.getSource().setImageBitmap(bitmap);
 
-            mPhotoEditorView.getSource().setImageBitmap(bitmapUserOther);
+        }else if(getIntent().getParcelableExtra("MediaimageUri")!=null){
+            Uri resultUri =  getIntent().getParcelableExtra("MediaimageUri");
+            Bitmap bitmap = null;
+            try {
+                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), resultUri);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            mPhotoEditorView.getSource().setImageBitmap(bitmap);
         }
+
+
     }
 
     private void handleIntentImage(ImageView source) {
