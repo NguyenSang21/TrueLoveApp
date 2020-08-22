@@ -73,8 +73,8 @@ public class ProfileActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private DatabaseReference databaseReference;
     private String userId;
-    private Uri resultUri;
-    private String uriImage ="default";
+    private Uri avatarResultUri;
+    private String avatarUriImage ="default";
     private RecyclerView recyclerViewAlbums;
     private ArrayList albumArray = new ArrayList<Album>();
 
@@ -86,7 +86,7 @@ public class ProfileActivity extends AppCompatActivity {
     GridLayoutManager gridLayoutManager;
 
     // avatatemp
-    private Uri avatatemp=null;
+    private Uri avatatempEditor=null;
     private Uri avatatempMediaPick=null;
 
     @Override
@@ -150,14 +150,14 @@ public class ProfileActivity extends AppCompatActivity {
                 alertDialog.hide();
                 Toast.makeText(ProfileActivity.this, "CAMERA", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(ProfileActivity.this, EditImageActivity.class);
-                if(avatatemp!=null){
-                    intent.putExtra("FileimageUri", avatatemp.getPath());
+                if(avatatempEditor!=null){
+                    intent.putExtra("FileimageUri", avatatempEditor.getPath());
                 }
                 else if(avatatempMediaPick!=null){
                     intent.setType("image/*");
                     intent.putExtra("MediaimageUri", avatatempMediaPick);
-                }else if(uriImage!=null){
-                    intent.putExtra("imageUri", uriImage);
+                }else if(avatarUriImage!=null){
+                    intent.putExtra("imageUri", avatarUriImage);
                 }
                 startActivityForResult(intent, 1);
             }
@@ -214,10 +214,10 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     void uploadImageToServer() throws IOException {
-        if (resultUri != null) {
+        if (avatarResultUri != null) {
             StorageReference filepath = FirebaseStorage.getInstance().getReference().child("profileImages").child(userId);
             Bitmap bitmap =  null;
-            bitmap = MediaStore.Images.Media.getBitmap(getApplication().getContentResolver(), resultUri);
+            bitmap = MediaStore.Images.Media.getBitmap(getApplication().getContentResolver(), avatarResultUri);
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
             bitmap.compress(Bitmap.CompressFormat.JPEG, 20, baos);
@@ -242,7 +242,7 @@ public class ProfileActivity extends AppCompatActivity {
                             String imageUrl = uri.toString();
                             databaseReference.child("albums").push().setValue(imageUrl);
                             Toast.makeText(ProfileActivity.this, "Tải lên thành công!", Toast.LENGTH_SHORT).show();
-                            resultUri=null;
+                            avatarResultUri=null;
                             isUploadAlbums=false;
                         }
                     });
@@ -275,8 +275,8 @@ public class ProfileActivity extends AppCompatActivity {
                         profileEMail.setText(map.get("email").toString());
                     }
                     if (map.get("img") != null) {
-                        uriImage = map.get("img").toString();
-                        Glide.with(getApplication()).load(uriImage).into(profileImage);
+                        avatarUriImage = map.get("img").toString();
+                        Glide.with(getApplication()).load(avatarUriImage).into(profileImage);
                     }
                     if (map.get("sex") != null) {
                         String sexs = map.get("sex").toString();
@@ -335,10 +335,10 @@ public class ProfileActivity extends AppCompatActivity {
             userInfo.put("sex", "female");
         }
 
-        if (resultUri != null) {
+        if (avatarResultUri != null) {
             StorageReference filepath = FirebaseStorage.getInstance().getReference().child("profileImages").child(userId);
             Bitmap bitmap =  null;
-            bitmap = MediaStore.Images.Media.getBitmap(getApplication().getContentResolver(), resultUri);
+            bitmap = MediaStore.Images.Media.getBitmap(getApplication().getContentResolver(), avatarResultUri);
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
             bitmap.compress(Bitmap.CompressFormat.JPEG, 20, baos);
@@ -371,7 +371,7 @@ public class ProfileActivity extends AppCompatActivity {
                 }
             });
         }else{
-            userInfo.put("img", uriImage);
+            userInfo.put("img", avatarUriImage);
             databaseReference.updateChildren(userInfo);
             Toast.makeText(ProfileActivity.this, "Lưu thành công!", Toast.LENGTH_SHORT).show();
             finish();
@@ -402,10 +402,14 @@ public class ProfileActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        // onActivityResult image Avatar
+        listerResultOfImageAvatar(requestCode,resultCode,data);
+    }
 
+    private void listerResultOfImageAvatar(int requestCode, int resultCode, @Nullable Intent data){
         if(requestCode == 1 && resultCode == Activity.RESULT_OK) {
             final Uri imageUri = data.getData();
-            resultUri = imageUri;
+            avatarResultUri = imageUri;
             // upload Albums of user
             if(isUploadAlbums) {
                 try {
@@ -414,18 +418,18 @@ public class ProfileActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
             } else { // pich up Avata User
-                profileImage.setImageURI(resultUri);
-                avatatempMediaPick=resultUri;
-                avatatemp=null;
+                profileImage.setImageURI(avatarResultUri);
+                avatatempMediaPick=avatarResultUri;
+                avatatempEditor=null;
             }
         }
 
         // camera editor Avata User
         if(requestCode == 1 && resultCode == 9999) {
             String imagePath = data.getExtras().getString("filepath");
-            resultUri = Uri.fromFile(new File(imagePath));
-            profileImage.setImageURI(resultUri);
-            avatatemp=resultUri;
+            avatarResultUri = Uri.fromFile(new File(imagePath));
+            profileImage.setImageURI(avatarResultUri);
+            avatatempEditor=avatarResultUri;
             avatatempMediaPick=null;
         }
     }
