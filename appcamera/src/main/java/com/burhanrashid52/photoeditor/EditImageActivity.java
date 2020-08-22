@@ -524,4 +524,6 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
         }
         return inerDire;
     }
+
+
 }
