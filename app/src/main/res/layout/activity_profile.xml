@@ -15,6 +15,7 @@
         tools:context=".activities.ProfileActivity">
 
         <RelativeLayout
+            android:id="@+id/backgroudImageProcess"
             android:background="#F45F92"
             android:layout_width="match_parent"
             android:layout_height="230dp">
@@ -247,13 +248,17 @@
                 android:layout_marginTop="15dp"
                 android:textColor="#515151"
                 android:textStyle="bold"/>
+
             <Button
                 android:id="@+id/btnUpImage"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
+                android:layout_width="25dp"
+                android:layout_height="30dp"
                 android:layout_alignParentEnd="true"
                 android:layout_gravity="center_horizontal"
-                android:layout_margin="5dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginBottom="5dp"
                 android:background="@drawable/image"
                 android:textAllCaps="false"
                 android:textColor="#F45F92" />

@@ -11,8 +11,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -24,9 +28,11 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Gallery;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -49,9 +55,15 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -61,7 +73,8 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class ProfileActivity extends AppCompatActivity {
 
     private EditText profileName, profileEMail, profilePhone, profileAddress, profileAge;
-    private Button btnCamera, btnGallery, btnUpImage;
+    private Button btnCamera, btnGallery, btnUpImage, btnSetbackgourduser;
+    private RelativeLayout relativeLayoutBackgrouduser;
     private TextView profileSex;
     private CircleImageView profileImage;
     private Button profileConfirm, btnBack;
@@ -69,8 +82,8 @@ public class ProfileActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private DatabaseReference databaseReference;
     private String userId;
-    private Uri resultUri;
-    private String uriImage ="default";
+    private String avatarUriImage ="default";
+    private String anhbiaUriImage ="default";
     private RecyclerView recyclerViewAlbums;
     private ArrayList albumArray = new ArrayList<Album>();
 
@@ -78,8 +91,23 @@ public class ProfileActivity extends AppCompatActivity {
     private Double latitudeCurrent = 10.762918;
     private Double longitudeCurrent = 106.682284;
     private AlertDialog alertDialog;
-    private Boolean isUploadAlbums = false;
     GridLayoutManager gridLayoutManager;
+
+    // upload avatar
+    private Uri avatatempEditor=null;
+    private Uri avatatempMediaPick=null;
+    private Uri avatarResultUri=null;
+
+    // upload images anh bia
+    private Uri anhBiaResultUri=null;
+    private Uri anhBiaTempEditor=null;
+    private Uri anhBiaTempMediaPick=null;
+
+    // album
+    private Uri albumResultUri=null;
+
+    private int modeImage=0;
+    //0 la avatar, 1 anh bia, 2 la albumn
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,6 +152,23 @@ public class ProfileActivity extends AppCompatActivity {
         profileImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                modeImage=0;
+                alertDialog.show();
+            }
+        });
+
+        btnSetbackgourduser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                modeImage=1;
+                alertDialog.show();
+            }
+        });
+
+        btnUpImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                modeImage=2;
                 alertDialog.show();
             }
         });
@@ -139,12 +184,8 @@ public class ProfileActivity extends AppCompatActivity {
         btnCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(ProfileActivity.this, "CAMERA", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(ProfileActivity.this, EditImageActivity.class);
-                if(uriImage!=null){
-                    intent.putExtra("imageUri", uriImage);
-                }
-                startActivityForResult(intent, 1);
+                alertDialog.hide();
+                cameraProcess();
             }
         });
 
@@ -152,26 +193,13 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 alertDialog.hide();
-                Toast.makeText(ProfileActivity.this, "Gallery", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(Intent.ACTION_PICK);
-                intent.setType("image/*");
-                startActivityForResult(intent, 1);
-            }
-        });
-
-        btnUpImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                isUploadAlbums = true;
-                Intent intent = new Intent(Intent.ACTION_PICK);
-                intent.setType("image/*");
-                startActivityForResult(intent, 1);
-
+                galleryProcess();
             }
         });
     }
 
     void getAlbums() {
+        albumArray.clear();
         gridLayoutManager = new GridLayoutManager(getApplicationContext(), 2);
         recyclerViewAlbums.setLayoutManager(gridLayoutManager);
         final AlbumAdapter albumAdapter = new AlbumAdapter(getApplicationContext(), albumArray);
@@ -181,6 +209,7 @@ public class ProfileActivity extends AppCompatActivity {
         currentUserConnectReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                albumArray.clear();
                 for (DataSnapshot childDataSnapshot : dataSnapshot.getChildren()) {
                     Album album = new Album();
                     album.setImageUrl((String) childDataSnapshot.getValue());
@@ -196,17 +225,71 @@ public class ProfileActivity extends AppCompatActivity {
         });
     }
 
+    private void cameraProcess(){
+        // avatar
+        if(modeImage==0){
+            Toast.makeText(ProfileActivity.this, "CamaraProcess  avatar", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(ProfileActivity.this, EditImageActivity.class);
+            if(avatatempEditor!=null){
+                intent.putExtra("FileimageUri", avatatempEditor.getPath());
+            }
+            else if(avatatempMediaPick!=null){
+                intent.setType("image/*");
+                intent.putExtra("MediaimageUri", avatatempMediaPick);
+            }else if(avatarUriImage!=null){
+                if(avatarUriImage.equals("default")){
+                    intent.putExtra("opencamera", "true");
+                }else{
+                    intent.putExtra("imageUri", avatarUriImage);
+                }
+            }
+            startActivityForResult(intent, 1);
+        }
+        else if(modeImage==1){ // anh bia
+            Toast.makeText(ProfileActivity.this, "CamaraProcess anh bia", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(ProfileActivity.this, EditImageActivity.class);
+            if(anhBiaTempEditor!=null){
+                intent.putExtra("FileimageUri", anhBiaTempEditor.getPath());
+            }
+            else if(anhBiaTempMediaPick!=null){
+                intent.setType("image/*");
+                intent.putExtra("MediaimageUri", anhBiaTempMediaPick);
+            }else if(anhbiaUriImage!=null){
+                if(anhbiaUriImage.equals("default")){
+                    intent.putExtra("opencamera", "true");
+                }else{
+                    intent.putExtra("imageUri", anhbiaUriImage);
+                }
+            }
+            startActivityForResult(intent, 1);
+        }else if(modeImage==2){ // Album
+            Toast.makeText(ProfileActivity.this, "CamaraProcess Album", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(ProfileActivity.this, EditImageActivity.class);
+            intent.putExtra("opencamera", "true");
+            startActivityForResult(intent, 1);
+        }
+    }
+
+
+    private void galleryProcess(){
+        Toast.makeText(ProfileActivity.this, "galleryProcess ", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType("image/*");
+        startActivityForResult(intent, 1);
+    }
+
     void uploadImageToServer() throws IOException {
-        if (resultUri != null) {
-            StorageReference filepath = FirebaseStorage.getInstance().getReference().child("profileImages").child(userId);
-            Bitmap bitmap =  null;
-            bitmap = MediaStore.Images.Media.getBitmap(getApplication().getContentResolver(), resultUri);
+        if (albumResultUri != null) {
+            String id=userId+System.currentTimeMillis();
+            StorageReference filepath = FirebaseStorage.getInstance().getReference().child("profileImages").child(id);
+            Bitmap bitmap2 =  null;
+            bitmap2 = MediaStore.Images.Media.getBitmap(getApplication().getContentResolver(), albumResultUri);
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 20, baos);
-            byte[] data = baos.toByteArray();
+            bitmap2.compress(Bitmap.CompressFormat.JPEG, 20, baos);
+            byte[] data2 = baos.toByteArray();
 
-            UploadTask uploadTask = filepath.putBytes(data);
+            UploadTask uploadTask = filepath.putBytes(data2);
 
             uploadTask.addOnFailureListener(new OnFailureListener() {
                 @Override
@@ -222,9 +305,10 @@ public class ProfileActivity extends AppCompatActivity {
                     dowloadUrl.addOnSuccessListener(new OnSuccessListener<Uri>() {
                         @Override
                         public void onSuccess(Uri uri) {
-                            String imageUrl = uri.toString();
-                            databaseReference.child("albums").push().setValue(imageUrl);
+                            String imageUrl2 = uri.toString();
+                            databaseReference.child("albums").push().setValue(imageUrl2);
                             Toast.makeText(ProfileActivity.this, "Tải lên thành công!", Toast.LENGTH_SHORT).show();
+                            albumResultUri=null;
                         }
                     });
                 }
@@ -256,8 +340,21 @@ public class ProfileActivity extends AppCompatActivity {
                         profileEMail.setText(map.get("email").toString());
                     }
                     if (map.get("img") != null) {
-                        uriImage = map.get("img").toString();
-                        Glide.with(getApplication()).load(uriImage).into(profileImage);
+                        avatarUriImage = map.get("img").toString();
+                        Glide.with(getApplication()).load(avatarUriImage).into(profileImage);
+                    }
+                    if (map.get("userbackgroud") != null) {
+                        anhbiaUriImage = map.get("userbackgroud").toString();
+
+                        Bitmap bitmapUserOther=null;
+                        try {
+                            bitmapUserOther=  bitmapUserOther = BitmapFactory.decodeStream((InputStream)new URL(anhbiaUriImage).getContent());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        Drawable d = new BitmapDrawable(getResources(), bitmapUserOther);
+                        relativeLayoutBackgrouduser.setBackground(d);
+                        /*Glide.with(getApplication()).load(anhbiaUriImage).into(relativeLayoutBackgrouduser);*/
                     }
                     if (map.get("sex") != null) {
                         String sexs = map.get("sex").toString();
@@ -316,10 +413,10 @@ public class ProfileActivity extends AppCompatActivity {
             userInfo.put("sex", "female");
         }
 
-        if (resultUri != null) {
+        if (avatarResultUri != null) {
             StorageReference filepath = FirebaseStorage.getInstance().getReference().child("profileImages").child(userId);
             Bitmap bitmap =  null;
-            bitmap = MediaStore.Images.Media.getBitmap(getApplication().getContentResolver(), resultUri);
+            bitmap = MediaStore.Images.Media.getBitmap(getApplication().getContentResolver(), avatarResultUri);
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
             bitmap.compress(Bitmap.CompressFormat.JPEG, 20, baos);
@@ -330,7 +427,6 @@ public class ProfileActivity extends AppCompatActivity {
             uploadTask.addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
-                    finish();
                 }
             });
 
@@ -344,20 +440,107 @@ public class ProfileActivity extends AppCompatActivity {
                             String imageUrl = uri.toString();
                             userInfo.put("img", imageUrl);
                             databaseReference.updateChildren(userInfo);
-                            Toast.makeText(ProfileActivity.this, "Lưu thành công!", Toast.LENGTH_SHORT).show();
-                            alertDialog.cancel();
+                            alertDialog.hide();
+
+                            // luu anh bia
+                            if (anhBiaResultUri != null) {
+                                String id=userId+System.currentTimeMillis();
+                                StorageReference filepath = FirebaseStorage.getInstance().getReference().child("profileImages").child(id);
+                                Bitmap bitmap =  null;
+                                try {
+                                    bitmap = MediaStore.Images.Media.getBitmap(getApplication().getContentResolver(), anhBiaResultUri);
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+
+                                bitmap.compress(Bitmap.CompressFormat.JPEG, 20, baos);
+                                byte[] data = baos.toByteArray();
+
+                                UploadTask uploadTask = filepath.putBytes(data);
+
+                                uploadTask.addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        finish();
+                                    }
+                                });
+
+                                uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                    @Override
+                                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                        Task<Uri> dowloadUrl = taskSnapshot.getMetadata().getReference().getDownloadUrl();
+                                        dowloadUrl.addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                            @Override
+                                            public void onSuccess(Uri uri) {
+                                                String imageUrl = uri.toString();
+                                                userInfo.put("userbackgroud", imageUrl);
+                                                databaseReference.updateChildren(userInfo);
+                                                Toast.makeText(ProfileActivity.this, "Lưu thành công!", Toast.LENGTH_SHORT).show();
+                                                alertDialog.hide();
+                                            }
+                                        });
+                                        finish();
+                                    }
+                                });
+                            }else{
+                                userInfo.put("userbackgroud", anhbiaUriImage);
+                                databaseReference.updateChildren(userInfo);
+                                Toast.makeText(ProfileActivity.this, "Lưu thành công!", Toast.LENGTH_SHORT).show();
+                                finish();
+                            }
                         }
                     });
-                    finish();
                 }
             });
         }else{
-            userInfo.put("img", uriImage);
+            userInfo.put("img", avatarUriImage);
             databaseReference.updateChildren(userInfo);
-            Toast.makeText(ProfileActivity.this, "Lưu thành công!", Toast.LENGTH_SHORT).show();
-            finish();
-        }
 
+            // luu anh bia
+            if (anhBiaResultUri != null) {
+                String id=userId+System.currentTimeMillis();
+                StorageReference filepath = FirebaseStorage.getInstance().getReference().child("profileImages").child(id);
+                Bitmap bitmap =  null;
+                bitmap = MediaStore.Images.Media.getBitmap(getApplication().getContentResolver(), anhBiaResultUri);
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 20, baos);
+                byte[] data = baos.toByteArray();
+
+                UploadTask uploadTask = filepath.putBytes(data);
+
+                uploadTask.addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        finish();
+                    }
+                });
+
+                uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        Task<Uri> dowloadUrl = taskSnapshot.getMetadata().getReference().getDownloadUrl();
+                        dowloadUrl.addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri uri) {
+                                String imageUrl = uri.toString();
+                                userInfo.put("userbackgroud", imageUrl);
+                                databaseReference.updateChildren(userInfo);
+                                Toast.makeText(ProfileActivity.this, "Lưu thành công!", Toast.LENGTH_SHORT).show();
+                                alertDialog.hide();
+                            }
+                        });
+                        finish();
+                    }
+                });
+            }else{
+                userInfo.put("userbackgroud", anhbiaUriImage);
+                databaseReference.updateChildren(userInfo);
+                Toast.makeText(ProfileActivity.this, "Lưu thành công!", Toast.LENGTH_SHORT).show();
+                finish();
+            }
+        }
     }
 
     private void mapping() {
@@ -373,6 +556,8 @@ public class ProfileActivity extends AppCompatActivity {
         btnBack = findViewById(R.id.btnBack);
         btnUpImage = findViewById(R.id.btnUpImage);
         recyclerViewAlbums = findViewById(R.id.recyclerViewAlbums);
+        btnSetbackgourduser=findViewById(R.id.btnBackgroundProfile);
+        relativeLayoutBackgrouduser=findViewById(R.id.backgroudImageProcess);
     }
 
     private void mapping2(View view) {
@@ -383,19 +568,86 @@ public class ProfileActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        // onActivityResult imagear
+        listerResultOfImage(requestCode,resultCode,data);
+    }
 
+    private void listerResultOfImage(int requestCode, int resultCode, @Nullable Intent data){
+        // pick image
         if(requestCode == 1 && resultCode == Activity.RESULT_OK) {
-            final Uri imageUri = data.getData();
-            resultUri = imageUri;
+            if(modeImage==0){ // avatar
+                final Uri imageUri = data.getData();
+                avatarResultUri = imageUri;
+                profileImage.setImageURI(avatarResultUri);
+                avatatempMediaPick=avatarResultUri;
+                avatatempEditor=null;
+            }
+            else if(modeImage==1){ // anh bia
+                final Uri imageUri = data.getData();
+                anhBiaResultUri = imageUri;
+                File f = new File(getRealPathFromURI(anhBiaResultUri));
+                Drawable d = Drawable.createFromPath(f.getAbsolutePath());
+                relativeLayoutBackgrouduser.setBackground(d);
+                anhBiaTempMediaPick=anhBiaResultUri;
+                anhBiaTempEditor=null;
+            }else if(modeImage==2){ // album
+                final Uri imageUri = data.getData();
+                albumResultUri= imageUri;
+                try {
+                    uploadImageToServer();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            /*final Uri imageUri = data.getData();
+            avatarResultUri = imageUri;
+            // upload Albums of user
             if(isUploadAlbums) {
                 try {
                     uploadImageToServer();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-            } else {
-                profileImage.setImageURI(resultUri);
+            } else { // pich up Avata User
+                profileImage.setImageURI(avatarResultUri);
+                avatatempMediaPick=avatarResultUri;
+                avatatempEditor=null;
+            }*/
+        }
+
+        // camera editor
+        if(requestCode == 1 && resultCode == 9999) {
+            if(modeImage==0){
+                String imagePath = data.getExtras().getString("filepath");
+                avatarResultUri = Uri.fromFile(new File(imagePath));
+                profileImage.setImageURI(avatarResultUri);
+                avatatempEditor=avatarResultUri;
+                avatatempMediaPick=null;
             }
+            else if(modeImage==1){ // anh bia
+                String imagePath = data.getExtras().getString("filepath");
+                anhBiaResultUri = Uri.fromFile(new File(imagePath));
+                Bitmap bitmap = null;
+                try {
+                    bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), anhBiaResultUri);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                Drawable d = new BitmapDrawable(getResources(), bitmap);
+                relativeLayoutBackgrouduser.setBackground(d);
+                anhBiaTempEditor=anhBiaResultUri;
+                anhBiaTempMediaPick=null;
+            } else if(modeImage==2){ // album
+                String imagePath = data.getExtras().getString("filepath");
+                albumResultUri = Uri.fromFile(new File(imagePath));
+                try {
+                    uploadImageToServer();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
         }
     }
 
@@ -410,6 +662,17 @@ public class ProfileActivity extends AppCompatActivity {
             // add FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS flag to the window
             w.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             // w.setStatusBarColor(Color.parseColor("#FB6667"));
+        }
+    }
+
+    private String getRealPathFromURI(Uri contentURI) {
+        Cursor cursor = getContentResolver().query(contentURI, null, null, null, null);
+        if (cursor == null) { // Source is Dropbox or other similar local file path
+            return contentURI.getPath();
+        } else {
+            cursor.moveToFirst();
+            int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+            return cursor.getString(idx);
         }
     }
 }

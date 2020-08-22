@@ -2,6 +2,7 @@ package com.burhanrashid52.photoeditor;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -34,6 +35,7 @@ import com.burhanrashid52.photoeditor.base.BaseActivity;
 import com.burhanrashid52.photoeditor.filters.FilterListener;
 import com.burhanrashid52.photoeditor.filters.FilterViewAdapter;
 import com.burhanrashid52.photoeditor.tools.EditingToolsAdapter;
+import com.burhanrashid52.photoeditor.tools.SingleMediaScanner;
 import com.burhanrashid52.photoeditor.tools.ToolType;
 
 import java.io.File;
@@ -125,17 +127,42 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
         // mPhotoEditorView.getSource().setImageResource(R.drawable.color_palette);
 
         //-------------------True love--------------------------
-        urlOfAvata = getIntent().getExtras().getString("imageUri");
-        if(urlOfAvata!=null){
-            Bitmap bitmapUserOther=null;
+        if(getIntent().getExtras().getString("opencamera")!=null){
+            Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            startActivityForResult(cameraIntent, CAMERA_REQUEST);
+        }
+
+        if(getIntent().getExtras().getString("imageUri")!=null){
+            urlOfAvata=getIntent().getExtras().getString("imageUri");
+                Bitmap bitmapUserOther=null;
+                try {
+                    bitmapUserOther=  bitmapUserOther = BitmapFactory.decodeStream((InputStream)new URL(urlOfAvata).getContent());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                mPhotoEditorView.getSource().setImageBitmap(bitmapUserOther);
+        }else if(getIntent().getExtras().getString("FileimageUri")!=null){ // file store
+            urlOfAvata=getIntent().getExtras().getString("FileimageUri");
+            Uri resultUri = Uri.fromFile(new File(urlOfAvata));
+            Bitmap bitmap = null;
             try {
-                 bitmapUserOther=  bitmapUserOther = BitmapFactory.decodeStream((InputStream)new URL(urlOfAvata).getContent());
+                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), resultUri);
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            mPhotoEditorView.getSource().setImageBitmap(bitmap);
 
-            mPhotoEditorView.getSource().setImageBitmap(bitmapUserOther);
+        }else if(getIntent().getParcelableExtra("MediaimageUri")!=null){ // file media
+            Uri resultUri =  getIntent().getParcelableExtra("MediaimageUri");
+            Bitmap bitmap = null;
+            try {
+                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), resultUri);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            mPhotoEditorView.getSource().setImageBitmap(bitmap);
         }
+
     }
 
     private void handleIntentImage(ImageView source) {
@@ -271,17 +298,18 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
     private void saveImage() {
         if (requestPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
             showLoading("Saving...");
-            File file = new File(Environment.getExternalStorageDirectory()
+          /*  final File file = new File(Environment.getExternalStorageDirectory()
                     + File.separator + ""
-                    + System.currentTimeMillis() + ".png");
+                    + System.currentTimeMillis() + ".png");*/
             try {
+                final File file=writeFileIntoExtendnal();
                 file.createNewFile();
 
                 SaveSettings saveSettings = new SaveSettings.Builder()
                         .setClearViewsEnabled(true)
                         .setTransparencyEnabled(true)
                         .build();
-
+                final Context context=this.getApplicationContext();
                 mPhotoEditor.saveAsFile(file.getAbsolutePath(), saveSettings, new PhotoEditor.OnSaveListener() {
                     @Override
                     public void onSuccess(@NonNull String imagePath) {
@@ -289,6 +317,11 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
                         showSnackbar("Image Saved Successfully");
                         mSaveImageUri = Uri.fromFile(new File(imagePath));
                         mPhotoEditorView.getSource().setImageURI(mSaveImageUri);
+                        new SingleMediaScanner(context,file);
+                        Intent intent = new Intent();
+                        intent.putExtra("filepath",file.getAbsolutePath());
+                        setResult(9999, intent);
+                        finish();
                     }
 
                     @Override
@@ -470,5 +503,25 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
         } else {
             super.onBackPressed();
         }
+    }
+
+    // read Folder
+    private File writeFileIntoExtendnal() throws IOException {
+        String folder_main = "TrueLove";
+
+        File outerFolder = new File(Environment.getExternalStorageDirectory(), folder_main);
+
+        File inerDire = new File(outerFolder.getAbsoluteFile(), System.currentTimeMillis() + ".png");
+
+        if (!outerFolder.exists()) {
+
+            outerFolder.mkdirs();
+
+        }
+        if (!outerFolder.exists()) {
+
+            inerDire.createNewFile();
+        }
+        return inerDire;
     }
 }
