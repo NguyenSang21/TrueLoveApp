@@ -127,7 +127,11 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
         // mPhotoEditorView.getSource().setImageResource(R.drawable.color_palette);
 
         //-------------------True love--------------------------
-        urlOfAvata = getIntent().getExtras().getString("imageUri");
+        if(getIntent().getExtras().getString("opencamera")!=null){
+            Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            startActivityForResult(cameraIntent, CAMERA_REQUEST);
+        }
+
         if(getIntent().getExtras().getString("imageUri")!=null){
             urlOfAvata=getIntent().getExtras().getString("imageUri");
                 Bitmap bitmapUserOther=null;
@@ -136,9 +140,8 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
                 mPhotoEditorView.getSource().setImageBitmap(bitmapUserOther);
-        }else if(getIntent().getExtras().getString("FileimageUri")!=null){
+        }else if(getIntent().getExtras().getString("FileimageUri")!=null){ // file store
             urlOfAvata=getIntent().getExtras().getString("FileimageUri");
             Uri resultUri = Uri.fromFile(new File(urlOfAvata));
             Bitmap bitmap = null;
@@ -149,7 +152,7 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
             }
             mPhotoEditorView.getSource().setImageBitmap(bitmap);
 
-        }else if(getIntent().getParcelableExtra("MediaimageUri")!=null){
+        }else if(getIntent().getParcelableExtra("MediaimageUri")!=null){ // file media
             Uri resultUri =  getIntent().getParcelableExtra("MediaimageUri");
             Bitmap bitmap = null;
             try {
@@ -159,7 +162,6 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
             }
             mPhotoEditorView.getSource().setImageBitmap(bitmap);
         }
-
 
     }
 
