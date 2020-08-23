@@ -55,6 +55,7 @@
         </activity>
         <activity android:name=".activities.MainActivity" />
         <activity android:name=".activities.ProfileFindersActivity" />
+        <activity android:name=".activities.ProfileActivity_view" />
     </application>
 
 </manifest>

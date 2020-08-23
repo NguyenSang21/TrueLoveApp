@@ -366,7 +366,7 @@ public class ProfileActivity extends AppCompatActivity {
                         avatarUriImage = map.get("img").toString();
                         Glide.with(getApplication()).load(avatarUriImage).into(profileImage);
                     }
-                    if (map.get("userbackgroud") != null) {
+                    if (map.get("userbackgroud") != null && !"default".equals(map.get("userbackgroud"))) {
                         anhbiaUriImage = map.get("userbackgroud").toString();
 
                         Bitmap bitmapUserOther=null;
