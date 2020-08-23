@@ -20,9 +20,13 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.truelove.R;
+import com.example.truelove.adapter.AlbumAdapter;
+import com.example.truelove.custom_class.Album;
 import com.example.truelove.custom_class.User;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -39,6 +43,7 @@ import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -58,10 +63,13 @@ public class ProfileFindersActivity extends AppCompatActivity {
 
     private Uri resultUri;
     private String uriImage ="default";
+    private RecyclerView recyclerViewAlbums;
+    private ArrayList albumArray = new ArrayList<Album>();
 
     // set defaul my school if data null
     private Double latitudeCurrent=10.762918;
     private Double longitudeCurrent=106.682284;
+    GridLayoutManager gridLayoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +82,7 @@ public class ProfileFindersActivity extends AppCompatActivity {
         databaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(matchID);
 
         getUserInfo();
+        getAlbums();
 
         matchYes.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,6 +112,32 @@ public class ProfileFindersActivity extends AppCompatActivity {
         });
     }
 
+    void getAlbums() {
+        albumArray.clear();
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getApplicationContext(), 2);
+        recyclerViewAlbums.setLayoutManager(gridLayoutManager);
+        final AlbumAdapter albumAdapter = new AlbumAdapter(getApplicationContext(), albumArray);
+        recyclerViewAlbums.setAdapter(albumAdapter);
+
+        DatabaseReference currentUserConnectReference = databaseReference.child("albums");
+        currentUserConnectReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                albumArray.clear();
+                for (DataSnapshot childDataSnapshot : dataSnapshot.getChildren()) {
+                    Album album = new Album();
+                    album.setImageUrl((String) childDataSnapshot.getValue());
+                    albumArray.add(album);
+                    albumAdapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
     private void isConnectionMatch(String userId) {
         final String currentUId=FirebaseAuth.getInstance().getCurrentUser().getUid();
         final DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("users");
@@ -265,6 +300,7 @@ public class ProfileFindersActivity extends AppCompatActivity {
         profileAge = findViewById(R.id.profileAge);
         profileSex = findViewById(R.id.profileSex);
         matchNope = findViewById(R.id.macthNope);
+        recyclerViewAlbums = findViewById(R.id.recyclerViewAlbums);
     }
 
     @Override

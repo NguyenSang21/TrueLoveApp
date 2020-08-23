@@ -78,6 +78,7 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
     //------------------ true love
 
     private String urlOfAvata="0";
+    private String uploadAblumStoreIDExist;
 
     @Nullable
     @VisibleForTesting
@@ -130,6 +131,10 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
         if(getIntent().getExtras().getString("opencamera")!=null){
             Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             startActivityForResult(cameraIntent, CAMERA_REQUEST);
+        }
+
+        if(getIntent().getExtras().getString("storeIDExist")!=null){
+            uploadAblumStoreIDExist=getIntent().getExtras().getString("storeIDExist");
         }
 
         if(getIntent().getExtras().getString("imageUri")!=null){
@@ -320,6 +325,7 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
                         new SingleMediaScanner(context,file);
                         Intent intent = new Intent();
                         intent.putExtra("filepath",file.getAbsolutePath());
+                        intent.putExtra("storeIDExist", uploadAblumStoreIDExist);
                         setResult(9999, intent);
                         finish();
                     }
@@ -523,5 +529,11 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
             inerDire.createNewFile();
         }
         return inerDire;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mPhotoEditorView.getSource().getDrawable();
     }
 }
