@@ -4,15 +4,35 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.MatchesActivity">
+    tools:context=".activities.MatchesActivity"
+    android:orientation="vertical">
 
-    <androidx.core.widget.NestedScrollView
+    <androidx.appcompat.widget.Toolbar
+        android:background="@color/pink"
+        android:id="@+id/toolbar"
+        app:titleTextColor="@color/white"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-    </androidx.core.widget.NestedScrollView>
+        android:layout_height="?attr/actionBarSize"
+        app:navigationIcon="?attr/homeAsUpIndicator" />
+
+   <RelativeLayout
+       android:layout_width="match_parent"
+       android:layout_height="match_parent">
+       <TextView
+           android:visibility="invisible"
+           android:id="@+id/txtLabel"
+           android:layout_centerInParent="true"
+           android:text="Không có dữ liệu!"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"></TextView>
+       <androidx.core.widget.NestedScrollView
+           android:layout_width="match_parent"
+           android:layout_height="match_parent">
+           <androidx.recyclerview.widget.RecyclerView
+               android:id="@+id/recyclerView"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"/>
+       </androidx.core.widget.NestedScrollView>
+   </RelativeLayout>
 
 </LinearLayout>

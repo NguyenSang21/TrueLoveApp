@@ -4,9 +4,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     tools:context=".activities.Finder">
 
+    <androidx.appcompat.widget.Toolbar
+        app:theme="@style/ThemeOverlay.AppCompat"
+        android:background="@color/pink"
+        android:id="@+id/toolbarFinder"
+        app:titleTextColor="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:navigationIcon="?attr/homeAsUpIndicator" />
+
     <Button
+        android:layout_below="@+id/toolbarFinder"
+        android:onClick="handleSearch"
         android:layout_marginTop="10dp"
         android:padding="10dp"
         android:textColor="@color/pink"
@@ -15,9 +27,13 @@
         android:layout_centerHorizontal="true"
         android:text="TÌM KIẾM BẠN BÈ"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"></Button>
+        android:layout_height="wrap_content">
+</Button>
 
     <TextView
+        android:textColor="@color/pink"
+        android:textStyle="italic"
+        android:layout_marginTop="10dp"
         android:id="@+id/txtHint"
         android:layout_below="@+id/btnFinder"
         android:layout_centerHorizontal="true"
@@ -31,6 +47,7 @@
         android:layout_height="wrap_content">
         <androidx.core.widget.NestedScrollView
             android:background="@drawable/bg_finder"
+            android:id="@+id/idNestedScrollView"
             android:layout_marginTop="20dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent">

@@ -3,8 +3,10 @@ package com.example.truelove.activities;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.app.Activity;
@@ -69,8 +71,10 @@ public class Finder extends AppCompatActivity {
     private boolean flagIsPressbtnFinder=false;
 
     private String currentUserID;
+    private NestedScrollView idNestedScrollView;
 
     private boolean isFinderMatch=false;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,13 +84,22 @@ public class Finder extends AppCompatActivity {
         personalUI();
 
         avi = findViewById(R.id.avi);
-
+        idNestedScrollView = findViewById(R.id.idNestedScrollView);
 
         // Construct a FusedLocationProviderClient.
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
         // set permission
         getLocationPermission();
+
+        toolbar = findViewById(R.id.toolbarFinder);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // back button pressed
+                finish();
+            }
+        });
 
         // list user find appear here
         recyclerView = (RecyclerView) findViewById(R.id.recyclerViewFinder);
@@ -99,15 +112,13 @@ public class Finder extends AppCompatActivity {
         mAdapter = new FindersAdapter(getDatasetFinders(), Finder.this);
 
         // set button find user
-        btnFinder= findViewById(R.id.btnFinder);
-        btnFinder.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                // get device location
-                getDeviceLocation();
-            }
-        });
+//        btnFinder= findViewById(R.id.btnFinder);
+//        btnFinder.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//
+//            }
+//        });
 
         // get information user current
         /*currentUserID = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -117,6 +128,7 @@ public class Finder extends AppCompatActivity {
     /*private void getUserCurrent(){
         databaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(userId);
     }*/
+
 
     @Override
     protected void onResume() {
@@ -149,10 +161,10 @@ public class Finder extends AppCompatActivity {
         getSupportActionBar().hide();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             Window w = getWindow();
-            w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+            // w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
             // add FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS flag to the window
-            w.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            w.setStatusBarColor(Color.parseColor("#FB6667"));
+            // w.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            // w.setStatusBarColor(Color.parseColor("#FB6667"));
         }
     }
 
@@ -179,7 +191,6 @@ public class Finder extends AppCompatActivity {
          * cases when a location is not available.
          */
         try {
-            startAnim();
             if (locationPermissionGranted) {
                 Task<Location> locationResult = mFusedLocationProviderClient.getLastLocation();
                 locationResult.addOnCompleteListener(this, new OnCompleteListener<Location>() {
@@ -192,7 +203,6 @@ public class Finder extends AppCompatActivity {
                             if (lastKnownLocation != null) {
                                 latUserCurrent = lastKnownLocation.getLatitude();
                                 longiUserCurrent = lastKnownLocation.getLongitude();
-                                Toast.makeText(Finder.this, "LATITUDE =" + latUserCurrent + "LONGI =" + longiUserCurrent , Toast.LENGTH_SHORT).show();
                                 if(!flagIsPressbtnFinder){
                                     // run tinh khoang cach all user
                                     getAllUser();
@@ -200,7 +210,7 @@ public class Finder extends AppCompatActivity {
                                 }
                             }
                         } else {
-                            Toast.makeText(Finder.this, "turn on GPS on your phone !!! " , Toast.LENGTH_SHORT).show();
+                            Toast.makeText(Finder.this, "Turn on GPS on your phone !!! " , Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -301,6 +311,7 @@ public class Finder extends AppCompatActivity {
 
                     }
                     stopAnim();
+                    idNestedScrollView.setBackground(null);
                 }
             }
 
@@ -568,5 +579,12 @@ public class Finder extends AppCompatActivity {
     void stopAnim(){
         avi.hide();
         // or avi.smoothToHide();
+    }
+
+    public void handleSearch(View view) {
+        startAnim();
+        idNestedScrollView.setBackgroundResource(R.drawable.bg_finder);
+        // get device location
+        getDeviceLocation();
     }
 }
