@@ -10,7 +10,7 @@
 
     <ImageButton
         android:background="@color/white"
-        android:src="@drawable/ic_launcher_background"
+        android:src="@drawable/love"
         android:layout_centerHorizontal="true"
         android:scaleType="fitCenter"
         android:id="@+id/img"

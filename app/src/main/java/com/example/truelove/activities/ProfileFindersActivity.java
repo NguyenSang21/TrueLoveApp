@@ -3,7 +3,10 @@ package com.example.truelove.activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -14,6 +17,8 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,6 +48,8 @@ import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -51,10 +58,11 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ProfileFindersActivity extends AppCompatActivity {
 
-    private TextView profileName, profileEMail, profilePhone, profileAddress, profileAge;
+    private TextView profileName, profileEMail, profilePhone, profileAddress, profileAge,txtNameUserCurrent;
     private TextView profileSex;
     private CircleImageView profileImage;
     private ImageButton matchYes, matchNope;
+    private ImageView relativeLayoutBackgrouduser;
 
     private String matchID;
     private DatabaseReference databaseReference;
@@ -125,10 +133,12 @@ public class ProfileFindersActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 albumArray.clear();
                 for (DataSnapshot childDataSnapshot : dataSnapshot.getChildren()) {
-                    Album album = new Album();
-                    album.setImageUrl((String) childDataSnapshot.getValue());
-                    albumArray.add(album);
-                    albumAdapter.notifyDataSetChanged();
+                    if(childDataSnapshot!=null){
+                        Album album = new Album();
+                        album.setImageUrl((String) childDataSnapshot.getValue());
+                        albumArray.add(album);
+                        albumAdapter.notifyDataSetChanged();
+                    }
                 }
             }
 
@@ -172,6 +182,7 @@ public class ProfileFindersActivity extends AppCompatActivity {
 
                     if (map.get("name") != null) {
                         profileName.setText(map.get("name").toString());
+                        txtNameUserCurrent.setText(map.get("name").toString());
                     }
                     if (map.get("age") != null) {
                         profileAge.setText(map.get("age").toString());
@@ -185,9 +196,22 @@ public class ProfileFindersActivity extends AppCompatActivity {
                     if (map.get("email") != null) {
                         profileEMail.setText(map.get("email").toString());
                     }
-                    if (map.get("img") != null) {
+                    if (map.get("img") != null && !"default".equals(map.get("img"))) {
                         uriImage = map.get("img").toString();
                         Glide.with(getApplication()).load(uriImage).into(profileImage);
+                    }
+                    if (map.get("userbackgroud") != null) {
+                        String anhbiaUriImage = map.get("userbackgroud").toString();
+
+                        Bitmap bitmapUserOther=null;
+                        try {
+                            bitmapUserOther=  bitmapUserOther = BitmapFactory.decodeStream((InputStream)new URL(anhbiaUriImage).getContent());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        Drawable d = new BitmapDrawable(getResources(), bitmapUserOther);
+                        relativeLayoutBackgrouduser.setImageDrawable(d);
+                        /*Glide.with(getApplication()).load(anhbiaUriImage).into(relativeLayoutBackgrouduser);*/
                     }
                     if (map.get("sex") != null) {
                         String sexs = map.get("sex").toString();
@@ -217,77 +241,7 @@ public class ProfileFindersActivity extends AppCompatActivity {
         });
     }
 
-    private void saveUserInfomation() throws IOException {
-        String name = profileName.getText().toString().trim();
-        String email = profileEMail.getText().toString().trim();
-        String phone = profilePhone.getText().toString().trim();
-        String address = profileAddress.getText().toString().trim();
-        int age = Integer.parseInt(profileAge.getText().toString().trim());
 
-        final Map userInfo = new HashMap();
-
-        userInfo.put("name", name);
-        userInfo.put("email", email);
-        userInfo.put("phone", phone);
-        userInfo.put("address", address);
-        userInfo.put("age", age);
-        userInfo.put("userId", this.userId);
-        userInfo.put("latitude", latitudeCurrent);
-        userInfo.put("longitude", longitudeCurrent);
-
-        String sexss =  profileSex.getText().toString();
-        if (sexss == null) {
-            return;
-        } else if (sexss.equals("")) {
-//                            sex = "male";
-            userInfo.put("sex", "male");
-        } else if (sexss.equals("Nữ")) {
-//                            sex = "female";
-            userInfo.put("sex", "female");
-        }
-
-        if (resultUri != null) {
-            StorageReference filepath = FirebaseStorage.getInstance().getReference().child("profileImages").child(userId);
-            Bitmap bitmap =  null;
-            bitmap = MediaStore.Images.Media.getBitmap(getApplication().getContentResolver(), resultUri);
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 20, baos);
-            byte[] data = baos.toByteArray();
-
-            UploadTask uploadTask = filepath.putBytes(data);
-
-            uploadTask.addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    finish();
-                }
-            });
-
-            uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    Task<Uri> dowloadUrl = taskSnapshot.getMetadata().getReference().getDownloadUrl();
-                    dowloadUrl.addOnSuccessListener(new OnSuccessListener<Uri>() {
-                        @Override
-                        public void onSuccess(Uri uri) {
-                            String imageUrl = uri.toString();
-                            userInfo.put("img", imageUrl);
-                            databaseReference.updateChildren(userInfo);
-                            Toast.makeText(ProfileFindersActivity.this, "Lưu thành công!", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                    finish();
-                }
-            });
-        }else{
-            userInfo.put("img", uriImage);
-            databaseReference.updateChildren(userInfo);
-            Toast.makeText(ProfileFindersActivity.this, "Lưu thành công!", Toast.LENGTH_SHORT).show();
-            finish();
-        }
-
-    }
 
     private void mapping() {
 
@@ -301,6 +255,8 @@ public class ProfileFindersActivity extends AppCompatActivity {
         profileSex = findViewById(R.id.profileSex);
         matchNope = findViewById(R.id.macthNope);
         recyclerViewAlbums = findViewById(R.id.recyclerViewAlbums);
+        relativeLayoutBackgrouduser=findViewById(R.id.backgroudImageProcess);
+        txtNameUserCurrent=findViewById(R.id.txtNameUserCurrent);
     }
 
     @Override

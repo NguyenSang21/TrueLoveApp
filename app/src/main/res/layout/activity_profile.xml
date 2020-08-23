@@ -15,10 +15,10 @@
         tools:context=".activities.ProfileActivity">
 
         <RelativeLayout
-            android:background="#F45F92"
             android:layout_width="match_parent"
             android:layout_height="230dp">
             <ImageView
+                android:background="#F45F92"
                 android:scaleType="centerCrop"
                 android:id="@+id/backgroudImageProcess"
                 android:layout_width="match_parent"
@@ -63,6 +63,7 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/nameUserCurrent"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
@@ -74,6 +75,7 @@
                         android:textStyle="bold" />
 
                     <TextView
+                        android:id="@+id/emailUserCurrent"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
@@ -151,6 +153,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="nguyena@gmail.com"
+                android:textColor="#000000"
+                android:editable="false"
                 android:padding="15dp"
                 android:background="@null"/>
         </androidx.cardview.widget.CardView>

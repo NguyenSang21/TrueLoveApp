@@ -14,13 +14,21 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:gravity="center_vertical|center_horizontal|center">
-            >
+            android:layout_height="230dp">
+            <ImageView
+                android:scaleType="centerCrop"
+                android:background="#F45F92"
+                android:id="@+id/backgroudImageProcess"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
             <RelativeLayout
+                android:layout_centerHorizontal="true"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                >
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/profileImage"
@@ -29,10 +37,11 @@
                     android:layout_marginTop="5dp"
                     android:layout_marginBottom="5dp"
                     android:src="@drawable/love"
-                    app:civ_border_color="#FF000000"
+                    app:civ_border_color="#ffffff"
                     app:civ_border_width="2dp"
                     />
             </RelativeLayout>
+
         </RelativeLayout >
         <LinearLayout
             android:layout_width="match_parent"
@@ -40,6 +49,7 @@
             android:orientation="vertical"
             android:layout_marginBottom="5dp">
             <TextView
+                android:id="@+id/txtNameUserCurrent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"

@@ -25,7 +25,7 @@
             android:layout_marginBottom="8dp">
 
             <de.hdodenhof.circleimageview.CircleImageView
-                android:src="@drawable/smile"
+                android:src="@drawable/love"
                 android:id="@+id/imageFinders"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
