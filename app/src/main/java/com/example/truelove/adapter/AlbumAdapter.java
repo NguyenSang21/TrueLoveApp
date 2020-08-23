@@ -22,7 +22,7 @@ import java.util.ArrayList;
 public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.ViewHolder>   {
     private ArrayList<Album> imageUrls;
     private Context context;
-    private ProfileActivity actitityS;
+    private ProfileActivity actitityProfire;
 
     public AlbumAdapter(Context context, ArrayList<Album> imageUrls) {
         this.context = context;
@@ -30,7 +30,7 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.ViewHolder> 
     }
 
     public void setActitityProfire(ProfileActivity actitityS){
-        this.actitityS=actitityS;
+        this.actitityProfire=actitityS;
     }
 
     @Override
@@ -48,17 +48,19 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(final ViewHolder viewHolder, final int i) {
         Glide.with(context).load(imageUrls.get(i).getImageUrl()).into(viewHolder.img);
-        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                actitityS.modeImage=2;
-                Toast.makeText(context , "viewHolder "+imageUrls.get(i).getIdStore(), Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(context, EditImageActivity.class);
-                intent.putExtra("imageUri", imageUrls.get(i).getImageUrl());
-                intent.putExtra("storeIDExist", imageUrls.get(i).getIdStore());
-                actitityS.startActivityForResult(intent, 1);
-            }
-        });
+        if(actitityProfire!=null){
+            viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    actitityProfire.modeImage=2;
+                    Toast.makeText(context , "viewHolder "+imageUrls.get(i).getIdStore(), Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(context, EditImageActivity.class);
+                    intent.putExtra("imageUri", imageUrls.get(i).getImageUrl());
+                    intent.putExtra("storeIDExist", imageUrls.get(i).getIdStore());
+                    actitityProfire.startActivityForResult(intent, 1);
+                }
+            });
+        }
     }
 
     @Override

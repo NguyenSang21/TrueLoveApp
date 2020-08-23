@@ -74,6 +74,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ProfileActivity extends AppCompatActivity {
 
+    private TextView textViewNameUserCurrent, txtEmailUserCurrent;
     private EditText profileName, profileEMail, profilePhone, profileAddress, profileAge;
     private Button btnCamera, btnGallery, btnUpImage, btnSetbackgourduser;
     private ImageView relativeLayoutBackgrouduser;
@@ -217,11 +218,13 @@ public class ProfileActivity extends AppCompatActivity {
                 albumArray.clear();
                     if(dataSnapshot.getValue()!=null) {
                         for (DataSnapshot childDataSnapshot : dataSnapshot.getChildren()) {
-                                Album album = new Album();
-                                album.setIdStore(String.valueOf(childDataSnapshot.getKey()));
-                                album.setImageUrl(String.valueOf(childDataSnapshot.getValue()));
-                                albumArray.add(album);
-                                albumAdapter.notifyDataSetChanged();
+                                if(childDataSnapshot!=null){
+                                    Album album = new Album();
+                                    album.setIdStore(String.valueOf(childDataSnapshot.getKey()));
+                                    album.setImageUrl(String.valueOf(childDataSnapshot.getValue()));
+                                    albumArray.add(album);
+                                    albumAdapter.notifyDataSetChanged();
+                                }
                             }
                         }
                     }
@@ -344,6 +347,7 @@ public class ProfileActivity extends AppCompatActivity {
 
                     if (map.get("name") != null) {
                         profileName.setText(map.get("name").toString());
+                        textViewNameUserCurrent.setText(map.get("name").toString());
                     }
                     if (map.get("age") != null) {
                         profileAge.setText(map.get("age").toString());
@@ -356,8 +360,9 @@ public class ProfileActivity extends AppCompatActivity {
                     }
                     if (map.get("email") != null) {
                         profileEMail.setText(map.get("email").toString());
+                        txtEmailUserCurrent.setText(map.get("email").toString());
                     }
-                    if (map.get("img") != null) {
+                    if (map.get("img") != null && !"default".equals(map.get("img"))) {
                         avatarUriImage = map.get("img").toString();
                         Glide.with(getApplication()).load(avatarUriImage).into(profileImage);
                     }
@@ -578,6 +583,8 @@ public class ProfileActivity extends AppCompatActivity {
         recyclerViewAlbums = findViewById(R.id.recyclerViewAlbums);
         btnSetbackgourduser=findViewById(R.id.btnBackgroundProfile);
         relativeLayoutBackgrouduser=findViewById(R.id.backgroudImageProcess);
+        textViewNameUserCurrent=findViewById(R.id.nameUserCurrent);
+        txtEmailUserCurrent=findViewById(R.id.emailUserCurrent);
     }
 
     private void mapping2(View view) {
