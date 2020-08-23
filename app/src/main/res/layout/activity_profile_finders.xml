@@ -12,219 +12,302 @@
         android:orientation="vertical"
         tools:context=".activities.ProfileActivity">
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical|center_horizontal|center">
+            >
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/profileImage"
+                    android:layout_width="150sp"
+                    android:layout_height="150sp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:src="@drawable/love"
+                    app:civ_border_color="#FF000000"
+                    app:civ_border_width="2dp"
+                    />
+            </RelativeLayout>
+        </RelativeLayout >
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:layout_margin="10dp"
-                android:id="@+id/profileImage"
-                android:layout_width="100sp"
-                android:layout_height="100sp"
-                android:src="@drawable/love"
-                app:civ_border_width="2dp"
-                app:civ_border_color="#FF000000" />
-
-            <LinearLayout
+            android:orientation="vertical"
+            android:layout_marginBottom="5dp">
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
-
+                android:layout_centerHorizontal="true"
+                android:text="Sang Nguyen"
+                android:textColor="#424242"
+                android:textSize="25sp"
+                android:textStyle="bold"
+                android:gravity="center"
+                />
+        </LinearLayout>
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="2dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:background="#D8D8D8">
+        </View>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginLeft="5dp"
+            android:padding="5dp"
+            android:layout_marginRight="5dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:background="@drawable/border_img_profile"
+                android:drawableLeft="@drawable/username"
+                />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginLeft="5dp">
                 <TextView
-                    android:layout_width="match_parent"
+                    android:id="@+id/profileName"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginBottom="10dp"
-                    android:text="Sang Nguyen"
+                    android:text="Son Heung Min "
                     android:textColor="#424242"
-                    android:textSize="25sp"
-                    android:textStyle="bold" />
-
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:background="@null"/>
                 <TextView
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:text="nguyensang@gmail.com"
-                    android:textColor="#424242"
-                    android:textSize="20sp" />
+                    android:text="Họ tên"
+                    />
+
             </LinearLayout>
         </LinearLayout>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Thông tin cơ bản"
-            android:textSize="20sp"
-            android:layout_marginLeft="10dp"
-            android:textColor="#424242"
-            android:textStyle="bold"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:background="@drawable/border_edit_profile"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="15dp">
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="15dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:drawableLeft="@drawable/username"/>
-            <TextView
-                android:id="@+id/profileName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Nguyen Van A"
-                android:padding="15dp"
-                android:background="@null"/>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:background="@drawable/border_edit_profile"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="15dp">
-            <TextView
+                android:background="@drawable/border_img_profile"
+                android:drawableLeft="@drawable/mail"
+                android:layout_marginLeft="10dp"/>
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:drawableLeft="@drawable/mail"/>
-            <TextView
-                android:id="@+id/profileEMail"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="nguyena@gmail.com"
-                android:padding="15dp"
-                android:background="@null"/>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:background="@drawable/border_edit_profile"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="15dp">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:drawableLeft="@drawable/phone"/>
-            <TextView
-                android:id="@+id/profilePhone"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="090929299"
-                android:padding="15dp"
-                android:background="@null"/>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:background="@drawable/border_edit_profile"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="15dp">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:drawableLeft="@drawable/pin"/>
+                android:orientation="vertical"
+                android:paddingLeft="5dp">
+                <TextView
+                    android:id="@+id/profileEMail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="nguyena@gmail.com"
+                    android:background="@null"
+                    android:textColor="#424242"
+                    android:textSize="18sp"
+                    android:textStyle="bold"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Email liên hệ" />
+            </LinearLayout>
 
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="15dp"
+            android:paddingTop="10dp"
+            >
             <TextView
-                android:id="@+id/profileAddress"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@null"
-                android:padding="15dp"
-                android:text="227 Nguyen Van Cu, phuong 4, quan 5, thanh pho Ho Chi Minh" />
+                android:layout_marginLeft="10dp"
+                android:paddingTop="5dp"
+                android:background="@drawable/border_img_profile"
+                android:drawableLeft="@drawable/phone"/>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginLeft="5dp">
+                <TextView
+                    android:id="@+id/profilePhone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="090929299"
+                    android:background="@null"
+                    android:textColor="#424242"
+                    android:textSize="18sp"
+                    android:textStyle="bold"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Số điện thoại" />
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="15dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="5dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/border_img_profile"
+                android:drawableLeft="@drawable/pin" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginLeft="5dp">
+                <TextView
+                    android:id="@+id/profileAddress"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:text="227 Nguyen Van Cu, phuong 4, quan 5, thanh pho Ho Chi Minh"
+                    android:textColor="#424242"
+                    android:textSize="18sp"
+                    android:paddingBottom="5dp"
+                    android:textStyle="bold" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Địa chỉ" />
+            </LinearLayout>
         </LinearLayout>
         <LinearLayout
             android:weightSum="10"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:layout_weight="5"
+            android:gravity="left"
             android:layout_marginTop="15dp">
-
             <LinearLayout
-                android:layout_weight="5"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:background="@drawable/border_edit_profile"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp">
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:paddingBottom="5dp">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
-                    android:drawableLeft="@drawable/age"/>
-                <TextView
-                    android:id="@+id/profileAge"
-                    android:layout_width="match_parent"
+                    android:background="@drawable/border_img_profile"
+                    android:drawableLeft="@drawable/age"
+                    android:paddingBottom="5dp"/>
+
+                    />
+                <LinearLayout
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="24"
-                    android:padding="15dp"
-                    android:background="@null"/>
+                    android:orientation="vertical"
+                    android:layout_marginLeft="5dp">
+                    <TextView
+                        android:id="@+id/profileAge"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="24"
+                        android:background="@null"
+                        android:textColor="#424242"
+                        android:textSize="18sp"
+                        android:textStyle="bold"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Tuổi" />
+                </LinearLayout>
             </LinearLayout>
 
-            <TextView
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_weight="5"
-                android:id="@+id/profileSex"
-                android:layout_width="0dp"
-                android:text="Nam"
-                android:layout_height="match_parent"
-                android:padding="15dp"
-                android:layout_marginRight="20dp"
-                android:background="@drawable/border_edit_profile"
-                android:drawableLeft="@drawable/gender"/>
+                android:gravity="right">
+
+                <TextView
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/border_img_profile"
+                    android:drawableLeft="@drawable/gender" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginLeft="5dp"
+                    >
+                    <TextView
+                        android:id="@+id/profileSex"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:text="Nam"
+                        android:textColor="#424242"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Giới tính" />
+                </LinearLayout>
+            </LinearLayout>
+
         </LinearLayout>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Hình ảnh"
+            android:text="Album"
             android:textSize="20sp"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="15dp"
             android:textColor="#424242"
             android:textStyle="bold"/>
-        <LinearLayout
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:id="@+id/recyclerViewAlbums"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <ImageView
-                android:layout_margin="10dp"
-                android:layout_gravity="center"
-                android:src="@color/colorAccent"
-                android:layout_width="100sp"
-                android:layout_height="100sp"/>
-            <ImageView
-                android:layout_margin="10dp"
-                android:layout_gravity="center"
-                android:src="@color/colorAccent"
-                android:layout_width="100sp"
-                android:layout_height="100sp"/>
-            <ImageView
-                android:layout_margin="10dp"
-                android:layout_gravity="center"
-                android:src="@color/colorAccent"
-                android:layout_width="100sp"
-                android:layout_height="100sp"/>
-            <ImageView
-                android:layout_margin="10dp"
-                android:layout_gravity="center"
-                android:src="@color/colorAccent"
-                android:layout_width="100sp"
-                android:layout_height="100sp"/>
-
-        </LinearLayout>
-
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:scrollbars="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
