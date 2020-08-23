@@ -74,7 +74,7 @@ public class ProfileActivity extends AppCompatActivity {
 
     private EditText profileName, profileEMail, profilePhone, profileAddress, profileAge;
     private Button btnCamera, btnGallery, btnUpImage, btnSetbackgourduser;
-    private RelativeLayout relativeLayoutBackgrouduser;
+    private ImageView relativeLayoutBackgrouduser;
     private TextView profileSex;
     private CircleImageView profileImage;
     private Button profileConfirm, btnBack;
@@ -353,7 +353,7 @@ public class ProfileActivity extends AppCompatActivity {
                             e.printStackTrace();
                         }
                         Drawable d = new BitmapDrawable(getResources(), bitmapUserOther);
-                        relativeLayoutBackgrouduser.setBackground(d);
+                        relativeLayoutBackgrouduser.setImageDrawable(d);
                         /*Glide.with(getApplication()).load(anhbiaUriImage).into(relativeLayoutBackgrouduser);*/
                     }
                     if (map.get("sex") != null) {
@@ -587,7 +587,7 @@ public class ProfileActivity extends AppCompatActivity {
                 anhBiaResultUri = imageUri;
                 File f = new File(getRealPathFromURI(anhBiaResultUri));
                 Drawable d = Drawable.createFromPath(f.getAbsolutePath());
-                relativeLayoutBackgrouduser.setBackground(d);
+                relativeLayoutBackgrouduser.setImageDrawable(d);
                 anhBiaTempMediaPick=anhBiaResultUri;
                 anhBiaTempEditor=null;
             }else if(modeImage==2){ // album
@@ -635,7 +635,7 @@ public class ProfileActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
                 Drawable d = new BitmapDrawable(getResources(), bitmap);
-                relativeLayoutBackgrouduser.setBackground(d);
+                relativeLayoutBackgrouduser.setImageDrawable(d);
                 anhBiaTempEditor=anhBiaResultUri;
                 anhBiaTempMediaPick=null;
             } else if(modeImage==2){ // album
@@ -661,7 +661,7 @@ public class ProfileActivity extends AppCompatActivity {
             w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
             // add FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS flag to the window
             w.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            // w.setStatusBarColor(Color.parseColor("#FB6667"));
+            w.setStatusBarColor(Color.parseColor("#007ac1"));
         }
     }
 
