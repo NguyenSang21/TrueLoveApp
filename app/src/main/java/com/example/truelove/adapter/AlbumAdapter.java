@@ -24,10 +24,13 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.ViewHolder> 
     private Context context;
     private ProfileActivity actitityS;
 
-    public AlbumAdapter(ProfileActivity actitity,Context context, ArrayList<Album> imageUrls) {
+    public AlbumAdapter(Context context, ArrayList<Album> imageUrls) {
         this.context = context;
         this.imageUrls = imageUrls;
-        actitityS=actitity;
+    }
+
+    public void setActitityProfire(ProfileActivity actitityS){
+        this.actitityS=actitityS;
     }
 
     @Override

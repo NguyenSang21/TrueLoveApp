@@ -205,7 +205,8 @@ public class ProfileActivity extends AppCompatActivity {
         albumArray.clear();
         gridLayoutManager = new GridLayoutManager(getApplicationContext(), 2);
         recyclerViewAlbums.setLayoutManager(gridLayoutManager);
-        final AlbumAdapter albumAdapter = new AlbumAdapter(this, getApplicationContext(), albumArray);
+        final AlbumAdapter albumAdapter = new AlbumAdapter( getApplicationContext(), albumArray);
+        albumAdapter.setActitityProfire(this);
         recyclerViewAlbums.setAdapter(albumAdapter);
 
 

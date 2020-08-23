@@ -16,6 +16,17 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_end="?attr/actionBarSize" />
 
+   <!-- <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:text="Delete"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+    </Button>-->
+
     <ja.burhanrashid52.photoeditor.PhotoEditorView
         android:id="@+id/photoEditorView"
         android:layout_width="0dp"
