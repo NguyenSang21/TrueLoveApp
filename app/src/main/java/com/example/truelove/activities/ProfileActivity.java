@@ -690,7 +690,7 @@ public class ProfileActivity extends AppCompatActivity {
             w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
             // add FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS flag to the window
             w.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            w.setStatusBarColor(Color.parseColor("#007ac1"));
+            //w.setStatusBarColor(Color.parseColor("#007ac1"));
         }
     }
 
@@ -704,4 +704,6 @@ public class ProfileActivity extends AppCompatActivity {
             return cursor.getString(idx);
         }
     }
+
+
 }
