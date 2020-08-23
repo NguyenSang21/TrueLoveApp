@@ -36,6 +36,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.wang.avi.AVLoadingIndicatorView;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -61,6 +63,7 @@ public class Finder extends AppCompatActivity {
     private List<FinderDistance> listFinders= new ArrayList<FinderDistance>();
     private Double latUserCurrent;
     private Double longiUserCurrent;
+    private AVLoadingIndicatorView avi;
 
     private Button btnFinder;
     private boolean flagIsPressbtnFinder=false;
@@ -75,6 +78,9 @@ public class Finder extends AppCompatActivity {
         setContentView(R.layout.activity_finder);
 
         personalUI();
+
+        avi = findViewById(R.id.avi);
+
 
         // Construct a FusedLocationProviderClient.
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
@@ -97,6 +103,7 @@ public class Finder extends AppCompatActivity {
         btnFinder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 // get device location
                 getDeviceLocation();
             }
@@ -172,6 +179,7 @@ public class Finder extends AppCompatActivity {
          * cases when a location is not available.
          */
         try {
+            startAnim();
             if (locationPermissionGranted) {
                 Task<Location> locationResult = mFusedLocationProviderClient.getLastLocation();
                 locationResult.addOnCompleteListener(this, new OnCompleteListener<Location>() {
@@ -292,7 +300,7 @@ public class Finder extends AppCompatActivity {
                         fetchMatchInformation(match.getKey());
 
                     }
-
+                    stopAnim();
                 }
             }
 
@@ -549,5 +557,16 @@ public class Finder extends AppCompatActivity {
         }
 
         return addressLocation2.toString();
+    }
+
+    void startAnim(){
+        avi.show();
+        avi.smoothToShow();
+        // or avi.smoothToShow();
+    }
+
+    void stopAnim(){
+        avi.hide();
+        // or avi.smoothToHide();
     }
 }
