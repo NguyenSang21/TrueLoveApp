@@ -23,6 +23,7 @@ import android.os.Bundle;
 import android.os.storage.StorageManager;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -66,6 +67,7 @@ import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -105,8 +107,9 @@ public class ProfileActivity extends AppCompatActivity {
 
     // album
     private Uri albumResultUri=null;
+    private String storeIDExist="";
 
-    private int modeImage=0;
+    public int modeImage=0;
     //0 la avatar, 1 anh bia, 2 la albumn
 
     @Override
@@ -202,27 +205,32 @@ public class ProfileActivity extends AppCompatActivity {
         albumArray.clear();
         gridLayoutManager = new GridLayoutManager(getApplicationContext(), 2);
         recyclerViewAlbums.setLayoutManager(gridLayoutManager);
-        final AlbumAdapter albumAdapter = new AlbumAdapter(getApplicationContext(), albumArray);
+        final AlbumAdapter albumAdapter = new AlbumAdapter(this, getApplicationContext(), albumArray);
         recyclerViewAlbums.setAdapter(albumAdapter);
+
 
         DatabaseReference currentUserConnectReference = databaseReference.child("albums");
         currentUserConnectReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 albumArray.clear();
-                for (DataSnapshot childDataSnapshot : dataSnapshot.getChildren()) {
-                    Album album = new Album();
-                    album.setImageUrl((String) childDataSnapshot.getValue());
-                    albumArray.add(album);
-                    albumAdapter.notifyDataSetChanged();
-                }
-            }
+                    if(dataSnapshot.getValue()!=null) {
+                        for (DataSnapshot childDataSnapshot : dataSnapshot.getChildren()) {
+                                Album album = new Album();
+                                album.setIdStore(String.valueOf(childDataSnapshot.getKey()));
+                                album.setImageUrl(String.valueOf(childDataSnapshot.getValue()));
+                                albumArray.add(album);
+                                albumAdapter.notifyDataSetChanged();
+                            }
+                        }
+                    }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
         });
+
     }
 
     private void cameraProcess(){
@@ -280,7 +288,13 @@ public class ProfileActivity extends AppCompatActivity {
 
     void uploadImageToServer() throws IOException {
         if (albumResultUri != null) {
-            String id=userId+System.currentTimeMillis();
+            String idTeam="";
+            if(!StringUtils.isEmpty(storeIDExist)){
+                 idTeam=storeIDExist;
+            }else{
+                idTeam=userId+System.currentTimeMillis();
+            }
+            final String id= idTeam;
             StorageReference filepath = FirebaseStorage.getInstance().getReference().child("profileImages").child(id);
             Bitmap bitmap2 =  null;
             bitmap2 = MediaStore.Images.Media.getBitmap(getApplication().getContentResolver(), albumResultUri);
@@ -306,9 +320,12 @@ public class ProfileActivity extends AppCompatActivity {
                         @Override
                         public void onSuccess(Uri uri) {
                             String imageUrl2 = uri.toString();
-                            databaseReference.child("albums").push().setValue(imageUrl2);
+/*                            Map<String,String> mapUri= new HashMap<>();
+                            mapUri.put(id,imageUrl2);*/
+                            databaseReference.child("albums").child(id).setValue(imageUrl2);
                             Toast.makeText(ProfileActivity.this, "Tải lên thành công!", Toast.LENGTH_SHORT).show();
                             albumResultUri=null;
+                            storeIDExist="";
                         }
                     });
                 }
@@ -444,7 +461,8 @@ public class ProfileActivity extends AppCompatActivity {
 
                             // luu anh bia
                             if (anhBiaResultUri != null) {
-                                String id=userId+System.currentTimeMillis();
+                                // anh bia thi them 001
+                                String id=userId+"001";
                                 StorageReference filepath = FirebaseStorage.getInstance().getReference().child("profileImages").child(id);
                                 Bitmap bitmap =  null;
                                 try {
@@ -499,7 +517,8 @@ public class ProfileActivity extends AppCompatActivity {
 
             // luu anh bia
             if (anhBiaResultUri != null) {
-                String id=userId+System.currentTimeMillis();
+                // anh bia thi them 001
+                String id=userId+"001";
                 StorageReference filepath = FirebaseStorage.getInstance().getReference().child("profileImages").child(id);
                 Bitmap bitmap =  null;
                 bitmap = MediaStore.Images.Media.getBitmap(getApplication().getContentResolver(), anhBiaResultUri);
@@ -616,6 +635,7 @@ public class ProfileActivity extends AppCompatActivity {
             }*/
         }
 
+
         // camera editor
         if(requestCode == 1 && resultCode == 9999) {
             if(modeImage==0){
@@ -641,6 +661,7 @@ public class ProfileActivity extends AppCompatActivity {
             } else if(modeImage==2){ // album
                 String imagePath = data.getExtras().getString("filepath");
                 albumResultUri = Uri.fromFile(new File(imagePath));
+                storeIDExist=data.getExtras().getString("storeIDExist");
                 try {
                     uploadImageToServer();
                 } catch (IOException e) {
