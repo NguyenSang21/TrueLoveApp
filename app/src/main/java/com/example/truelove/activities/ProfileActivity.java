@@ -366,7 +366,7 @@ public class ProfileActivity extends AppCompatActivity {
                         avatarUriImage = map.get("img").toString();
                         Glide.with(getApplication()).load(avatarUriImage).into(profileImage);
                     }
-                    if (map.get("userbackgroud") != null) {
+                    if (map.get("userbackgroud") != null && !"default".equals(map.get("userbackgroud"))) {
                         anhbiaUriImage = map.get("userbackgroud").toString();
 
                         Bitmap bitmapUserOther=null;
@@ -614,7 +614,8 @@ public class ProfileActivity extends AppCompatActivity {
                 anhBiaResultUri = imageUri;
                 File f = new File(getRealPathFromURI(anhBiaResultUri));
                 Drawable d = Drawable.createFromPath(f.getAbsolutePath());
-                relativeLayoutBackgrouduser.setImageDrawable(d);
+//                relativeLayoutBackgrouduser.setImageDrawable(d);
+                Glide.with(ProfileActivity.this).load(d).into(relativeLayoutBackgrouduser);
                 anhBiaTempMediaPick=anhBiaResultUri;
                 anhBiaTempEditor=null;
             }else if(modeImage==2){ // album
@@ -663,7 +664,8 @@ public class ProfileActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
                 Drawable d = new BitmapDrawable(getResources(), bitmap);
-                relativeLayoutBackgrouduser.setImageDrawable(d);
+//                relativeLayoutBackgrouduser.setImageDrawable(d);
+                Glide.with(ProfileActivity.this).load(d).into(relativeLayoutBackgrouduser);
                 anhBiaTempEditor=anhBiaResultUri;
                 anhBiaTempMediaPick=null;
             } else if(modeImage==2){ // album

@@ -15,6 +15,7 @@ import com.bumptech.glide.Glide;
 import com.burhanrashid52.photoeditor.EditImageActivity;
 import com.example.truelove.R;
 import com.example.truelove.activities.ProfileActivity;
+import com.example.truelove.activities.ProfileActivity_view;
 import com.example.truelove.custom_class.Album;
 
 import java.util.ArrayList;
@@ -23,6 +24,8 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.ViewHolder> 
     private ArrayList<Album> imageUrls;
     private Context context;
     private ProfileActivity actitityProfire;
+    private Activity actitityCurrent;
+    private String userIdMatch;
 
     public AlbumAdapter(Context context, ArrayList<Album> imageUrls) {
         this.context = context;
@@ -31,6 +34,13 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.ViewHolder> 
 
     public void setActitityProfire(ProfileActivity actitityS){
         this.actitityProfire=actitityS;
+    }
+    public void setActitityCurrent(Activity actitityS){
+        this.actitityCurrent=actitityS;
+    }
+
+    public void setUserIdMatch(String id){
+        this.userIdMatch=id;
     }
 
     @Override
@@ -48,7 +58,7 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(final ViewHolder viewHolder, final int i) {
         Glide.with(context).load(imageUrls.get(i).getImageUrl()).into(viewHolder.img);
-        if(actitityProfire!=null){
+        if(actitityProfire!=null){ // view profire
             viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -60,6 +70,19 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.ViewHolder> 
                     actitityProfire.startActivityForResult(intent, 1);
                 }
             });
+        }else{
+            // view finder
+            viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(context, ProfileActivity_view.class);
+                    intent.putExtra("imageUri", imageUrls.get(i).getImageUrl());
+                    intent.putExtra("storeIDExist", imageUrls.get(i).getIdStore());
+                    intent.putExtra("userIdMatch", userIdMatch);
+                    actitityCurrent.startActivity(intent);
+                }
+            });
+
         }
     }
 

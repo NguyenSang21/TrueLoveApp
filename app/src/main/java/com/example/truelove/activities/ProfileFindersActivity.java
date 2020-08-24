@@ -74,6 +74,8 @@ public class ProfileFindersActivity extends AppCompatActivity {
     private RecyclerView recyclerViewAlbums;
     private ArrayList albumArray = new ArrayList<Album>();
 
+    private Button btnBack;
+
     // set defaul my school if data null
     private Double latitudeCurrent=10.762918;
     private Double longitudeCurrent=106.682284;
@@ -125,6 +127,8 @@ public class ProfileFindersActivity extends AppCompatActivity {
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getApplicationContext(), 2);
         recyclerViewAlbums.setLayoutManager(gridLayoutManager);
         final AlbumAdapter albumAdapter = new AlbumAdapter(getApplicationContext(), albumArray);
+        albumAdapter.setActitityCurrent(this);
+        albumAdapter.setUserIdMatch(this.matchID);
         recyclerViewAlbums.setAdapter(albumAdapter);
 
         DatabaseReference currentUserConnectReference = databaseReference.child("albums");
@@ -135,6 +139,7 @@ public class ProfileFindersActivity extends AppCompatActivity {
                 for (DataSnapshot childDataSnapshot : dataSnapshot.getChildren()) {
                     if(childDataSnapshot!=null){
                         Album album = new Album();
+                        album.setIdStore((String) childDataSnapshot.getKey());
                         album.setImageUrl((String) childDataSnapshot.getValue());
                         albumArray.add(album);
                         albumAdapter.notifyDataSetChanged();
@@ -200,7 +205,7 @@ public class ProfileFindersActivity extends AppCompatActivity {
                         uriImage = map.get("img").toString();
                         Glide.with(getApplication()).load(uriImage).into(profileImage);
                     }
-                    if (map.get("userbackgroud") != null) {
+                    if (map.get("userbackgroud") != null && !"default".equals(map.get("userbackgroud"))) {
                         String anhbiaUriImage = map.get("userbackgroud").toString();
 
                         Bitmap bitmapUserOther=null;
@@ -257,6 +262,14 @@ public class ProfileFindersActivity extends AppCompatActivity {
         recyclerViewAlbums = findViewById(R.id.recyclerViewAlbums);
         relativeLayoutBackgrouduser=findViewById(R.id.backgroudImageProcess);
         txtNameUserCurrent=findViewById(R.id.txtNameUserCurrent);
+        btnBack=findViewById(R.id.btnBack);
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+                return;
+            }
+        });
     }
 
     @Override
