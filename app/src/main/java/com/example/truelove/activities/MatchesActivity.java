@@ -67,7 +67,7 @@ public class MatchesActivity extends AppCompatActivity {
 
 
         if(resultMatches.size() == 0) {
-            txtLabel.setVisibility(View.GONE);
+            txtLabel.setVisibility(View.VISIBLE);
         } else {
             txtLabel.setVisibility(View.INVISIBLE);
         }
