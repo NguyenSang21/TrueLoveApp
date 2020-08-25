@@ -2,13 +2,17 @@ package com.example.truelove.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.TextView;
@@ -26,10 +30,10 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MatchesActivity extends AppCompatActivity {
+public class MatchesActivity extends AppCompatActivity  {
 
     private RecyclerView recyclerView;
-    private RecyclerView.Adapter mAdapter;
+    private MatchesAdapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
     private ArrayList<MatchesObject> resultMatches = new ArrayList<MatchesObject>();
     private String currentUserID;
@@ -42,14 +46,6 @@ public class MatchesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_matches);
 
         currentUserID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        toolbar = findViewById(R.id.toolbar);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // back button pressed
-                finish();
-            }
-        });
 
         txtLabel = findViewById(R.id.txtLabel);
 
@@ -64,7 +60,8 @@ public class MatchesActivity extends AppCompatActivity {
 
         mAdapter = new MatchesAdapter(getDatasetMatches(), MatchesActivity.this);
         recyclerView.setAdapter(mAdapter);
-
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
+        recyclerView.addItemDecoration(dividerItemDecoration);
 
         if(resultMatches.size() == 0) {
             txtLabel.setVisibility(View.GONE);
@@ -116,6 +113,7 @@ public class MatchesActivity extends AppCompatActivity {
                     MatchesObject obj = new MatchesObject(userId, name, profileImageUrl);
 
                     resultMatches.add(obj);
+                    mAdapter.setListForAsch(resultMatches);
                     mAdapter.notifyDataSetChanged();
                 }
             }
@@ -133,7 +131,8 @@ public class MatchesActivity extends AppCompatActivity {
     }
 
     private void personalUI() {
-        getSupportActionBar().hide();
+        getSupportActionBar().show();
+//        getSupportActionBar().setTitle("");
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             Window w = getWindow();
             // w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
@@ -143,4 +142,24 @@ public class MatchesActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_match, menu);
+        MenuItem menuItem = menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView) menuItem.getActionView();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                mAdapter.getFilter().filter(newText);
+                return false;
+            }
+        });
+
+        return super.onCreateOptionsMenu(menu);
+    }
 }
