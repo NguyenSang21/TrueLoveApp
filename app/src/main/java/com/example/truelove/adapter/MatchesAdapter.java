@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -13,6 +14,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.truelove.R;
 import com.example.truelove.custom_class.MatchesObject;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -22,6 +25,7 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesViewHolders>  im
     private List<MatchesObject> matchesList;
     private List<MatchesObject> moviesListAll;
     private Context context;
+    private TextView resultFindTextView;
 
     public MatchesAdapter(List<MatchesObject> matchesList, Context context) {
         this.matchesList = matchesList;
@@ -34,6 +38,10 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesViewHolders>  im
         this.matchesList=matchesList;
         moviesListAll.clear();
         moviesListAll.addAll(this.matchesList);
+    }
+
+    public void setTextViewResult(TextView text){
+        this.resultFindTextView=text;
     }
 
     @Override
@@ -94,6 +102,11 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesViewHolders>  im
         protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
             matchesList.clear();
             matchesList.addAll((Collection<? extends MatchesObject>) filterResults.values);
+            if(matchesList.size() == 0) {
+                resultFindTextView.setVisibility(View.VISIBLE);
+            } else {
+                resultFindTextView.setVisibility(View.INVISIBLE);
+            }
             notifyDataSetChanged();
         }
     };
