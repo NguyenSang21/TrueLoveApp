@@ -25,6 +25,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -61,10 +62,11 @@ public class ProfileFindersActivity extends AppCompatActivity {
     private TextView profileName, profileEMail, profilePhone, profileAddress, profileAge,txtNameUserCurrent;
     private TextView profileSex;
     private CircleImageView profileImage;
-    private ImageButton matchYes, matchNope;
+    private ImageButton matchNope;
     private ImageView relativeLayoutBackgrouduser;
 
     private String matchID;
+    private String isChatScreen;
     private DatabaseReference databaseReference;
 
     private String userId;
@@ -89,33 +91,32 @@ public class ProfileFindersActivity extends AppCompatActivity {
         mapping();
 
         matchID = getIntent().getExtras().getString("matchId");
+        isChatScreen=getIntent().getExtras().getString("chatScreen");
+
         databaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(matchID);
 
         getUserInfo();
         getAlbums();
-
-        matchYes.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                databaseReference.child("connections").child("yeps").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(true);
-                isConnectionMatch(matchID);
-                Toast.makeText(ProfileFindersActivity.this, " You has match "+profileName.getText().toString(), Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent();
-                intent.putExtra("matchIdReturn",matchID);
-                setResult(RESULT_OK, intent);
-                finish();
-            }
-        });
 
 
         matchNope.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 databaseReference.child("connections").child("nope").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(true);
+                if(isChatScreen!=null){
+                    databaseReference.child("connections").child("yeps").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).removeValue();
+                    // delete match tren tren thang dang chat
+                    databaseReference.child("connections").child("matches").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).removeValue();
+                    DatabaseReference databaseReferenceMy = FirebaseDatabase.getInstance().getReference().child("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                    databaseReferenceMy.child("connections").child("matches").child(matchID).removeValue();
+                    databaseReferenceMy.child("connections").child("yeps").child(matchID).removeValue();
+                    // detechat tren thang
+                }
                 isConnectionMatch(matchID);
                 Toast.makeText(ProfileFindersActivity.this, " You has nope "+profileName.getText().toString(), Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent();
                 intent.putExtra("matchIdReturn",matchID);
+                intent.putExtra("matchNope","matchNope");
                 setResult(RESULT_OK, intent);
                 finish();
             }
@@ -254,7 +255,6 @@ public class ProfileFindersActivity extends AppCompatActivity {
         profileEMail = findViewById(R.id.profileEMail);
         profilePhone = findViewById(R.id.profilePhone);
         profileImage = findViewById(R.id.profileImage);
-        matchYes = findViewById(R.id.matchYesh);
         profileAddress = findViewById(R.id.profileAddress);
         profileAge = findViewById(R.id.profileAge);
         profileSex = findViewById(R.id.profileSex);
