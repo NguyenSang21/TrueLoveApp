@@ -3,21 +3,30 @@ package com.example.truelove.activities;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
+import android.app.SearchManager;
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.view.Window;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
@@ -25,6 +34,7 @@ import android.widget.Toast;
 import com.example.truelove.R;
 import com.example.truelove.adapter.ChatAdapter;
 import com.example.truelove.custom_class.ChatObject;
+import com.example.truelove.custom_class.FinderDistance;
 import com.example.truelove.custom_class.MatchesObject;
 import com.example.truelove.custom_class.User;
 import com.example.truelove.utilchatuser.KerboardListenerInterface;
@@ -36,11 +46,14 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -91,6 +104,8 @@ public class ChatActivity extends AppCompatActivity implements KerboardListenerI
 
         //listener keyboard appear
         setKeyboardVisibilityListener(this);
+
+        personalUI();
     }
 
     private void handleOnClick() {
@@ -391,5 +406,58 @@ public class ChatActivity extends AppCompatActivity implements KerboardListenerI
             });
         }
         isKeyboardOpen=visible;
+    }
+
+    private void personalUI() {
+
+        getSupportActionBar().show();
+//        getSupportActionBar().setTitle("");
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            Window w = getWindow();
+            // w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+            // add FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS flag to the window
+            // w.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            //w.setStatusBarColor(Color.parseColor("#FB6667"));
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_math_profire, menu);
+        MenuItem menuItem = menu.findItem(R.id.action_profile_match);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.action_profile_match:
+                Toast.makeText(ChatActivity.this, "match ID"+matchID, Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(this.getApplicationContext(), ProfileFindersActivity.class);
+                Bundle b = new Bundle();
+                b.putString("matchId", matchID);
+                b.putString("chatScreen", "chatScreen");
+                intent.putExtras(b);
+                startActivityForResult(intent,1111);
+                return true;
+            default: return super.onOptionsItemSelected(item);
+        }
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(Activity.RESULT_OK==resultCode){
+            try{
+                String matchNope=data.getExtras().getString("matchNope");
+                if(!StringUtils.isEmpty(matchNope)){
+                    finish();
+                }
+            }catch(Exception e){
+                System.out.print(e);
+            }
+        }
     }
 }
