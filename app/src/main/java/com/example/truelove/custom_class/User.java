@@ -13,6 +13,8 @@ public class User {
     private Double latitude;
     private Double longitude;
 
+    private String caption;
+
     public void setLatitude(Double latitude) {
         this.latitude = latitude;
     }
@@ -101,6 +103,13 @@ public class User {
         return email;
     }
 
+    public String getCaption() {
+        return caption;
+    }
+
+    public void setCaption(String caption) {
+        this.caption = caption;
+    }
 
     public void setUid(String uid) {
         this.uid = uid;

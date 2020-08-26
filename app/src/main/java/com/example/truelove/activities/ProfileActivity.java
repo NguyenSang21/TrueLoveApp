@@ -74,13 +74,11 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ProfileActivity extends AppCompatActivity {
 
-    private TextView textViewNameUserCurrent, txtEmailUserCurrent;
-    private EditText profileName, profileEMail, profilePhone, profileAddress, profileAge;
-    private Button btnCamera, btnGallery, btnUpImage, btnSetbackgourduser;
-    private ImageView relativeLayoutBackgrouduser;
-    private TextView profileSex;
+    private TextView textViewNameUserCurrent, txtEmailUserCurrent, txtCaption;
+    private TextView profileSex, profileEMail, profileName, profilePhone, profileAddress, profileAge;
     private CircleImageView profileImage;
-    private Button profileConfirm, btnBack;
+    private ImageView relativeLayoutBackgrouduser;
+    private Button profileConfirm, btnBack, btnSetbackgourduser, btnUpImage, btnCamera, btnGallery;
 
     private FirebaseAuth mAuth;
     private DatabaseReference databaseReference;
@@ -256,8 +254,7 @@ public class ProfileActivity extends AppCompatActivity {
                 }
             }
             startActivityForResult(intent, 1);
-        }
-        else if(modeImage==1){ // anh bia
+        } else if(modeImage==1){ // anh bia
             Toast.makeText(ProfileActivity.this, "CamaraProcess anh bia", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(ProfileActivity.this, EditImageActivity.class);
             if(anhBiaTempEditor!=null){
@@ -274,7 +271,7 @@ public class ProfileActivity extends AppCompatActivity {
                 }
             }
             startActivityForResult(intent, 1);
-        }else if(modeImage==2){ // Album
+        } else if(modeImage==2){ // Album
             Toast.makeText(ProfileActivity.this, "CamaraProcess Album", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(ProfileActivity.this, EditImageActivity.class);
             intent.putExtra("opencamera", "true");
@@ -397,6 +394,9 @@ public class ProfileActivity extends AppCompatActivity {
                     if(map.get("longitude")!=null){
                         longitudeCurrent= Double.valueOf(map.get("longitude").toString());
                     }
+                    if(map.get("caption")!=null) {
+                        txtCaption.setText(map.get("caption").toString());
+                    }
                 }
             }
 
@@ -412,6 +412,7 @@ public class ProfileActivity extends AppCompatActivity {
         String email = profileEMail.getText().toString().trim();
         String phone = profilePhone.getText().toString().trim();
         String address = profileAddress.getText().toString().trim();
+        String caption = txtCaption.getText().toString().trim();
         int age = Integer.parseInt(profileAge.getText().toString().trim());
 
         final Map userInfo = new HashMap();
@@ -424,6 +425,7 @@ public class ProfileActivity extends AppCompatActivity {
         userInfo.put("userId", this.userId);
         userInfo.put("latitude", latitudeCurrent);
         userInfo.put("longitude", longitudeCurrent);
+        userInfo.put("caption", caption);
 
         String sexss =  profileSex.getText().toString();
         if (sexss == null) {
@@ -585,6 +587,7 @@ public class ProfileActivity extends AppCompatActivity {
         relativeLayoutBackgrouduser=findViewById(R.id.backgroudImageProcess);
         textViewNameUserCurrent=findViewById(R.id.nameUserCurrent);
         txtEmailUserCurrent=findViewById(R.id.emailUserCurrent);
+        txtCaption = findViewById(R.id.caption);
     }
 
     private void mapping2(View view) {

@@ -240,7 +240,12 @@ public class MainActivity extends AppCompatActivity {
                     String address = dataSnapshot.child("address").getValue().toString();
                     String img = dataSnapshot.child("img").getValue().toString();
                     User userInfo = new User(dataSnapshot.getKey(), name, age, address, img);
+                    String caption = (String) dataSnapshot.child("caption").getValue();
 
+                    if(caption == null || caption.equals("")) {
+                        caption = "Thích động vật, nuôi chó";
+                    }
+                    userInfo.setCaption(caption);
                     rowItems.add(userInfo);
                     userAdapter.notifyDataSetChanged();
                 }
@@ -346,6 +351,9 @@ public class MainActivity extends AppCompatActivity {
                     if (map.get("sex") != null) {
                         String sexs = map.get("sex").toString();
                         userCurrent.setSex(sexs);
+                    }
+                    if (map.get("caption") != null) {
+                        userCurrent.setCaption(map.get("caption").toString());
                     }
                     saveUserInfomation();
                 }

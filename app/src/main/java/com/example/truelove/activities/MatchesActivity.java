@@ -66,12 +66,6 @@ public class MatchesActivity extends AppCompatActivity {
         recyclerView.setAdapter(mAdapter);
 
 
-        if(resultMatches.size() == 0) {
-            txtLabel.setVisibility(View.VISIBLE);
-        } else {
-            txtLabel.setVisibility(View.INVISIBLE);
-        }
-
         getUserMatchId();
 
     }
@@ -116,6 +110,13 @@ public class MatchesActivity extends AppCompatActivity {
                     MatchesObject obj = new MatchesObject(userId, name, profileImageUrl);
 
                     resultMatches.add(obj);
+
+                    if(resultMatches.size() == 0) {
+                        txtLabel.setVisibility(View.VISIBLE);
+                    } else {
+                        txtLabel.setVisibility(View.INVISIBLE);
+                    }
+
                     mAdapter.notifyDataSetChanged();
                 }
             }
