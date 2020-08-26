@@ -317,7 +317,13 @@ public class Finder extends AppCompatActivity {
                     userFinderDistance.setUnit("meter");
                 }
                 // SET MIN =2, MAX = GET KM ON SCREEN
-                if(userFinderDistance.getDistance() >= 2 && userFinderDistance.getDistance() <= km){
+                float kmOfUser=0;
+                if("meter".equals(userFinderDistance.getUnit())){
+                    kmOfUser=userFinderDistance.getDistance()/1000;
+                }else{
+                    kmOfUser=userFinderDistance.getDistance();
+                }
+                if(kmOfUser >= 2 && kmOfUser <= km){
                     statusSearch.setVisibility(View.GONE);
                     listFinders.add(userFinderDistance);
                 }
