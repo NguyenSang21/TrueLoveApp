@@ -65,6 +65,7 @@ public class MatchesActivity extends AppCompatActivity  {
         recyclerView.setLayoutManager(layoutManager);
 
         mAdapter = new MatchesAdapter(getDatasetMatches(), MatchesActivity.this);
+        mAdapter.setTextViewResult(txtLabel);
         recyclerView.setAdapter(mAdapter);
 
 
