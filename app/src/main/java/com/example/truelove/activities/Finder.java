@@ -70,7 +70,6 @@ public class Finder extends AppCompatActivity {
     private AVLoadingIndicatorView avi;
 
     private Button btnFinder;
-    private boolean flagIsPressbtnFinder=false;
 
     private String currentUserID;
     private NestedScrollView idNestedScrollView;
@@ -81,6 +80,8 @@ public class Finder extends AppCompatActivity {
     private SeekBar seekBarKM;
     private TextView txtKM;
     private int km;
+    private boolean isRunningSearch=false;
+    private TextView statusSearch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,6 +92,8 @@ public class Finder extends AppCompatActivity {
 
         avi = findViewById(R.id.avi);
         idNestedScrollView = findViewById(R.id.idNestedScrollView);
+        statusSearch=findViewById(R.id.statusSearch);
+        statusSearch.setVisibility(View.GONE);
 
         // Construct a FusedLocationProviderClient.
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
@@ -117,14 +120,19 @@ public class Finder extends AppCompatActivity {
 
         mAdapter = new FindersAdapter(getDatasetFinders(), Finder.this);
 
-        // set button find user
-//        btnFinder= findViewById(R.id.btnFinder);
-//        btnFinder.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//
-//            }
-//        });
+        //set button find user
+        btnFinder= findViewById(R.id.btnFinder);
+        btnFinder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!isRunningSearch){
+                    statusSearch.setVisibility(View.VISIBLE);
+                    listFinders.clear();
+                    mAdapter.notifyDataSetChanged();
+                    handleSearch();
+                }
+            }
+        });
 
         // get information user current
         /*currentUserID = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -237,11 +245,8 @@ public class Finder extends AppCompatActivity {
                             if (lastKnownLocation != null) {
                                 latUserCurrent = lastKnownLocation.getLatitude();
                                 longiUserCurrent = lastKnownLocation.getLongitude();
-                                if(!flagIsPressbtnFinder){
                                     // run tinh khoang cach all user
                                     getAllUser();
-                                    flagIsPressbtnFinder=true;
-                                }
                             }
                         } else {
                             Toast.makeText(Finder.this, "Turn on GPS on your phone !!! " , Toast.LENGTH_SHORT).show();
@@ -311,7 +316,11 @@ public class Finder extends AppCompatActivity {
                     userFinderDistance.setDistance(kqReality);
                     userFinderDistance.setUnit("meter");
                 }
-                listFinders.add(userFinderDistance);
+                // SET MIN =2, MAX = GET KM ON SCREEN
+                if(userFinderDistance.getDistance() >= 2 && userFinderDistance.getDistance() <= km){
+                    statusSearch.setVisibility(View.GONE);
+                    listFinders.add(userFinderDistance);
+                }
             // sort tang dan
             Collections.sort(listFinders, new Comparator<FinderDistance>() {
                 @Override
@@ -342,7 +351,6 @@ public class Finder extends AppCompatActivity {
                 if(dataSnapshot.exists()) {
                     for(DataSnapshot match : dataSnapshot.getChildren()) {
                         fetchMatchInformation(match.getKey());
-
                     }
                     stopAnim();
                     idNestedScrollView.setBackground(null);
@@ -406,13 +414,23 @@ public class Finder extends AppCompatActivity {
                     }
                     // KHONG SERACH USER HIEN TAI
                     if(!FirebaseAuth.getInstance().getCurrentUser().getUid().equals(obj.getUid())){
-                        // user dang search chua get hoac chua match ai het
+                        /*// user dang search chua get hoac chua match ai het
                         if(dataSnapshot.child("connections")==null){
                             getFindersWithUserCurrent(obj);
                         }else{
                             // user đang search không thich và không match vs user current
                             if(!dataSnapshot.child("connections").child("nope").hasChild(FirebaseAuth.getInstance().getCurrentUser().getUid()) &&
                                     !dataSnapshot.child("connections").child("yeps").hasChild(FirebaseAuth.getInstance().getCurrentUser().getUid())){
+                                getFindersWithUserCurrent(obj);
+                            }
+                        }*/
+                        // user dang search da match
+                        if(dataSnapshot.child("connections")==null){
+                            //getFindersWithUserCurrent(obj);
+                            statusSearch.setText("Chưa match user nào !");
+                        }else{
+                            // user đang search đã match vs user current
+                            if(dataSnapshot.child("connections").child("matches").hasChild(FirebaseAuth.getInstance().getCurrentUser().getUid())){
                                 getFindersWithUserCurrent(obj);
                             }
                         }
@@ -442,17 +460,19 @@ public class Finder extends AppCompatActivity {
     private void saveUserInfomation(DataSnapshot dataSnapshot) throws IOException {
         databaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(dataSnapshot.getKey());
         String name = dataSnapshot.child("name").getValue().toString().trim();
-        String email = dataSnapshot.child("email").getValue().toString().trim();
-        String phone = dataSnapshot.child("phone").getValue().toString().trim();
+//        String email = dataSnapshot.child("email").getValue().toString().trim();
+//        String phone = dataSnapshot.child("phone").getValue().toString().trim();
+        String caption = dataSnapshot.child("caption").getValue().toString().trim();
         String image = dataSnapshot.child("img").getValue().toString().trim();
         int age = Integer.parseInt(dataSnapshot.child("age").getValue().toString().trim());
 
         final Map userInfo = new HashMap();
 
         userInfo.put("name", name);
-        userInfo.put("email", email);
-        userInfo.put("phone", phone);
+//        userInfo.put("email", email);
+//        userInfo.put("phone", phone);
 
+        userInfo.put("caption", caption);
         userInfo.put("age", age);
         userInfo.put("userId", dataSnapshot.getKey());
 
@@ -471,7 +491,7 @@ public class Finder extends AppCompatActivity {
 
         if(dataSnapshot.child("latitude").getValue()==null || dataSnapshot.child("longitude").getValue() == null){
             Double lat=radomLocationlatitude();
-            Double longi=radomLocationlongitude();
+           Double longi=radomLocationlongitude();
 
             Geocoder geocoder;
             List<Address> addresses = null;
@@ -605,18 +625,28 @@ public class Finder extends AppCompatActivity {
     }
 
     void startAnim(){
+        isRunningSearch=true;
         avi.show();
         avi.smoothToShow();
         // or avi.smoothToShow();
     }
 
     void stopAnim(){
+        isRunningSearch=false;
         avi.hide();
+        btnFinder.setEnabled(true);
         // or avi.smoothToHide();
     }
 
-    public void handleSearch(View view) {
+
+    void handleSearch() {
         startAnim();
+        btnFinder.setEnabled(false);
+       /* try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }*/
         idNestedScrollView.setBackgroundResource(R.drawable.bg_finder);
         // get device location
         getDeviceLocation();

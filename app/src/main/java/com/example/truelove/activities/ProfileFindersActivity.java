@@ -47,6 +47,8 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -59,7 +61,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ProfileFindersActivity extends AppCompatActivity {
 
-    private TextView profileName, cationUser, profileAddress, profileAge,txtNameUserCurrent;
+    private TextView profileName, cationUser, profileAddress, profileAge, txtNameUserCurrent;
     private TextView profileSex;
     private CircleImageView profileImage;
     private ImageButton matchNope;
@@ -72,15 +74,15 @@ public class ProfileFindersActivity extends AppCompatActivity {
     private String userId;
 
     private Uri resultUri;
-    private String uriImage ="default";
+    private String uriImage = "default";
     private RecyclerView recyclerViewAlbums;
     private ArrayList albumArray = new ArrayList<Album>();
 
-    private Button btnBack;
+    private Button btnBack, btnGoChatScreen;
 
     // set defaul my school if data null
-    private Double latitudeCurrent=10.762918;
-    private Double longitudeCurrent=106.682284;
+    private Double latitudeCurrent = 10.762918;
+    private Double longitudeCurrent = 106.682284;
     GridLayoutManager gridLayoutManager;
 
     @Override
@@ -91,8 +93,11 @@ public class ProfileFindersActivity extends AppCompatActivity {
         mapping();
 
         matchID = getIntent().getExtras().getString("matchId");
-        isChatScreen=getIntent().getExtras().getString("chatScreen");
+        isChatScreen = getIntent().getExtras().getString("chatScreen");
 
+        if(!StringUtils.isEmpty(isChatScreen)){
+            btnGoChatScreen.setVisibility(View.GONE);
+        }
         databaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(matchID);
 
         getUserInfo();
@@ -103,20 +108,17 @@ public class ProfileFindersActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 databaseReference.child("connections").child("nope").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(true);
-                if(isChatScreen!=null){
-                    databaseReference.child("connections").child("yeps").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).removeValue();
-                    // delete match tren tren thang dang chat
-                    databaseReference.child("connections").child("matches").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).removeValue();
-                    DatabaseReference databaseReferenceMy = FirebaseDatabase.getInstance().getReference().child("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
-                    databaseReferenceMy.child("connections").child("matches").child(matchID).removeValue();
-                    databaseReferenceMy.child("connections").child("yeps").child(matchID).removeValue();
-                    // detechat tren thang
-                }
-                isConnectionMatch(matchID);
-                Toast.makeText(ProfileFindersActivity.this, " You has nope "+profileName.getText().toString(), Toast.LENGTH_SHORT).show();
+                databaseReference.child("connections").child("yeps").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).removeValue();
+                // delete match tren tren thang dang chat
+                databaseReference.child("connections").child("matches").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).removeValue();
+                DatabaseReference databaseReferenceMy = FirebaseDatabase.getInstance().getReference().child("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                databaseReferenceMy.child("connections").child("matches").child(matchID).removeValue();
+                databaseReferenceMy.child("connections").child("yeps").child(matchID).removeValue();
+                // detechat tren thang
+                Toast.makeText(ProfileFindersActivity.this, " You has nope " + profileName.getText().toString(), Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent();
-                intent.putExtra("matchIdReturn",matchID);
-                intent.putExtra("matchNope","matchNope");
+                intent.putExtra("matchIdReturn", matchID);
+                intent.putExtra("matchNope", "matchNope");
                 setResult(RESULT_OK, intent);
                 finish();
             }
@@ -138,7 +140,7 @@ public class ProfileFindersActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 albumArray.clear();
                 for (DataSnapshot childDataSnapshot : dataSnapshot.getChildren()) {
-                    if(childDataSnapshot!=null){
+                    if (childDataSnapshot != null) {
                         Album album = new Album();
                         album.setIdStore((String) childDataSnapshot.getKey());
                         album.setImageUrl((String) childDataSnapshot.getValue());
@@ -154,14 +156,15 @@ public class ProfileFindersActivity extends AppCompatActivity {
             }
         });
     }
+
     private void isConnectionMatch(String userId) {
-        final String currentUId=FirebaseAuth.getInstance().getCurrentUser().getUid();
+        final String currentUId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         final DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("users");
         DatabaseReference currentUserConnectReference = userDb.child(currentUId).child("connections").child("yeps").child(userId);
         currentUserConnectReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if(dataSnapshot.exists()) {
+                if (dataSnapshot.exists()) {
                     Toast.makeText(ProfileFindersActivity.this, "new connection", Toast.LENGTH_SHORT).show();
                     String keyChat = FirebaseDatabase.getInstance().getReference().child("chat").push().getKey();
 
@@ -183,7 +186,7 @@ public class ProfileFindersActivity extends AppCompatActivity {
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if(dataSnapshot.exists() && dataSnapshot.getChildrenCount() > 0) {
+                if (dataSnapshot.exists() && dataSnapshot.getChildrenCount() > 0) {
                     Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
 
                     if (map.get("name") != null) {
@@ -209,9 +212,9 @@ public class ProfileFindersActivity extends AppCompatActivity {
                     if (map.get("userbackgroud") != null && !"default".equals(map.get("userbackgroud"))) {
                         String anhbiaUriImage = map.get("userbackgroud").toString();
 
-                        Bitmap bitmapUserOther=null;
+                        Bitmap bitmapUserOther = null;
                         try {
-                            bitmapUserOther=  bitmapUserOther = BitmapFactory.decodeStream((InputStream)new URL(anhbiaUriImage).getContent());
+                            bitmapUserOther = bitmapUserOther = BitmapFactory.decodeStream((InputStream) new URL(anhbiaUriImage).getContent());
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
@@ -231,11 +234,11 @@ public class ProfileFindersActivity extends AppCompatActivity {
                             profileSex.setText("Nữ");
                         }
                     }
-                    if(map.get("latitude")!=null){
-                        latitudeCurrent= Double.valueOf(map.get("latitude").toString());
+                    if (map.get("latitude") != null) {
+                        latitudeCurrent = Double.valueOf(map.get("latitude").toString());
                     }
-                    if(map.get("longitude")!=null){
-                        longitudeCurrent= Double.valueOf(map.get("longitude").toString());
+                    if (map.get("longitude") != null) {
+                        longitudeCurrent = Double.valueOf(map.get("longitude").toString());
                     }
                 }
             }
@@ -246,7 +249,6 @@ public class ProfileFindersActivity extends AppCompatActivity {
             }
         });
     }
-
 
 
     private void mapping() {
@@ -260,14 +262,26 @@ public class ProfileFindersActivity extends AppCompatActivity {
         profileSex = findViewById(R.id.profileSex);
         matchNope = findViewById(R.id.macthNope);
         recyclerViewAlbums = findViewById(R.id.recyclerViewAlbums);
-        relativeLayoutBackgrouduser=findViewById(R.id.backgroudImageProcess);
-        txtNameUserCurrent=findViewById(R.id.txtNameUserCurrent);
-        btnBack=findViewById(R.id.btnBack);
+        relativeLayoutBackgrouduser = findViewById(R.id.backgroudImageProcess);
+        txtNameUserCurrent = findViewById(R.id.txtNameUserCurrent);
+        btnBack = findViewById(R.id.btnBack);
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
                 return;
+            }
+        });
+        btnGoChatScreen=findViewById(R.id.btnGoChatScreen);
+        btnGoChatScreen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(view.getContext(), "Toasttt", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getApplicationContext(), ChatActivity.class);
+                Bundle b = new Bundle();
+                b.putString("matchId", matchID);
+                intent.putExtras(b);
+                view.getContext().startActivity(intent);
             }
         });
     }
@@ -276,7 +290,7 @@ public class ProfileFindersActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode == 1 && resultCode == Activity.RESULT_OK) {
+        if (requestCode == 1 && resultCode == Activity.RESULT_OK) {
             final Uri imageUri = data.getData();
             resultUri = imageUri;
             profileImage.setImageURI(resultUri);
@@ -286,6 +300,7 @@ public class ProfileFindersActivity extends AppCompatActivity {
     public void goToback(View view) {
         onBackPressed();
     }
+
     private void personalUI() {
         getSupportActionBar().hide();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {

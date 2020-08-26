@@ -55,19 +55,30 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
+            android:orientation="horizontal"
+            android:weightSum="2"
             android:layout_marginBottom="5dp">
             <TextView
+                android:layout_marginLeft="5dp"
+                android:layout_gravity="start"
                 android:id="@+id/txtNameUserCurrent"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_weight="1.5"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:text="Sang Nguyen"
                 android:textColor="#424242"
+                android:textAlignment="textStart"
                 android:textSize="30sp"
                 android:textStyle="bold"
-                android:gravity="center"
                 />
+            <Button
+                android:id="@+id/btnGoChatScreen"
+                android:textColor="@color/black"
+                android:layout_width="wrap_content"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:text="Go Message"></Button>
         </LinearLayout>
         <View
             android:layout_width="wrap_content"
