@@ -107,7 +107,6 @@ public class ProfileFindersActivity extends AppCompatActivity {
             }
         });
 
-
         matchNope.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
