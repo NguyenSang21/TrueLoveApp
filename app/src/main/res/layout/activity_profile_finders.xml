@@ -125,7 +125,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/border_img_profile"
-                android:drawableLeft="@drawable/mail"
+                android:drawableLeft="@drawable/info"
                 android:layout_marginLeft="10dp"/>
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -133,7 +133,7 @@
                 android:orientation="vertical"
                 android:paddingLeft="5dp">
                 <TextView
-                    android:id="@+id/profileEMail"
+                    android:id="@+id/cationUser"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Thích động vật"

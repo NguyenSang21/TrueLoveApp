@@ -18,7 +18,7 @@
         android:paddingLeft="5dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="List hình ảnh trượt ngang để xem"
+        android:text="List hình ảnh trượt ngang để xem thêm"
         android:textColor="@color/black"
         android:textStyle="bold"
         />
@@ -39,7 +39,7 @@
         android:paddingLeft="5dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Hình ảnh thật"
+        android:text="Hình ảnh phóng to"
         android:textColor="@color/black"
         android:textStyle="bold"
         />

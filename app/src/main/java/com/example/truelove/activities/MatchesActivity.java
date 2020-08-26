@@ -192,6 +192,7 @@ public class MatchesActivity extends AppCompatActivity  {
     protected void onResume() {
         super.onResume();
         resultMatches.clear();
+        mAdapter.setListForAsch(resultMatches);
         getUserMatchId();
     }
 }

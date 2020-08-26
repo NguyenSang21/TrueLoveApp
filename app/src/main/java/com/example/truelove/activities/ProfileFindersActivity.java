@@ -59,7 +59,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ProfileFindersActivity extends AppCompatActivity {
 
-    private TextView profileName, profileEMail, profilePhone, profileAddress, profileAge,txtNameUserCurrent;
+    private TextView profileName, cationUser, profileAddress, profileAge,txtNameUserCurrent;
     private TextView profileSex;
     private CircleImageView profileImage;
     private ImageButton matchNope;
@@ -196,11 +196,11 @@ public class ProfileFindersActivity extends AppCompatActivity {
                     if (map.get("address") != null) {
                         profileAddress.setText(map.get("address").toString());
                     }
-                    if (map.get("phone") != null) {
+                   /* if (map.get("phone") != null) {
                         profilePhone.setText(map.get("phone").toString());
-                    }
-                    if (map.get("email") != null) {
-                        profileEMail.setText(map.get("email").toString());
+                    }*/
+                    if (map.get("caption") != null) {
+                        cationUser.setText(map.get("caption").toString());
                     }
                     if (map.get("img") != null && !"default".equals(map.get("img"))) {
                         uriImage = map.get("img").toString();
@@ -252,8 +252,8 @@ public class ProfileFindersActivity extends AppCompatActivity {
     private void mapping() {
 
         profileName = findViewById(R.id.profileName);
-        profileEMail = findViewById(R.id.profileEMail);
-        profilePhone = findViewById(R.id.profilePhone);
+        cationUser = findViewById(R.id.cationUser);
+//        profilePhone = findViewById(R.id.profilePhone);
         profileImage = findViewById(R.id.profileImage);
         profileAddress = findViewById(R.id.profileAddress);
         profileAge = findViewById(R.id.profileAge);
