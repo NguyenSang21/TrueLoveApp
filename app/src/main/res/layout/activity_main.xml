@@ -107,7 +107,7 @@
             >
 
             <LinearLayout
-                android:weightSum="4"
+                android:weightSum="5"
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
@@ -155,6 +155,16 @@
                     android:onClick="gotoFinder"
                     android:src="@drawable/location"
                     android:background="#fff" />
+
+                <ImageView
+                    android:scaleType="fitCenter"
+                    android:padding="13dp"
+                    android:onClick="goToSetting"
+                    android:id="@+id/btnSetting"
+                    android:src="@drawable/cog"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"/>
 
             </LinearLayout>
 
