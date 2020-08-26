@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto" tools:context=".activities.ChatActivity">
+
+    <item
+        android:id="@+id/action_profile_match"
+        android:icon="@drawable/userprofile"
+        app:showAsAction="ifRoom"
+        app:actionViewClass="androidx.appcompat.widget.SearchView"
+        android:title="Profile User Match" />
+</menu>
