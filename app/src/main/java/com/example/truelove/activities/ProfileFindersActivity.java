@@ -293,7 +293,7 @@ public class ProfileFindersActivity extends AppCompatActivity {
             w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
             // add FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS flag to the window
             w.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            //w.setStatusBarColor(Color.parseColor("#0277bd"));
+            w.setStatusBarColor(Color.parseColor("#FB6667"));
         }
     }
 }

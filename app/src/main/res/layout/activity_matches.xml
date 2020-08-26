@@ -1,39 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.MatchesActivity"
-    android:orientation="vertical">
+    tools:context=".activities.MatchesActivity">
 
-    <androidx.appcompat.widget.Toolbar
-        android:background="@color/pink"
-        android:id="@+id/toolbar"
-        app:titleTextColor="@color/white"
+    <!--    <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbarMatch"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/pink"
+            app:layout_constraintTop_toTopOf="parent"
+            app:navigationIcon="?attr/homeAsUpIndicator"
+            app:titleTextColor="@color/white" />-->
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        app:navigationIcon="?attr/homeAsUpIndicator" />
+        android:layout_height="match_parent">
 
-   <RelativeLayout
-       android:layout_width="match_parent"
-       android:layout_height="match_parent">
-       <androidx.core.widget.NestedScrollView
-           android:layout_width="match_parent"
-           android:layout_height="match_parent">
-           <androidx.recyclerview.widget.RecyclerView
-               android:id="@+id/recyclerView"
-               android:layout_width="match_parent"
-               android:layout_height="wrap_content"/>
-       </androidx.core.widget.NestedScrollView>
-       <TextView
-           android:textStyle="italic"
-           android:textColor="@color/pink"
-           android:id="@+id/txtLabel"
-           android:layout_centerInParent="true"
-           android:text="Không có bạn tình!"
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"></TextView>
-   </RelativeLayout>
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-</LinearLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </androidx.core.widget.NestedScrollView>
+
+        <TextView
+            android:id="@+id/txtLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="Không có bạn tình!"
+            android:textColor="@color/pink"
+            android:textStyle="italic"></TextView>
+    </RelativeLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -4,6 +4,9 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -12,17 +15,34 @@ import com.bumptech.glide.Glide;
 import com.example.truelove.R;
 import com.example.truelove.custom_class.MatchesObject;
 
+import org.w3c.dom.Text;
+
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
-public class MatchesAdapter extends RecyclerView.Adapter<MatchesViewHolders>  {
+public class MatchesAdapter extends RecyclerView.Adapter<MatchesViewHolders>  implements Filterable {
     private List<MatchesObject> matchesList;
+    private List<MatchesObject> moviesListAll;
     private Context context;
+    private TextView resultFindTextView;
 
     public MatchesAdapter(List<MatchesObject> matchesList, Context context) {
         this.matchesList = matchesList;
+        moviesListAll = new ArrayList<>();
+        moviesListAll.addAll(this.matchesList);
         this.context = context;
     }
 
+    public void setListForAsch(List<MatchesObject> matchesList){
+        this.matchesList=matchesList;
+        moviesListAll.clear();
+        moviesListAll.addAll(this.matchesList);
+    }
+
+    public void setTextViewResult(TextView text){
+        this.resultFindTextView=text;
+    }
 
     @Override
     public MatchesViewHolders onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -47,4 +67,49 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesViewHolders>  {
     public int getItemCount() {
         return this.matchesList.size();
     }
+
+    @Override
+    public Filter getFilter() {
+
+        return myFilter;
+    }
+
+    Filter myFilter = new Filter() {
+
+        //Automatic on background thread
+        @Override
+        protected FilterResults performFiltering(CharSequence charSequence) {
+
+            List<MatchesObject> filteredList = new ArrayList<>();
+
+            if (charSequence == null || charSequence.length() == 0) {
+                filteredList.addAll(moviesListAll);
+            } else {
+                for (MatchesObject movie: moviesListAll) {
+                    if (movie.getName().toLowerCase().contains(charSequence.toString().toLowerCase())) {
+                        filteredList.add(movie);
+                    }
+                }
+            }
+
+            FilterResults filterResults = new FilterResults();
+            filterResults.values = filteredList;
+            return filterResults;
+        }
+
+        //Automatic on UI thread
+        @Override
+        protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+            matchesList.clear();
+            matchesList.addAll((Collection<? extends MatchesObject>) filterResults.values);
+            if(matchesList.size() == 0) {
+                resultFindTextView.setVisibility(View.VISIBLE);
+            } else {
+                resultFindTextView.setVisibility(View.INVISIBLE);
+            }
+            notifyDataSetChanged();
+        }
+    };
+
+
 }

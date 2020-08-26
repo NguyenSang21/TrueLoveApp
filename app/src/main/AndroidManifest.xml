@@ -39,10 +39,10 @@
             android:value="@string/google_maps_key" />
 
         <activity android:name=".activities.ChatActivity"
-            android:theme="@style/Theme.AppCompat.NoActionBar"
+
             android:windowSoftInputMode="adjustResize"/>
         <activity android:name=".activities.Finder"></activity>
-        <activity android:name=".activities.MatchesActivity" />
+        <activity android:name=".activities.MatchesActivity"   />
         <activity android:name=".activities.ProfileActivity" />
         <activity android:name=".activities.LoginActivity" />
         <activity android:name=".activities.RegistrationActivity" />
