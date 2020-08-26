@@ -72,7 +72,6 @@ public class MatchesActivity extends AppCompatActivity  {
 
         txtLabel.setVisibility(View.VISIBLE);
 
-        getUserMatchId();
 
     }
 
@@ -183,5 +182,12 @@ public class MatchesActivity extends AppCompatActivity  {
         });
 
         return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        resultMatches.clear();
+        getUserMatchId();
     }
 }
