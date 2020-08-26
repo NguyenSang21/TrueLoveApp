@@ -125,7 +125,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/border_img_profile"
-                android:drawableLeft="@drawable/mail"
+                android:drawableLeft="@drawable/info"
                 android:layout_marginLeft="10dp"/>
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -133,7 +133,7 @@
                 android:orientation="vertical"
                 android:paddingLeft="5dp">
                 <TextView
-                    android:id="@+id/profileEMail"
+                    android:id="@+id/cationUser"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Thích động vật"
@@ -391,7 +391,8 @@
 
                     </androidx.cardview.widget.CardView>
 
-                    <androidx.cardview.widget.CardView
+                   <!-- <androidx.cardview.widget.CardView
+                        android:id="@+id/layoutYeps"
                         android:layout_centerVertical="true"
                         android:layout_margin="10dp"
                         android:layout_alignParentRight="true"
@@ -400,7 +401,7 @@
                         android:layout_width="70dp"
                         android:layout_height="70dp">
 
-                        <RelativeLayout
+                       &lt;!&ndash; <RelativeLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent">
                             <ImageButton
@@ -412,8 +413,8 @@
                                 android:scaleType="fitCenter"
                                 android:layout_width="30dp"
                                 android:layout_height="30dp"/>
-                        </RelativeLayout>
-                    </androidx.cardview.widget.CardView>
+                        </RelativeLayout>&ndash;&gt;
+                    </androidx.cardview.widget.CardView>-->
             </LinearLayout>
 
         </RelativeLayout>
