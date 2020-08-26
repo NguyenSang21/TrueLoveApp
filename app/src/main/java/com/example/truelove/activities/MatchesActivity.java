@@ -46,14 +46,6 @@ public class MatchesActivity extends AppCompatActivity  {
         setContentView(R.layout.activity_matches);
 
         currentUserID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        toolbar = findViewById(R.id.toolbar);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // back button pressed
-                finish();
-            }
-        });
 
         txtLabel = findViewById(R.id.txtLabel);
 

@@ -23,6 +23,8 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.example.truelove.R;
 import com.example.truelove.adapter.FindersAdapter;
@@ -76,6 +78,10 @@ public class Finder extends AppCompatActivity {
     private boolean isFinderMatch=false;
     private Toolbar toolbar;
 
+    private SeekBar seekBarKM;
+    private TextView txtKM;
+    private int km;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -123,6 +129,34 @@ public class Finder extends AppCompatActivity {
         // get information user current
         /*currentUserID = FirebaseAuth.getInstance().getCurrentUser().getUid();
         getUserCurrent();*/
+
+        // match KM
+        seekBarKM = (SeekBar) findViewById(R.id.seekBarKM);
+        txtKM = (TextView) findViewById(R.id.txtKM);
+        seekBarKM.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            int progressValue = 0;
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean b) {
+                if (progress <= 2) {
+                    progressValue = 2;
+                } else {
+                    progressValue = progress;
+                }
+                txtKM.setText(String.valueOf(progressValue) + " km");
+                km = progressValue;
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+
     }
 
     /*private void getUserCurrent(){

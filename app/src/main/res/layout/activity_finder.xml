@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context=".activities.Finder">
+    tools:context=".activities.Finder"
+    android:orientation="vertical">
 
     <androidx.appcompat.widget.Toolbar
         app:theme="@style/ThemeOverlay.AppCompat"
@@ -27,7 +28,8 @@
         android:layout_centerHorizontal="true"
         android:text="TÌM KIẾM BẠN BÈ"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal">
 </Button>
 
     <TextView
@@ -37,9 +39,42 @@
         android:id="@+id/txtHint"
         android:layout_below="@+id/btnFinder"
         android:layout_centerHorizontal="true"
-        android:text="Tìm kiếm bạn bè nhiều hơn xung quanh bạn"
+        android:text="Tìm kiếm bạn bè trong bán kính"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"></TextView>
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"></TextView>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_marginTop="10dp"
+        android:weightSum="10"
+        android:layout_gravity="center">
+        <TextView
+            android:layout_height="match_parent"
+            android:text=""
+            android:layout_weight="1"
+            android:layout_width="0dp">
+        </TextView>
+        <SeekBar
+            android:id="@+id/seekBarKM"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="7"
+            android:max="100"/>
+        <TextView
+            android:id="@+id/txtKM"
+            android:layout_height="match_parent"
+            android:textColor="@color/pink"
+            android:layout_marginTop="3dp"
+            android:text="2 Km"
+            android:layout_weight="2"
+            android:layout_width="0dp">
+        </TextView>
+    </LinearLayout>
+
 
     <RelativeLayout
         android:layout_below="@+id/txtHint"
@@ -68,4 +103,4 @@
             />
     </RelativeLayout>
 
-</RelativeLayout>
+</LinearLayout>
