@@ -46,6 +46,14 @@ public class MatchesActivity extends AppCompatActivity  {
         setContentView(R.layout.activity_matches);
 
         currentUserID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        toolbar = findViewById(R.id.toolbar);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // back button pressed
+                finish();
+            }
+        });
 
         txtLabel = findViewById(R.id.txtLabel);
 
@@ -59,12 +67,8 @@ public class MatchesActivity extends AppCompatActivity  {
         recyclerView.setLayoutManager(layoutManager);
 
         mAdapter = new MatchesAdapter(getDatasetMatches(), MatchesActivity.this);
-        mAdapter.setTextViewResult(txtLabel);
         recyclerView.setAdapter(mAdapter);
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
-        recyclerView.addItemDecoration(dividerItemDecoration);
 
-        txtLabel.setVisibility(View.VISIBLE);
 
         getUserMatchId();
 
@@ -112,6 +116,13 @@ public class MatchesActivity extends AppCompatActivity  {
                     resultMatches.add(obj);
                     txtLabel.setVisibility(View.INVISIBLE);
                     mAdapter.setListForAsch(resultMatches);
+
+                    if(resultMatches.size() == 0) {
+                        txtLabel.setVisibility(View.VISIBLE);
+                    } else {
+                        txtLabel.setVisibility(View.INVISIBLE);
+                    }
+
                     mAdapter.notifyDataSetChanged();
                 }
             }

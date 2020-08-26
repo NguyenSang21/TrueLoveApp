@@ -14,6 +14,8 @@ import com.bumptech.glide.Glide;
 import com.example.truelove.R;
 import com.example.truelove.custom_class.User;
 
+import org.w3c.dom.Text;
+
 import java.util.List;
 
 public class UserAdapter extends ArrayAdapter {
@@ -34,10 +36,18 @@ public class UserAdapter extends ArrayAdapter {
         TextView age = convertView.findViewById(R.id.txtAge);
         TextView address = convertView.findViewById(R.id.txtAdrress);
         ImageView image = (ImageView) convertView.findViewById(R.id.img);
+        TextView caption = convertView.findViewById(R.id.txtCaption);
+
         image.setEnabled(false);
         name.setText(user.getName());
         age.setText(user.getAge() + " tuổi");
         address.setText(user.getAddress());
+        if(user.getCaption() == null || user.getCaption().equals("")) {
+            caption.setText("Thích chó , mèo");
+        } else {
+            caption.setText(user.getCaption());
+        }
+
         Glide.with(getContext()).load(user.getImg()).into(image);
 
         return convertView;

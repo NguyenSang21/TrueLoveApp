@@ -64,7 +64,7 @@
                 android:layout_centerHorizontal="true"
                 android:text="Sang Nguyen"
                 android:textColor="#424242"
-                android:textSize="25sp"
+                android:textSize="30sp"
                 android:textStyle="bold"
                 android:gravity="center"
                 />
@@ -136,7 +136,7 @@
                     android:id="@+id/profileEMail"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="nguyena@gmail.com"
+                    android:text="Thích động vật"
                     android:background="@null"
                     android:textColor="#424242"
                     android:textSize="18sp"
@@ -144,46 +144,46 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Email liên hệ" />
+                    android:text="Mô tả" />
             </LinearLayout>
 
         </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginTop="15dp"
-            android:paddingTop="10dp"
-            >
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:paddingTop="5dp"
-                android:background="@drawable/border_img_profile"
-                android:drawableLeft="@drawable/phone"/>
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginLeft="5dp">
-                <TextView
-                    android:id="@+id/profilePhone"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="090929299"
-                    android:background="@null"
-                    android:textColor="#424242"
-                    android:textSize="18sp"
-                    android:textStyle="bold"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Số điện thoại" />
-            </LinearLayout>
-        </LinearLayout>
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="horizontal"-->
+<!--            android:layout_marginLeft="5dp"-->
+<!--            android:layout_marginRight="5dp"-->
+<!--            android:layout_marginTop="15dp"-->
+<!--            android:paddingTop="10dp"-->
+<!--            >-->
+<!--            <TextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginLeft="10dp"-->
+<!--                android:paddingTop="5dp"-->
+<!--                android:background="@drawable/border_img_profile"-->
+<!--                android:drawableLeft="@drawable/phone"/>-->
+<!--            <LinearLayout-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:orientation="vertical"-->
+<!--                android:layout_marginLeft="5dp">-->
+<!--                <TextView-->
+<!--                    android:id="@+id/profilePhone"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="090929299"-->
+<!--                    android:background="@null"-->
+<!--                    android:textColor="#424242"-->
+<!--                    android:textSize="18sp"-->
+<!--                    android:textStyle="bold"/>-->
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="Số điện thoại" />-->
+<!--            </LinearLayout>-->
+<!--        </LinearLayout>-->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -209,7 +209,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@null"
-                    android:text="227 Nguyen Van Cu, phuong 4, quan 5, thanh pho Ho Chi Minh"
+                    android:text="HCM"
                     android:textColor="#424242"
                     android:textSize="18sp"
                     android:paddingBottom="5dp"
@@ -217,7 +217,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Địa chỉ" />
+                    android:text="Nơi sống" />
             </LinearLayout>
         </LinearLayout>
         <LinearLayout
