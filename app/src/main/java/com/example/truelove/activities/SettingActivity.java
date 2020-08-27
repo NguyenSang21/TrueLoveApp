@@ -4,11 +4,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.view.View;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,6 +22,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.yahoo.mobile.client.android.util.rangeseekbar.RangeSeekBar;
 
 import java.util.Map;
@@ -27,8 +30,8 @@ import java.util.Map;
 public class SettingActivity extends AppCompatActivity {
     private TextView txtKM;
     private SeekBar seekBarKM;
-    private Button btnSave;
     private FirebaseAuth mAuth;
+    private Button btnSave;
     private DatabaseReference databaseReference;
     private String userId;
     private int km=2;
@@ -77,7 +80,7 @@ public class SettingActivity extends AppCompatActivity {
         });
 
         //setup range old
-        rangeSeekBar = (RangeSeekBar) findViewById(R.id.rangeSeekBar);
+        RangeSeekBar rangeSeekBar = (RangeSeekBar) findViewById(R.id.rangeSeekBar);
         rangeSeekBar.setOnRangeSeekBarChangeListener(new RangeSeekBar.OnRangeSeekBarChangeListener() {
             @Override
             public void onRangeSeekBarValuesChanged(RangeSeekBar bar, Object minValue, Object maxValue) {
@@ -85,8 +88,6 @@ public class SettingActivity extends AppCompatActivity {
                 maxOld = Integer.valueOf(maxValue.toString());
             }
         });
-
-
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -99,6 +100,15 @@ public class SettingActivity extends AppCompatActivity {
         });
 
         getSettingOfUser();
+
+    }
+
+    public void logoutUser (View view) {
+        mAuth.signOut();
+        Intent intent = new Intent(SettingActivity.this, ChooseLoginRegistrationActivity.class);
+        startActivity(intent);
+        finish();
+        return;
 
     }
 
