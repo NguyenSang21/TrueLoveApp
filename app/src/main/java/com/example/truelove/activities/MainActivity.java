@@ -9,6 +9,8 @@ import androidx.core.content.ContextCompat;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.net.Uri;
@@ -26,6 +28,7 @@ import com.bumptech.glide.Glide;
 import com.burhanrashid52.photoeditor.EditImageActivity;
 import com.example.truelove.R;
 import com.example.truelove.adapter.UserAdapter;
+import com.example.truelove.custom_class.FinderDistance;
 import com.example.truelove.custom_class.User;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -43,10 +46,16 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.lorentzos.flingswipe.SwipeFlingAdapterView;
+
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -60,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
     ListView listView;
     List<User> rowItems;
 
+
     // LOCATION UPDATE WHEN OPEN APP
     private FusedLocationProviderClient mFusedLocationProviderClient;
     private boolean locationPermissionGranted;
@@ -71,6 +81,16 @@ public class MainActivity extends AppCompatActivity {
     protected LocationListener locationListener;
     private GeoDataClient mGeoDataClient;
     private PlaceDetectionClient mPlaceDetectionClient;
+
+
+    //-------------------- setting
+    private Double latUserCurrentSetting;
+    private Double longiUserCurrentSetting;
+    // get following setting
+    private List<FinderDistance> listFinders= new ArrayList<FinderDistance>();
+    private int km=2;
+    private int minDistanceMatch=20;
+    private int maxDistanceMatch=60;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
 
         rowItems = new ArrayList<User>();
 
-        userAdapter = new UserAdapter(this, R.layout.item, rowItems );
+        userAdapter = new UserAdapter(this, R.layout.item, listFinders );
 
         SwipeFlingAdapterView flingContainer = findViewById(R.id.frame);
         flingContainer.setAdapter(userAdapter);
@@ -96,6 +116,7 @@ public class MainActivity extends AppCompatActivity {
             public void removeFirstObjectInAdapter() {
                 // this is the simplest way to delete an object from the Adapter (/AdapterView)
                 rowItems.remove(0);
+                listFinders.remove(0);
                 userAdapter.notifyDataSetChanged();
             }
 
@@ -104,8 +125,8 @@ public class MainActivity extends AppCompatActivity {
                 //Do something on the left!
                 //You also have access to the original object.
                 //If you want to use it just cast it (String) dataObject
-                User userObj = (User) dataObject;
-                String userId = userObj.getUid();
+                FinderDistance userObj = (FinderDistance) dataObject;
+                String userId = userObj.getUser().getUid();
                 userDb.child(userId).child("connections").child("nope").child(currentUId).setValue(true);
 
                 Toast.makeText(MainActivity.this, "Left!", Toast.LENGTH_SHORT).show();
@@ -113,8 +134,8 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onRightCardExit(Object dataObject) {
-                User userObj = (User) dataObject;
-                String userId = userObj.getUid();
+                FinderDistance userObj = (FinderDistance) dataObject;
+                String userId = userObj.getUser().getUid();
                 userDb.child(userId).child("connections").child("yeps").child(currentUId).setValue(true);
                 isConnectionMatch(userId);
 
@@ -440,5 +461,300 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(MainActivity.this, SettingActivity.class);
         startActivity(intent);
         return;
+    }
+
+    //-------------------------------- setting ------------------------------
+    private void getDeviceLocationSetting() {
+        /*
+         * Get the best and most recent location of the device, which may be null in rare
+         * cases when a location is not available.
+         */
+        try {
+            if (locationPermissionGranted) {
+                Task<Location> locationResult = mFusedLocationProviderClient.getLastLocation();
+                locationResult.addOnCompleteListener(this, new OnCompleteListener<Location>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Location> task) {
+                        if (task.isSuccessful()) {
+                            // Set the map's camera position to the current location of the device.
+                            Location lastKnownLocation = task.getResult();
+
+                            if (lastKnownLocation != null) {
+                                latUserCurrentSetting = lastKnownLocation.getLatitude();
+                                longiUserCurrentSetting = lastKnownLocation.getLongitude();
+                                // run tinh khoang cach all user
+                                getAllUserSetting();
+                            }
+                        } else {
+                            Toast.makeText(MainActivity.this, "Turn on GPS on your phone !!! " , Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+            }
+        } catch (SecurityException e)  {
+            Log.e("Exception: %s", e.getMessage(), e);
+        }
+    }
+
+    //===================get all user ==========================
+    private void getAllUserSetting() {
+        DatabaseReference matchDb = FirebaseDatabase.getInstance().getReference().child("users");
+        matchDb.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()) {
+                    for(DataSnapshot match : dataSnapshot.getChildren()) {
+                        fetchMatchInformationSetting(match.getKey());
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void fetchMatchInformationSetting(String key) {
+        DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("users").child(key);
+        userDb.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()) {
+                    User obj = new User();
+                    obj.setUid(dataSnapshot.getKey());
+
+                    if(dataSnapshot.child("name").equals("Titus")){
+                        System.out.print("");
+                    }
+
+                    if (dataSnapshot.child("age") != null) {
+                        obj.setAge(Integer.valueOf(dataSnapshot.child("age").getValue().toString()));
+                    }
+                    if(dataSnapshot.child("name").getValue() != null) {
+                        obj.setName(dataSnapshot.child("name").getValue().toString());
+                    }
+
+                    if(dataSnapshot.child("img").getValue() != null) {
+                        obj.setImg(dataSnapshot.child("img").getValue().toString());
+                    }
+
+                    if(dataSnapshot.child("address").getValue() != null) {
+                        obj.setAddress(dataSnapshot.child("address").getValue().toString());
+                    }
+
+                    if (dataSnapshot.child("sex").getValue()  != null) {
+                        String sex = dataSnapshot.child("sex").getValue().toString();
+                        if (sex == null) {
+                            return;
+                        } else if (sex.equals("male")) {
+//                            sex = "male";
+                            obj.setSex("Nam");
+                        } else if (sex.equals("female")) {
+//                            sex = "female";
+                            obj.setSex("Nữ");
+                        }
+                    }
+
+                    if(dataSnapshot.child("latitude").getValue()==null || dataSnapshot.child("longitude").getValue() == null){
+                        Double lat=radomLocationlatitude();
+                        Double longi=radomLocationlongitude();
+                        obj.setLatitude(lat);
+                        obj.setLongitude(longi);
+                    }else{
+                        obj.setLatitude(Double.valueOf(dataSnapshot.child("latitude").getValue().toString().trim()));
+                        obj.setLongitude(Double.valueOf(dataSnapshot.child("longitude").getValue().toString().trim()));
+                    }
+                    // KHONG SERACH USER HIEN TAI
+                    if(!FirebaseAuth.getInstance().getCurrentUser().getUid().equals(obj.getUid())){
+                        // user dang search chua get hoac chua match ai het
+                        if(dataSnapshot.child("connections")==null){
+                            getFindersWithUserCurrentSetting(obj);
+                        }else{
+                            // user đang search không thich và không match vs user current
+                        /*    if(!dataSnapshot.child("connections").child("nope").hasChild(FirebaseAuth.getInstance().getCurrentUser().getUid()) &&
+                                    !dataSnapshot.child("connections").child("yeps").hasChild(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                            && !dataSnapshot.child("sex").getValue().equals(userCurrent.getSex()))*/
+
+                                if(dataSnapshot.exists() && !dataSnapshot.child("connections").child("nope").hasChild(currentUId)
+                                        && !dataSnapshot.child("connections").child("yeps").hasChild(currentUId)&&
+                            !dataSnapshot.child("sex").getValue().equals(userCurrent.getSex()))
+                            {
+                                getFindersWithUserCurrentSetting(obj);
+                            }
+                        }
+                    }
+                    userAdapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    Double radomLocationlongitude(){
+        // bac cu chi 11.076944, 106.457601
+        // nam can gio 10.449601, 106.892934
+        // dong 10.869324, 106.833883
+        // tay 10.756016, 106.494680
+        Double minlatitude=new Double("106.457601");
+        Double maxlatitude=new Double("106.892934");
+        Random r = new Random();
+        Double random = minlatitude + r.nextFloat() * (maxlatitude - minlatitude);
+        return random;
+
+    }
+
+    Double radomLocationlatitude(){
+        // bac cu chi 11.076944, 106.457601
+        // nam can gio 10.449601, 106.892934
+        // dong 10.869324, 106.833883
+        // tay 10.756016, 106.494680
+        Double minlatitude=new Double("10.449601");
+        Double maxlatitude=new Double("10.869324");
+        Random r = new Random();
+        Double random = minlatitude + r.nextFloat() * (maxlatitude - minlatitude);
+        return random;
+    }
+
+
+    // distance user current with all user
+    private void getFindersWithUserCurrentSetting(User in){
+
+        if(latUserCurrentSetting == null || longiUserCurrentSetting == null){
+            Toast.makeText(MainActivity.this, "turn on GPS on your phone !!! " , Toast.LENGTH_SHORT).show();
+        }
+
+        // khoang cach user
+        if(in!=null){
+            FinderDistance userFinderDistance= new FinderDistance();
+            userFinderDistance.setUser(in);
+            Location userCurrentLocation= new Location(" User Current");
+            userCurrentLocation.setLatitude( latUserCurrentSetting);
+            userCurrentLocation.setLongitude(longiUserCurrentSetting);
+
+            Location yourLocation= new Location("You");
+            yourLocation.setLatitude( in.getLatitude());
+            yourLocation.setLongitude(in.getLongitude());
+            float kq=  userCurrentLocation.distanceTo(yourLocation);
+
+            // get address of you
+            String addressOfYou = locationToAddressSetting(in.getLatitude(),in.getLongitude());
+            userFinderDistance.setAddressCurrentOfYou(addressOfYou);
+
+            if(kq>1000){
+                // meter to km
+                float kqReality=(float) Math.round((kq/1000) * 10)/10;
+                userFinderDistance.setDistance(kqReality);
+                userFinderDistance.setUnit("km");
+            }else{
+                // meter to km
+                float kqReality=(float) Math.round(kq * 10)/10;
+                userFinderDistance.setDistance(kqReality);
+                userFinderDistance.setUnit("meter");
+            }
+            // SET MIN =2, MAX = GET KM ON SCREEN
+            float kmOfUser=0;
+            if("meter".equals(userFinderDistance.getUnit())){
+                kmOfUser=userFinderDistance.getDistance()/1000;
+            }else{
+                kmOfUser=userFinderDistance.getDistance();
+            }
+            // km va tuoi setting
+            if( (kmOfUser >= 2 && kmOfUser <= km)  && (userFinderDistance.getUser().getAge() >= minDistanceMatch && userFinderDistance.getUser().getAge() <= maxDistanceMatch)){
+                listFinders.add(userFinderDistance);
+            }
+            // sort tang dan
+            Collections.sort(listFinders, new Comparator<FinderDistance>() {
+                @Override
+                public int compare(FinderDistance truoc, FinderDistance sau) {
+                    // -1 - less than, 1 - greater than, 0 - equal, all inversed for descending
+                    float truocDis=truoc.getDistance();
+                    float sauDis=sau.getDistance();
+                    if("km".equals(truoc.getUnit())){
+                        truocDis=truocDis*1000;
+                    }
+                    if("km".equals(sau.getUnit())){
+                        sauDis=sauDis*1000;
+                    }
+                    return truocDis > sauDis ? 1 : -1;
+                }
+            });
+            userAdapter.notifyDataSetChanged();
+        }
+    }
+
+
+    private String locationToAddressSetting(Double latitude, Double longitude){
+        Geocoder geocoder;
+        List<Address> addresses = null;
+        geocoder = new Geocoder(MainActivity.this, Locale.getDefault());
+
+        try {
+            addresses = geocoder.getFromLocation(latitude, longitude, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
+        String city = addresses.get(0).getLocality();
+        String state = addresses.get(0).getAdminArea();
+        String country = addresses.get(0).getCountryName();
+        String postalCode = addresses.get(0).getPostalCode();
+        String knownName = addresses.get(0).getFeatureName(); //
+
+        StringBuilder addressLocation2=new StringBuilder();
+        if( addresses.get(0).getSubAdminArea()!=null){
+            addressLocation2.append(addresses.get(0).getSubAdminArea()+",");
+        }
+        if(addresses.get(0).getAdminArea()!=null){
+            addressLocation2.append(addresses.get(0).getAdminArea()+",");
+        }
+        if(addresses.get(0).getCountryName()!=null){
+            addressLocation2.append(addresses.get(0).getCountryName());
+        }
+
+        return addressLocation2.toString();
+    }
+
+    void getSettingOfUser(){
+        databaseReference.child("setting").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists() && dataSnapshot.getChildrenCount() > 0) {
+                    Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
+
+                    if (map.get("ageMaxMatch") != null) {
+                        maxDistanceMatch= Integer.valueOf(map.get("ageMaxMatch").toString());
+                    }
+
+                    if (map.get("ageMinMatch") != null) {
+                        minDistanceMatch= Integer.valueOf(map.get("ageMinMatch").toString());
+                    }
+
+                    if (map.get("distanceMatch") != null) {
+                        km=Integer.valueOf(map.get("distanceMatch").toString());
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getSettingOfUser();
+        listFinders.clear();
+        getDeviceLocationSetting();
+        userAdapter.notifyDataSetChanged();
     }
 }

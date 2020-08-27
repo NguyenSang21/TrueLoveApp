@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 
 import com.bumptech.glide.Glide;
 import com.example.truelove.R;
+import com.example.truelove.custom_class.FinderDistance;
 import com.example.truelove.custom_class.User;
 
 import org.w3c.dom.Text;
@@ -21,12 +22,12 @@ import java.util.List;
 public class UserAdapter extends ArrayAdapter {
     Context context;
 
-    public UserAdapter(@NonNull Context context, int resource, List<User> items) {
+    public UserAdapter(@NonNull Context context, int resource, List<FinderDistance> items) {
         super(context, resource, items);
     }
 
     public View getView(int position, View convertView, ViewGroup parent) {
-        User user = (User) getItem(position);
+        FinderDistance user = (FinderDistance) getItem(position);
 
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.item, parent, false);
@@ -39,16 +40,16 @@ public class UserAdapter extends ArrayAdapter {
         TextView caption = convertView.findViewById(R.id.txtCaption);
 
         image.setEnabled(false);
-        name.setText(user.getName());
-        age.setText(user.getAge() + " tuổi");
-        address.setText(user.getAddress());
-        if(user.getCaption() == null || user.getCaption().equals("")) {
+        name.setText(user.getUser().getName());
+        age.setText(user.getUser().getAge() + " tuổi");
+        address.setText(user.getUser().getAddress());
+        if(user.getUser().getCaption() == null || user.getUser().getCaption().equals("")) {
             caption.setText("Thích chó , mèo");
         } else {
-            caption.setText(user.getCaption());
+            caption.setText(user.getUser().getCaption());
         }
 
-        Glide.with(getContext()).load(user.getImg()).into(image);
+        Glide.with(getContext()).load(user.getUser().getImg()).into(image);
 
         return convertView;
     }
