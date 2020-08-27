@@ -30,16 +30,6 @@
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 tools:ignore="MissingClass" />
-
-            <RelativeLayout
-                android:id="@+id/layout_dot_indicator"
-                android:layout_width="12dp"
-                android:layout_height="12dp"
-                android:padding="2dp"
-                android:background="@drawable/dot_message"
-                android:layout_toEndOf="@id/imageMatches"
-                android:layout_centerInParent="true"
-                android:layout_marginStart="-5dp"/>
         </RelativeLayout>
 
 
@@ -62,6 +52,7 @@
                 />
 
             <androidx.appcompat.widget.AppCompatTextView
+                android:visibility="gone"
                 android:text="Matche's ID"
                 android:id="@+id/txtMatchesId"
                 android:layout_width="wrap_content"
