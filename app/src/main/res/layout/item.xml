@@ -15,7 +15,7 @@
         android:scaleType="fitCenter"
         android:id="@+id/img"
         android:layout_width="match_parent"
-        android:layout_height="270dp"/>
+        android:layout_height="260dp"/>
 
     <RelativeLayout
         android:layout_below="@+id/img"
@@ -27,7 +27,7 @@
             android:text="Tên"
             android:layout_centerHorizontal="true"
             android:id="@+id/edtUserName"
-            android:textSize="30sp"
+            android:textSize="17sp"
             android:textColor="@android:color/black"
             android:gravity="center|left"
             android:layout_width="wrap_content"
@@ -42,7 +42,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
         <TextView
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="3dp"
             android:layout_centerHorizontal="true"
             android:text="Địa chỉ"
             android:textSize="20sp"
@@ -51,7 +51,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
         <TextView
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:layout_centerHorizontal="true"
             android:layout_below="@+id/txtAdrress"
             android:id="@+id/txtCaption"
