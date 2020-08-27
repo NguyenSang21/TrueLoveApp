@@ -73,6 +73,7 @@
         rsb:absoluteMaxValue="50"/>
 
     <Button
+        android:onClick="saveSetting"
         android:id="@+id/btnSave"
         android:background="@color/pink"
         android:textColor="#fff"
@@ -82,6 +83,18 @@
         android:layout_marginRight="35dp"
         android:layout_marginLeft="35dp"
         android:text="Lưu lại"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:background="@color/pink"
+        android:text="Thoát"
+        android:layout_marginTop="85dp"
+        android:layout_marginRight="35dp"
+        android:layout_marginLeft="35dp"
+        android:onClick="logoutUser"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 </LinearLayout>
