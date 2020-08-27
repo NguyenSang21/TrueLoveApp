@@ -70,7 +70,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         rsb:absoluteMinValue="60"
-        rsb:absoluteMaxValue="50"/>
+        rsb:absoluteMaxValue="18"/>
 
     <Button
         android:id="@+id/btnSave"

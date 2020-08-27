@@ -166,7 +166,7 @@ public class MainActivity extends AppCompatActivity {
         // set permission
         getLocationPermission();
 
-        //get location
+        //update locaiton currnte of user current
         getDeviceLocation();
 
     }
