@@ -217,12 +217,18 @@ public class ProfileFindersActivity extends AppCompatActivity {
 
                         Bitmap bitmapUserOther = null;
                         try {
-                            bitmapUserOther = bitmapUserOther = BitmapFactory.decodeStream((InputStream) new URL(anhbiaUriImage).getContent());
-                        } catch (IOException e) {
+                            bitmapUserOther = BitmapFactory.decodeStream((InputStream) new URL(anhbiaUriImage).getContent());
+                        }catch (OutOfMemoryError e){
+
+                        } catch (Exception e) {
                             e.printStackTrace();
                         }
-                        Drawable d = new BitmapDrawable(getResources(), bitmapUserOther);
-                        relativeLayoutBackgrouduser.setImageDrawable(d);
+                       if(bitmapUserOther!=null){
+                            Drawable d= new BitmapDrawable(getResources(), bitmapUserOther);
+                            relativeLayoutBackgrouduser.setImageDrawable(d);
+                        }else{
+                            relativeLayoutBackgrouduser.setImageResource(R.drawable.backgroup_default);
+                        }
                         /*Glide.with(getApplication()).load(anhbiaUriImage).into(relativeLayoutBackgrouduser);*/
                     }
                     if (map.get("sex") != null) {
@@ -315,4 +321,6 @@ public class ProfileFindersActivity extends AppCompatActivity {
             w.setStatusBarColor(Color.parseColor("#FB6667"));
         }
     }
+
+
 }

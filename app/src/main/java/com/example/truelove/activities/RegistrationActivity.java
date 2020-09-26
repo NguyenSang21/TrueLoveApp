@@ -26,6 +26,7 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.example.truelove.R;
+import com.example.truelove.custom_class.SetttingUser;
 import com.example.truelove.custom_class.User;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -190,9 +191,12 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                                         user.setLatitude( 10.762918);
                                         user.setLongitude(106.682284);
                                     }
-
                                     System.out.println(user.toString());
                                     currentReference.setValue(user);
+                                    //setting user default
+                                    currentReference.child("setting").child("distanceMatch").setValue(50);
+                                    currentReference.child("setting").child("ageMinMatch").setValue(18);
+                                    currentReference.child("setting").child("ageMaxMatch").setValue(60);
                                     Toast.makeText(RegistrationActivity.this, "Đăng ký thành công!", Toast.LENGTH_SHORT).show();
                                 } else {
                                     // If sign in fails, display a message to the user.

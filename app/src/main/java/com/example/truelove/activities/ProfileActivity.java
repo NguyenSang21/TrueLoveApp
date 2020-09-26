@@ -20,6 +20,8 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.os.storage.StorageManager;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
@@ -112,6 +114,8 @@ public class ProfileActivity extends AppCompatActivity {
     //0 la avatar, 1 anh bia, 2 la albumn
 
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -156,7 +160,15 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 modeImage=0;
-                alertDialog.show();
+                if(!((Activity) ProfileActivity.this).isFinishing())
+                {
+                    try{
+                        alertDialog.show();
+                    }catch (Exception e){
+
+                    }
+                }
+
             }
         });
 
@@ -164,7 +176,15 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 modeImage=1;
-                alertDialog.show();
+                if(!((Activity) ProfileActivity.this).isFinishing())
+                {
+                    try{
+                        alertDialog.show();
+                    }catch (Exception e){
+
+                    }
+
+                }
             }
         });
 
@@ -172,7 +192,14 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 modeImage=2;
-                alertDialog.show();
+                if(!((Activity) ProfileActivity.this).isFinishing())
+                {
+                    try{
+                        alertDialog.show();
+                    }catch (Exception e){
+
+                    }
+                }
             }
         });
 
@@ -187,7 +214,10 @@ public class ProfileActivity extends AppCompatActivity {
         btnCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                alertDialog.hide();
+                if(!((Activity) ProfileActivity.this).isFinishing())
+                {
+                    alertDialog.hide();
+                }
                 cameraProcess();
             }
         });
@@ -195,11 +225,16 @@ public class ProfileActivity extends AppCompatActivity {
         btnGallery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                alertDialog.hide();
+                if(!((Activity) ProfileActivity.this).isFinishing())
+                {
+                    alertDialog.hide();
+                }
                 galleryProcess();
             }
         });
     }
+
+
 
     void getAlbums() {
         albumArray.clear();
@@ -370,11 +405,18 @@ public class ProfileActivity extends AppCompatActivity {
                         Bitmap bitmapUserOther=null;
                         try {
                             bitmapUserOther=  bitmapUserOther = BitmapFactory.decodeStream((InputStream)new URL(anhbiaUriImage).getContent());
-                        } catch (IOException e) {
+                        } catch (OutOfMemoryError e){
+
+                        }catch (Exception e) {
                             e.printStackTrace();
                         }
-                        Drawable d = new BitmapDrawable(getResources(), bitmapUserOther);
-                        relativeLayoutBackgrouduser.setImageDrawable(d);
+                        if(bitmapUserOther!=null){
+                            Drawable d = new BitmapDrawable(getResources(), bitmapUserOther);
+                            relativeLayoutBackgrouduser.setImageDrawable(d);
+                        }else{
+                            relativeLayoutBackgrouduser.setImageResource(R.drawable.backgroup_default);
+                        }
+
                         /*Glide.with(getApplication()).load(anhbiaUriImage).into(relativeLayoutBackgrouduser);*/
                     }
                     if (map.get("sex") != null) {
@@ -476,7 +518,9 @@ public class ProfileActivity extends AppCompatActivity {
                                 Bitmap bitmap =  null;
                                 try {
                                     bitmap = MediaStore.Images.Media.getBitmap(getApplication().getContentResolver(), anhBiaResultUri);
-                                } catch (IOException e) {
+                                }catch (OutOfMemoryError e){
+
+                                } catch (Exception e) {
                                     e.printStackTrace();
                                 }
                                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -665,12 +709,19 @@ public class ProfileActivity extends AppCompatActivity {
                 Bitmap bitmap = null;
                 try {
                     bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), anhBiaResultUri);
-                } catch (IOException e) {
+                }catch (OutOfMemoryError e){
+
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
-                Drawable d = new BitmapDrawable(getResources(), bitmap);
+                if(bitmap!=null){
+                    Drawable d = new BitmapDrawable(getResources(), bitmap);
 //                relativeLayoutBackgrouduser.setImageDrawable(d);
-                Glide.with(ProfileActivity.this).load(d).into(relativeLayoutBackgrouduser);
+                    Glide.with(ProfileActivity.this).load(d).into(relativeLayoutBackgrouduser);
+                }else{
+                    relativeLayoutBackgrouduser.setImageResource(R.drawable.backgroup_default);
+                }
+
                 anhBiaTempEditor=anhBiaResultUri;
                 anhBiaTempMediaPick=null;
             } else if(modeImage==2){ // album
@@ -712,5 +763,15 @@ public class ProfileActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        alertDialog.hide();
+    }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        alertDialog.cancel();
+    }
 }

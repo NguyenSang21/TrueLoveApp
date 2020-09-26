@@ -236,7 +236,10 @@ public class ChatActivity extends AppCompatActivity implements KerboardListenerI
         Bitmap bitmapUserCurrent = null;
         try {
             bitmapUserCurrent = BitmapFactory.decodeStream((InputStream)new URL(userCurrent.getImg()).getContent());
-        } catch (IOException e) {
+        }
+        catch (OutOfMemoryError e){
+
+        }catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -246,7 +249,9 @@ public class ChatActivity extends AppCompatActivity implements KerboardListenerI
             if(!"default".equals(userOther.getImg())) {
                 bitmapUserOther = BitmapFactory.decodeStream((InputStream)new URL(userOther.getImg()).getContent());
             }
-        } catch (IOException e) {
+        }catch (OutOfMemoryError e){
+
+        } catch (Exception e) {
             e.printStackTrace();
         }
         final Bitmap finalBitmapUserCurrent = bitmapUserCurrent;

@@ -12,7 +12,7 @@ public class User {
     private String sex;
     private Double latitude;
     private Double longitude;
-
+    
     private String caption;
 
     public void setLatitude(Double latitude) {

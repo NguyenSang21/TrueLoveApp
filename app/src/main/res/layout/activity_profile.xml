@@ -107,6 +107,7 @@
                         android:drawableLeft="@drawable/phone"
                         android:drawablePadding="5dp"
                         android:padding="15dp"
+                        android:visibility="invisible"
                         android:text="090929299" />
                 </LinearLayout>
             </LinearLayout>

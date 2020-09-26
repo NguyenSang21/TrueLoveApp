@@ -662,7 +662,13 @@ public class Finder extends AppCompatActivity {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }*/
-        idNestedScrollView.setBackgroundResource(R.drawable.bg_finder);
+       try{
+           idNestedScrollView.setBackgroundResource(R.drawable.bg_finder);
+       } catch (OutOfMemoryError e){
+
+       } catch (Exception e){
+
+       }
         // get device location
         getDeviceLocation();
     }
