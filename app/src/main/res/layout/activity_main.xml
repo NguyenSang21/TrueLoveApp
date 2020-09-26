@@ -34,64 +34,65 @@
         android:elevation="8dp"
         android:background="#fff" />
 
+<!--    <RelativeLayout-->
+<!--        android:layout_weight="2"-->
+<!--        android:layout_marginTop="5dp"-->
+<!--        android:layout_marginLeft="80dp"-->
+<!--        android:layout_marginRight="80dp"-->
+<!--        android:layout_marginBottom="5dp"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="0dp">-->
+<!--        <androidx.cardview.widget.CardView-->
+<!--            android:layout_centerVertical="true"-->
+<!--            android:layout_margin="10dp"-->
+<!--            app:cardCornerRadius="34dp"-->
+<!--            app:cardElevation="3dp"-->
+<!--            android:layout_width="70dp"-->
+<!--            android:layout_height="70dp">-->
+
+<!--            <RelativeLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent">-->
+<!--                <ImageButton-->
+<!--                    android:layout_centerVertical="true"-->
+<!--                    android:layout_centerHorizontal="true"-->
+<!--                    android:src="@drawable/close"-->
+<!--                    android:background="#fff"-->
+<!--                    android:scaleType="fitCenter"-->
+<!--                    android:layout_width="30dp"-->
+<!--                    android:layout_height="30dp"/>-->
+<!--            </RelativeLayout>-->
+
+<!--        </androidx.cardview.widget.CardView>-->
+
+<!--        <androidx.cardview.widget.CardView-->
+<!--            android:layout_centerVertical="true"-->
+<!--            android:layout_margin="10dp"-->
+<!--            android:layout_alignParentRight="true"-->
+<!--            app:cardCornerRadius="34dp"-->
+<!--            app:cardElevation="3dp"-->
+<!--            android:layout_width="70dp"-->
+<!--            android:layout_height="70dp">-->
+
+<!--            <RelativeLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent">-->
+<!--                <ImageButton-->
+<!--                    android:layout_centerHorizontal="true"-->
+<!--                    android:layout_centerVertical="true"-->
+<!--                    android:src="@drawable/heart"-->
+<!--                    android:background="#fff"-->
+<!--                    android:scaleType="fitCenter"-->
+<!--                    android:layout_width="30dp"-->
+<!--                    android:layout_height="30dp"/>-->
+<!--            </RelativeLayout>-->
+
+<!--        </androidx.cardview.widget.CardView>-->
+<!--    </RelativeLayout>-->
+
+
     <RelativeLayout
-        android:layout_weight="2"
-        android:layout_marginTop="5dp"
-        android:layout_marginLeft="80dp"
-        android:layout_marginRight="80dp"
-        android:layout_marginBottom="5dp"
-        android:layout_width="match_parent"
-        android:layout_height="0dp">
-        <androidx.cardview.widget.CardView
-            android:layout_centerVertical="true"
-            android:layout_margin="10dp"
-            app:cardCornerRadius="34dp"
-            app:cardElevation="3dp"
-            android:layout_width="70dp"
-            android:layout_height="70dp">
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-                <ImageButton
-                    android:layout_centerVertical="true"
-                    android:layout_centerHorizontal="true"
-                    android:src="@drawable/close"
-                    android:background="#fff"
-                    android:scaleType="fitCenter"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"/>
-            </RelativeLayout>
-
-        </androidx.cardview.widget.CardView>
-
-        <androidx.cardview.widget.CardView
-            android:layout_centerVertical="true"
-            android:layout_margin="10dp"
-            android:layout_alignParentRight="true"
-            app:cardCornerRadius="34dp"
-            app:cardElevation="3dp"
-            android:layout_width="70dp"
-            android:layout_height="70dp">
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-                <ImageButton
-                    android:layout_centerHorizontal="true"
-                    android:layout_centerVertical="true"
-                    android:src="@drawable/heart"
-                    android:background="#fff"
-                    android:scaleType="fitCenter"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"/>
-            </RelativeLayout>
-
-        </androidx.cardview.widget.CardView>
-    </RelativeLayout>
-
-
-    <RelativeLayout
+        android:layout_marginTop="20dp"
         android:layout_weight="1"
         android:layout_width="match_parent"
         android:layout_height="0dp">
