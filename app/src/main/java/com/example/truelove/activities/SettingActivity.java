@@ -80,7 +80,7 @@ public class SettingActivity extends AppCompatActivity {
         });
 
         //setup range old
-        RangeSeekBar rangeSeekBar = (RangeSeekBar) findViewById(R.id.rangeSeekBar);
+        rangeSeekBar = (RangeSeekBar) findViewById(R.id.rangeSeekBar);
         rangeSeekBar.setOnRangeSeekBarChangeListener(new RangeSeekBar.OnRangeSeekBarChangeListener() {
             @Override
             public void onRangeSeekBarValuesChanged(RangeSeekBar bar, Object minValue, Object maxValue) {

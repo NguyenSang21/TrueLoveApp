@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.Html;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -78,7 +79,8 @@ public class ProfileFindersActivity extends AppCompatActivity {
     private RecyclerView recyclerViewAlbums;
     private ArrayList albumArray = new ArrayList<Album>();
 
-    private Button btnBack, btnGoChatScreen;
+    private Button btnBack;
+    private ImageButton btnGoChatScreen;
 
     // set defaul my school if data null
     private Double latitudeCurrent = 10.762918;

@@ -18,6 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="230dp">
             <ImageView
+                android:tooltipText=""
                 android:background="#F45F92"
                 android:scaleType="centerCrop"
                 android:id="@+id/backgroudImageProcess"
@@ -32,15 +33,29 @@
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp" />
 
-            <Button
-                android:textColor="@color/white"
-                android:id="@+id/btnBackgroundProfile"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:layout_marginEnd="10dp"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/camera" />
+                >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Cập nhật ảnh bìa"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginTop="5dp"
+                    >
+                </TextView>
+                <Button
+                    android:textColor="@color/white"
+                    android:id="@+id/btnBackgroundProfile"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/camera" />
+            </LinearLayout>
+
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -107,18 +122,31 @@
                 android:layout_weight="0.7"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="right">
+                    <TextView
+                        android:id="@+id/txtluu"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="Lưu"
 
-                <Button
-                    android:id="@+id/profileConfirm"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginEnd="5dp"
-                    android:layout_marginBottom="5dp"
-                    android:background="@drawable/direct_download"
-                    android:textAllCaps="false" />
+                        android:layout_marginRight="10dp"
+                        android:layout_alignRight="@+id/profileConfirm"/>
+                    <Button
+                        android:id="@+id/profileConfirm"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginEnd="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:background="@drawable/direct_download"
+                        android:textAllCaps="false" />
+                </LinearLayout>
             </RelativeLayout>
 
         </LinearLayout>
@@ -268,32 +296,48 @@
         </LinearLayout>
 
         <RelativeLayout
-            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Album"
-                android:textSize="23sp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="15dp"
+                android:text="Album"
                 android:textColor="#515151"
-                android:textStyle="bold"/>
+                android:textSize="23sp"
+                android:textStyle="bold" />
 
-            <Button
-                android:id="@+id/btnUpImage"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_alignParentEnd="true"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginStart="5dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginEnd="5dp"
-                android:layout_marginBottom="5dp"
-                android:background="@drawable/gallery"
-                android:textAllCaps="false"
-                android:textColor="#F45F92" />
+            <LinearLayout android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:gravity="right"
+                >
+
+                <TextView
+                    android:layout_marginTop="5dp"
+                    android:id="@+id/txtViewTaiAnhLen"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginBottom="20dp"
+                    android:text="Tải ảnh lên album" />
+                <Button
+                    android:layout_alignTop="@+id/txtViewTaiAnhLen"
+                    android:id="@+id/btnUpImage"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:background="@drawable/gallery"
+                    android:textAllCaps="false"
+                    android:textColor="#F45F92" />
+            </LinearLayout>
         </RelativeLayout>
 
         <androidx.recyclerview.widget.RecyclerView
