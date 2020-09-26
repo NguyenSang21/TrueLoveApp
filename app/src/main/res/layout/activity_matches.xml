@@ -6,15 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".activities.MatchesActivity">
 
-    <!--    <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbarMatch"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@color/pink"
-            app:layout_constraintTop_toTopOf="parent"
-            app:navigationIcon="?attr/homeAsUpIndicator"
-            app:titleTextColor="@color/white" />-->
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">

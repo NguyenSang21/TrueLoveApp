@@ -2,12 +2,14 @@ package com.example.truelove.activities;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Context;
@@ -29,6 +31,7 @@ import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.truelove.R;
@@ -70,6 +73,8 @@ public class ChatActivity extends AppCompatActivity implements KerboardListenerI
     private User userCurrent, userOther;
     private boolean isKeyboardOpen;
 
+
+    @SuppressLint("RestrictedApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -106,6 +111,9 @@ public class ChatActivity extends AppCompatActivity implements KerboardListenerI
         setKeyboardVisibilityListener(this);
 
         personalUI();
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
     }
 
     private void handleOnClick() {
@@ -314,6 +322,8 @@ public class ChatActivity extends AppCompatActivity implements KerboardListenerI
             }
         });
 
+
+
     }
 
     private List<ChatObject> getDataSetChat() {
@@ -441,9 +451,13 @@ public class ChatActivity extends AppCompatActivity implements KerboardListenerI
                 intent.putExtras(b);
                 startActivityForResult(intent,1111);
                 return true;
+            case android.R.id.home:
+                finish();
+                break;
+
             default: return super.onOptionsItemSelected(item);
         }
-
+        return true;
     }
 
     @Override
@@ -459,5 +473,12 @@ public class ChatActivity extends AppCompatActivity implements KerboardListenerI
                 System.out.print(e);
             }
         }
+    }
+
+    // And override this method
+    @Override
+    public boolean onNavigateUp() {
+        finish();
+        return true;
     }
 }

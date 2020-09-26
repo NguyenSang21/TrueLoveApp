@@ -63,7 +63,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class ProfileFindersActivity extends AppCompatActivity {
 
     private TextView profileName, cationUser, profileAddress, profileAge, txtNameUserCurrent;
-    private TextView profileSex;
+    private TextView profileSex,  txtnhantinview;;
     private CircleImageView profileImage;
     private ImageButton matchNope;
     private ImageView relativeLayoutBackgrouduser;
@@ -99,6 +99,7 @@ public class ProfileFindersActivity extends AppCompatActivity {
 
         if(!StringUtils.isEmpty(isChatScreen)){
             btnGoChatScreen.setVisibility(View.GONE);
+            txtnhantinview.setVisibility(View.GONE);
         }
         databaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(matchID);
 
@@ -286,6 +287,7 @@ public class ProfileFindersActivity extends AppCompatActivity {
                 view.getContext().startActivity(intent);
             }
         });
+        txtnhantinview=findViewById(R.id.txtNhantin);
     }
 
     @Override

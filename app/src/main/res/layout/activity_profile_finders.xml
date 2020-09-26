@@ -25,8 +25,9 @@
 
             <Button
                 android:id="@+id/btnBack"
-                android:layout_width="35dp"
-                android:layout_height="40dp"
+                android:layout_marginTop="5dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
                 android:layout_marginLeft="15dp"
                 android:background="@drawable/left_arrow"
                 android:paddingLeft="5dp"
@@ -89,12 +90,13 @@
                 android:textStyle="bold"
                 />
             <TextView
+                android:id="@+id/txtNhantin"
                 android:layout_weight="0.2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
+                android:paddingTop="10dp"
                 android:text="Nhắn tin"
-
+                android:textAlignment="textEnd"
                 />
             <ImageButton
                 android:layout_weight="0.2"

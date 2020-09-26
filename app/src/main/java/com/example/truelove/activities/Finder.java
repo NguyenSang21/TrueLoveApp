@@ -75,13 +75,14 @@ public class Finder extends AppCompatActivity {
     private NestedScrollView idNestedScrollView;
 
     private boolean isFinderMatch=false;
-    private Toolbar toolbar;
+//    private Toolbar toolbar;
 
     private SeekBar seekBarKM;
     private TextView txtKM;
     private int km;
     private boolean isRunningSearch=false;
     private TextView statusSearch;
+    private Button btnBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,21 +95,21 @@ public class Finder extends AppCompatActivity {
         idNestedScrollView = findViewById(R.id.idNestedScrollView);
         statusSearch=findViewById(R.id.statusSearch);
         statusSearch.setVisibility(View.GONE);
-
+        btnBack=findViewById(R.id.btnBack);
         // Construct a FusedLocationProviderClient.
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
         // set permission
         getLocationPermission();
 
-        toolbar = findViewById(R.id.toolbarFinder);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // back button pressed
-                finish();
-            }
-        });
+//        toolbar = findViewById(R.id.toolbarFinder);
+//        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                // back button pressed
+//                finish();
+//            }
+//        });
 
         // list user find appear here
         recyclerView = (RecyclerView) findViewById(R.id.recyclerViewFinder);
@@ -131,6 +132,14 @@ public class Finder extends AppCompatActivity {
                     mAdapter.notifyDataSetChanged();
                     handleSearch();
                 }
+            }
+        });
+
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+                return;
             }
         });
 

@@ -9,6 +9,8 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.view.View;
 import android.widget.SeekBar;
@@ -38,6 +40,7 @@ public class SettingActivity extends AppCompatActivity {
     private int minOld=18;
     private int maxOld=60;
     RangeSeekBar rangeSeekBar;
+    private Button btnBack;
 
     @RequiresApi(api = Build.VERSION_CODES.P)
     @Override
@@ -45,6 +48,7 @@ public class SettingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
 
+        personalUI();
         mAuth = FirebaseAuth.getInstance();
         userId = mAuth.getCurrentUser().getUid();
         databaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(userId);
@@ -53,7 +57,7 @@ public class SettingActivity extends AppCompatActivity {
         seekBarKM = (SeekBar) findViewById(R.id.seekBarKM);
         txtKM = (TextView) findViewById(R.id.txtKM);
         btnSave=findViewById(R.id.btnSave);
-
+        btnBack = findViewById(R.id.btnBack);
 
         seekBarKM.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             int progressValue = 0;
@@ -101,6 +105,13 @@ public class SettingActivity extends AppCompatActivity {
 
         getSettingOfUser();
 
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+                return;
+            }
+        });
     }
 
     public void logoutUser (View view) {
@@ -112,7 +123,16 @@ public class SettingActivity extends AppCompatActivity {
 
     }
 
-
+    private void personalUI() {
+        getSupportActionBar().hide();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            Window w = getWindow();
+            w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+            // add FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS flag to the window
+            w.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            //w.setStatusBarColor(Color.parseColor("#007ac1"));
+        }
+    }
 
     void getSettingOfUser(){
         databaseReference.child("setting").addListenerForSingleValueEvent(new ValueEventListener() {

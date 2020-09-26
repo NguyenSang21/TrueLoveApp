@@ -15,6 +15,7 @@ import com.example.truelove.R;
 import com.example.truelove.custom_class.FinderDistance;
 import com.example.truelove.custom_class.User;
 
+import org.apache.commons.lang3.StringUtils;
 import org.w3c.dom.Text;
 
 import java.util.List;
@@ -49,8 +50,9 @@ public class UserAdapter extends ArrayAdapter {
             caption.setText(user.getUser().getCaption());
         }
 
-        Glide.with(getContext()).load(user.getUser().getImg()).into(image);
-
+        if(!StringUtils.isEmpty(user.getUser().getImg())){
+            Glide.with(getContext()).load(user.getUser().getImg()).into(image);
+        }
         return convertView;
     }
 }

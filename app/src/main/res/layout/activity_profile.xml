@@ -26,8 +26,9 @@
                 android:layout_height="match_parent"/>
             <Button
                 android:id="@+id/btnBack"
-                android:layout_width="35dp"
-                android:layout_height="40dp"
+                android:layout_marginTop="5dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
                 android:layout_marginLeft="15dp"
                 android:background="@drawable/left_arrow"
                 android:paddingLeft="5dp"
@@ -41,7 +42,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Cập nhật ảnh bìa"
+                    android:text=""
                     android:layout_marginRight="5dp"
                     android:layout_marginTop="5dp"
                     >
@@ -49,8 +50,8 @@
                 <Button
                     android:textColor="@color/white"
                     android:id="@+id/btnBackgroundProfile"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     android:layout_marginEnd="10dp"
                     android:layout_marginTop="10dp"
                     android:background="@drawable/camera" />
@@ -97,6 +98,16 @@
                         android:text="nguyensang@gmail.com"
                         android:textColor="#FFFFFF"
                         android:textSize="20sp" />
+
+                    <EditText
+                        android:id="@+id/profilePhone"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:drawableLeft="@drawable/phone"
+                        android:drawablePadding="5dp"
+                        android:padding="15dp"
+                        android:text="090929299" />
                 </LinearLayout>
             </LinearLayout>
         </RelativeLayout>
@@ -137,14 +148,14 @@
                         android:layout_alignRight="@+id/profileConfirm"/>
                     <Button
                         android:id="@+id/profileConfirm"
-                        android:layout_width="35dp"
-                        android:layout_height="35dp"
+                        android:layout_width="27dp"
+                        android:layout_height="27dp"
                         android:layout_alignParentEnd="true"
-                        android:layout_gravity="center_horizontal"
+                        android:layout_gravity="center_vertical"
                         android:layout_marginTop="5dp"
                         android:layout_marginEnd="5dp"
                         android:layout_marginBottom="5dp"
-                        android:background="@drawable/direct_download"
+                        android:background="@drawable/saveicon"
                         android:textAllCaps="false" />
                 </LinearLayout>
             </RelativeLayout>
@@ -198,15 +209,7 @@
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:layout_marginTop="15dp">
-            <EditText
-                android:drawablePadding="5dp"
-                android:drawableLeft="@drawable/phone"
-                android:id="@+id/profilePhone"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="090929299"
-                android:padding="15dp"
-                android:background="@null"/>
+
         </androidx.cardview.widget.CardView>
         <androidx.cardview.widget.CardView
             app:cardCornerRadius="7dp"
@@ -326,7 +329,7 @@
                 <Button
                     android:layout_alignTop="@+id/txtViewTaiAnhLen"
                     android:id="@+id/btnUpImage"
-                    android:layout_width="30dp"
+                    android:layout_width="35dp"
                     android:layout_height="30dp"
                     android:layout_alignParentEnd="true"
                     android:layout_gravity="center_horizontal"

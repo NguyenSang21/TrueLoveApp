@@ -111,6 +111,7 @@ public class ProfileActivity extends AppCompatActivity {
     public int modeImage=0;
     //0 la avatar, 1 anh bia, 2 la albumn
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -588,6 +589,7 @@ public class ProfileActivity extends AppCompatActivity {
         textViewNameUserCurrent=findViewById(R.id.nameUserCurrent);
         txtEmailUserCurrent=findViewById(R.id.emailUserCurrent);
         txtCaption = findViewById(R.id.caption);
+
     }
 
     private void mapping2(View view) {

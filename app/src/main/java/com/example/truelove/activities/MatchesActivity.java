@@ -36,6 +36,8 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
+
+
 public class MatchesActivity extends AppCompatActivity  {
 
     private RecyclerView recyclerView;
@@ -43,8 +45,8 @@ public class MatchesActivity extends AppCompatActivity  {
     private RecyclerView.LayoutManager layoutManager;
     private ArrayList<MatchesObject> resultMatches = new ArrayList<MatchesObject>();
     private String currentUserID;
-    private Toolbar toolbar;
     private TextView txtLabel;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +56,7 @@ public class MatchesActivity extends AppCompatActivity  {
         currentUserID = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         txtLabel = findViewById(R.id.txtLabel);
+
 
         personalUI();
 
@@ -68,8 +71,31 @@ public class MatchesActivity extends AppCompatActivity  {
         mAdapter.setTextViewResult(txtLabel);
         recyclerView.setAdapter(mAdapter);
 
+       /* toolbar=findViewById(R.id.toolbarMatch);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // back button pressed
+                finish();
+            }
+        });*/
 
+        //getSupportActionBar().setHomeAsUpIndicator(R.drawable.left_arrow);// set drawable icon
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected( MenuItem item ) {
+
+        switch( item.getItemId() ) {
+            case android.R.id.home:
+                finish();
+                break;
+            default:break;
+        }
+        return true;
     }
 
     private void getUserMatchId() {
@@ -195,4 +221,6 @@ public class MatchesActivity extends AppCompatActivity  {
         mAdapter.setListForAsch(resultMatches);
         getUserMatchId();
     }
+
+
 }

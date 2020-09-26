@@ -9,13 +9,14 @@
     >
 
     <ImageButton
+        android:layout_marginTop="20dp"
         android:background="@color/white"
         android:src="@drawable/love"
         android:layout_centerHorizontal="true"
         android:scaleType="fitCenter"
         android:id="@+id/img"
         android:layout_width="match_parent"
-        android:layout_height="260dp"/>
+        android:layout_height="320dp"/>
 
     <RelativeLayout
         android:layout_below="@+id/img"
@@ -27,7 +28,8 @@
             android:text="Tên"
             android:layout_centerHorizontal="true"
             android:id="@+id/edtUserName"
-            android:textSize="17sp"
+            android:textSize="28sp"
+            android:textStyle="bold"
             android:textColor="@android:color/black"
             android:gravity="center|left"
             android:layout_width="wrap_content"
@@ -36,7 +38,7 @@
             android:layout_centerHorizontal="true"
             android:layout_below="@+id/edtUserName"
             android:text="Tuổi"
-            android:textSize="25sp"
+            android:textSize="22sp"
             android:textColor="@android:color/black"
             android:id="@+id/txtAge"
             android:layout_width="wrap_content"
