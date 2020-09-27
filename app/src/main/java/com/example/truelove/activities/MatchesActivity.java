@@ -192,10 +192,8 @@ public class MatchesActivity extends AppCompatActivity  {
         theTextArea.setTextColor(Color.parseColor("#ffffff"));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             theTextArea.setTextCursorDrawable(R.drawable.cursor);
-            theTextArea.setTextCursorDrawable(Color.parseColor("#ffffff"));
-
+            // theTextArea.setTextCursorDrawable(Color.parseColor("#ffffff"));
         }
-
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
