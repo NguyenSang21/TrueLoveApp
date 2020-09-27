@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    tools:context=".activities.Finder">
+
+    <!--<androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbarFinder"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/pink"
+        app:navigationIcon="?attr/homeAsUpIndicator"
+        app:theme="@style/ThemeOverlay.AppCompat"
+        app:titleTextColor="@color/white" />-->
+
+    <Button
+        android:id="@+id/btnBack"
+        android:layout_marginTop="5dp"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_marginLeft="15dp"
+        android:background="@drawable/left_arrow"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp" />
+
+    <Button
+        android:id="@+id/btnFinder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbarFinder"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/border_edit_profile"
+        android:padding="10dp"
+        android:text="TÌM KIẾM BẠN BÈ"
+        android:textColor="@color/pink"></Button>
+
+    <TextView
+        android:id="@+id/txtHint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btnFinder"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp"
+        android:text="Tìm kiếm bạn bè trong bán kính"
+        android:textColor="@color/pink"
+        android:textStyle="italic"></TextView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        android:weightSum="10">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text=""></TextView>
+
+        <SeekBar
+            android:id="@+id/seekBarKM"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="7"
+            android:max="100" />
+
+        <TextView
+            android:id="@+id/txtKM"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginTop="3dp"
+            android:layout_weight="2"
+            android:text="2 Km"
+            android:textColor="@color/pink"></TextView>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/statusSearch"
+        android:layout_height="wrap_content"
+        android:textColor="@color/pink"
+        android:layout_marginTop="3dp"
+        android:textAlignment="center"
+        android:text="Không tìm thấy kết quả !"
+        android:layout_width="match_parent">
+    </TextView>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtHint">
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/idNestedScrollView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/bg_finder">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewFinder"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </androidx.core.widget.NestedScrollView>
+
+        <com.wang.avi.AVLoadingIndicatorView
+            android:id="@+id/avi"
+            style="@style/AVLoadingIndicatorView.Large"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_centerInParent="true"
+            android:visibility="visible"
+            app:indicatorColor="@color/pink"
+            app:indicatorName="BallScaleRippleMultipleIndicator" />
+    </RelativeLayout>
+
+</LinearLayout>

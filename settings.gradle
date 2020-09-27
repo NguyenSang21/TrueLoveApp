@@ -1,2 +1,3 @@
+include ':appcamera'
 include ':app'
 rootProject.name = "TrueLove"

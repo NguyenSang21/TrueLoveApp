@@ -1,7 +1,175 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"/>
+    android:background="@drawable/backgroud_main"
+    tools:context=".activities.MainActivity"
+    android:layout_weight="10"
+    android:orientation="vertical">
+
+    <TextView
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_weight="0.6"
+        android:textSize="25dp"
+        android:id="@+id/txtLabel"
+        android:text="True Love"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"/>
+
+    <com.lorentzos.flingswipe.SwipeFlingAdapterView
+        android:layout_weight="6"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/frame"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:elevation="8dp"
+        android:background="#fff" />
+
+<!--    <RelativeLayout-->
+<!--        android:layout_weight="2"-->
+<!--        android:layout_marginTop="5dp"-->
+<!--        android:layout_marginLeft="80dp"-->
+<!--        android:layout_marginRight="80dp"-->
+<!--        android:layout_marginBottom="5dp"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="0dp">-->
+<!--        <androidx.cardview.widget.CardView-->
+<!--            android:layout_centerVertical="true"-->
+<!--            android:layout_margin="10dp"-->
+<!--            app:cardCornerRadius="34dp"-->
+<!--            app:cardElevation="3dp"-->
+<!--            android:layout_width="70dp"-->
+<!--            android:layout_height="70dp">-->
+
+<!--            <RelativeLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent">-->
+<!--                <ImageButton-->
+<!--                    android:layout_centerVertical="true"-->
+<!--                    android:layout_centerHorizontal="true"-->
+<!--                    android:src="@drawable/close"-->
+<!--                    android:background="#fff"-->
+<!--                    android:scaleType="fitCenter"-->
+<!--                    android:layout_width="30dp"-->
+<!--                    android:layout_height="30dp"/>-->
+<!--            </RelativeLayout>-->
+
+<!--        </androidx.cardview.widget.CardView>-->
+
+<!--        <androidx.cardview.widget.CardView-->
+<!--            android:layout_centerVertical="true"-->
+<!--            android:layout_margin="10dp"-->
+<!--            android:layout_alignParentRight="true"-->
+<!--            app:cardCornerRadius="34dp"-->
+<!--            app:cardElevation="3dp"-->
+<!--            android:layout_width="70dp"-->
+<!--            android:layout_height="70dp">-->
+
+<!--            <RelativeLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent">-->
+<!--                <ImageButton-->
+<!--                    android:layout_centerHorizontal="true"-->
+<!--                    android:layout_centerVertical="true"-->
+<!--                    android:src="@drawable/heart"-->
+<!--                    android:background="#fff"-->
+<!--                    android:scaleType="fitCenter"-->
+<!--                    android:layout_width="30dp"-->
+<!--                    android:layout_height="30dp"/>-->
+<!--            </RelativeLayout>-->
+
+<!--        </androidx.cardview.widget.CardView>-->
+<!--    </RelativeLayout>-->
+
+    <RelativeLayout
+        android:layout_marginTop="20dp"
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="0dp">
+        <androidx.cardview.widget.CardView
+            android:id="@+id/groupBtn"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:layout_centerHorizontal="true"
+            app:cardCornerRadius="25dp"
+            app:cardElevation="5dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            >
+
+            <LinearLayout
+                android:weightSum="5"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageButton
+                    android:scaleType="fitCenter"
+                    android:id="@+id/btnHome"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:src="@drawable/home"
+                    android:onClick="logoutUser"
+                    android:padding="13dp"
+                    android:background="@color/pink"
+                    />
+
+                <ImageButton
+                    android:id="@+id/btnProfile"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:onClick="goToProfile"
+                    android:src="@drawable/profile"
+                    android:scaleType="fitCenter"
+                    android:padding="13dp"
+                    android:background="#fff" />
+
+                <ImageButton
+                    android:id="@+id/btnMatches"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:scaleType="fitCenter"
+                    android:padding="13dp"
+                    android:onClick="gotoMatches"
+                    android:src="@drawable/couple"
+                    android:background="#fff" />
+
+                <ImageButton
+                    android:id="@+id/btnLocation"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:scaleType="fitCenter"
+                    android:padding="13dp"
+                    android:onClick="gotoFinder"
+                    android:src="@drawable/location"
+                    android:background="#fff" />
+
+                <ImageView
+                    android:scaleType="fitCenter"
+                    android:padding="13dp"
+                    android:onClick="goToSetting"
+                    android:id="@+id/btnSetting"
+                    android:src="@drawable/cog"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"/>
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+    </RelativeLayout>
+
+</LinearLayout>

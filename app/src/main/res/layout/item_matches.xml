@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="100dp"
+    android:background="?attr/selectableItemBackground"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/layout_message_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:background="?android:attr/selectableItemBackground">
+
+
+        <RelativeLayout
+            android:id="@+id/layout_picture_frame"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/imageMatches"
+                android:src="@drawable/love"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                tools:ignore="MissingClass" />
+        </RelativeLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_toEndOf="@id/layout_picture_frame"
+            android:layout_centerInParent="true">
+            <androidx.appcompat.widget.AppCompatTextView
+                android:text="Matche's Name"
+                android:id="@+id/txtMatchesName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:fontFamily="sans-serif-medium"
+                android:maxLines="1"
+                android:textColor="@color/darkGray"
+                android:textSize="17sp"
+                />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:visibility="gone"
+                android:text="Matche's ID"
+                android:id="@+id/txtMatchesId"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:textSize="14sp"
+                android:maxLines="1"
+                android:ellipsize="end"/>
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:background="@color/md_grey_200"
+            android:layout_marginEnd="26dp"
+            android:layout_alignParentBottom="true"
+            android:layout_height="0.5dp"
+            android:layout_toEndOf="@id/layout_picture_frame" />
+    </RelativeLayout>
+
+</FrameLayout>
