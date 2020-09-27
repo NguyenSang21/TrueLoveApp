@@ -20,17 +20,17 @@
             <ImageView
                 android:tooltipText=""
                 android:background="#F45F92"
-                android:scaleType="centerCrop"
                 android:id="@+id/backgroudImageProcess"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
+
             <Button
                 android:id="@+id/btnBack"
-                android:layout_marginTop="5dp"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
+                android:layout_width="19dp"
+                android:layout_height="14dp"
                 android:layout_marginLeft="15dp"
-                android:background="@drawable/left_arrow"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/left_arrow_2"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp" />
 
@@ -135,18 +135,21 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content">
                 <LinearLayout
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentBottom="true"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="right">
+
                     <TextView
                         android:id="@+id/txtluu"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_alignRight="@+id/profileConfirm"
                         android:layout_gravity="center_vertical"
-                        android:text="Lưu"
-
+                        android:textColor="@color/black"
                         android:layout_marginRight="10dp"
-                        android:layout_alignRight="@+id/profileConfirm"/>
+                        android:text="Lưu" />
                     <Button
                         android:id="@+id/profileConfirm"
                         android:layout_width="27dp"
@@ -200,17 +203,6 @@
                 android:editable="false"
                 android:padding="15dp"
                 android:background="@null"/>
-        </androidx.cardview.widget.CardView>
-        <androidx.cardview.widget.CardView
-            app:cardCornerRadius="7dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:background="@drawable/border_edit_profile"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="15dp">
-
         </androidx.cardview.widget.CardView>
         <androidx.cardview.widget.CardView
             app:cardCornerRadius="7dp"
@@ -305,6 +297,7 @@
             android:orientation="horizontal">
 
             <TextView
+                android:layout_centerVertical="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
@@ -315,17 +308,17 @@
                 android:textStyle="bold" />
 
             <LinearLayout android:layout_height="match_parent"
+                android:layout_centerVertical="true"
                 android:layout_width="match_parent"
                 android:gravity="right"
                 >
-
                 <TextView
+                    android:textColor="@color/black"
                     android:layout_marginTop="5dp"
                     android:id="@+id/txtViewTaiAnhLen"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    android:layout_marginBottom="20dp"
                     android:text="Tải ảnh lên album" />
                 <Button
                     android:layout_alignTop="@+id/txtViewTaiAnhLen"

@@ -90,7 +90,6 @@
 <!--        </androidx.cardview.widget.CardView>-->
 <!--    </RelativeLayout>-->
 
-
     <RelativeLayout
         android:layout_marginTop="20dp"
         android:layout_weight="1"
@@ -103,8 +102,8 @@
             android:layout_centerHorizontal="true"
             app:cardCornerRadius="25dp"
             app:cardElevation="5dp"
-            android:layout_marginLeft="40dp"
-            android:layout_marginRight="40dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
             >
 
             <LinearLayout
@@ -114,15 +113,16 @@
                 android:layout_height="match_parent">
 
                 <ImageButton
+                    android:scaleType="fitCenter"
                     android:id="@+id/btnHome"
                     android:layout_width="0dp"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:src="@drawable/home"
-                    android:scaleType="fitCenter"
                     android:onClick="logoutUser"
                     android:padding="13dp"
-                    android:background="#F45F92"/>
+                    android:background="@color/pink"
+                    />
 
                 <ImageButton
                     android:id="@+id/btnProfile"
