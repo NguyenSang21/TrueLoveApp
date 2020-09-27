@@ -14,7 +14,7 @@
         android:layout_above="@+id/cardSignup"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="0dp"
-        android:text="Sign Up"
+        android:text="Đăng kí"
         android:layout_marginBottom="10dp"
         android:textColor="#fff"
         android:textSize="30sp"
